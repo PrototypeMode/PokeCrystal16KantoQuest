@@ -337,6 +337,26 @@ _LookJigglypuffPosterText::
 	line "cute JIGGLYPUFF."
 	done
 
+_LookNESConsoleText::
+	text "Oldschool! NES!"
+;	line "cute PIKACHU."
+	done
+
+_LookSNESConsoleText::
+	text "Cool Super NES!"
+;	line "cute CLEFAIRY."
+	done
+
+_LookN64ConsoleText::
+	text "Nice N64!"
+;	line "cute JIGGLYPUFF."
+	done
+	
+_LookGamecubeConsoleText::
+    text "Wow! GAMECUBE!"
+	line "This is new!"
+	done
+
 _LookAdorableDecoText::
 	text "It's an adorable"
 	line "@"

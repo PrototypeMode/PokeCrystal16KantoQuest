@@ -1,11 +1,17 @@
 BattleStart_TrainerHuds:
+    ld a, [wBattleType]
+	cp BATTLETYPE_SCOPE
+	jr z, .BallContinue
 	ld a, $e4
 	ldh [rOBP0], a
 	call LoadBallIconGFX
 	call ShowPlayerMonsRemaining
+	
+.BallContinue	
 	ld a, [wBattleMode]
 	dec a
 	ret z
+	call LoadBallIconGFX
 	jp ShowOTTrainerMonsRemaining
 
 EnemySwitch_TrainerHud:
@@ -142,12 +148,17 @@ DrawEnemyHUDBorder:
 	ld a, [wBattleMode]
 	dec a
 	ret nz
+	
+    ld a, [wBattleType]
+	cp BATTLETYPE_GHOST
+	jr z, .ret
+    	
 	ld a, [wTempEnemyMonSpecies]
-	dec a
 	call CheckCaughtMon
 	ret z
 	hlcoord 1, 1
 	ld [hl], $5d
+.ret	
 	ret
 
 .tiles

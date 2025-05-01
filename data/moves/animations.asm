@@ -1,5 +1,36 @@
-BattleAnimations::
 ; entries correspond to constants/move_constants.asm
+:
+	table_width 2, :-
+; negative entries first (see the constants file for details)
+	dw BattleAnim_GhostFade2
+	dw BattleAnim_GhostFade
+	dw BattleAnim_ExitThrow2
+	dw BattleAnim_ExitThrow
+    dw BattleAnim_BlockedPokeBall
+	dw BattleAnim_ThrowPokeBall
+	dw BattleAnim_SendOutMon
+	dw BattleAnim_ReturnMon
+	dw BattleAnim_Confused
+	dw BattleAnim_Slp
+	dw BattleAnim_Brn
+	dw BattleAnim_Psn
+	dw BattleAnim_Sap
+	dw BattleAnim_Frz
+	dw BattleAnim_Par
+	dw BattleAnim_InLove
+	dw BattleAnim_InSandstorm
+	dw BattleAnim_InNightmare
+	dw BattleAnim_InWhirlpool
+	dw BattleAnim_Miss
+	dw BattleAnim_EnemyDamage
+	dw BattleAnim_EnemyStatDown
+	dw BattleAnim_PlayerStatDown
+	dw BattleAnim_PlayerDamage
+	dw BattleAnim_Wobble
+	dw BattleAnim_Shake
+	dw BattleAnim_HitConfusion
+	assert_table_length NUM_BATTLE_ANIMS
+BattleAnimations::
 	table_width 2
 	dw BattleAnim_Dummy
 	dw BattleAnim_Pound
@@ -254,35 +285,7 @@ BattleAnimations::
 	dw BattleAnim_Whirlpool
 	dw BattleAnim_BeatUp
 	assert_table_length NUM_ATTACKS + 1
-	dw BattleAnim_Dummy
-	dw BattleAnim_Dummy
-	dw BattleAnim_Dummy
 	dw BattleAnim_SweetScent2
-	assert_table_length $100
-; $100
-	dw BattleAnim_ThrowPokeBall
-	dw BattleAnim_SendOutMon
-	dw BattleAnim_ReturnMon
-	dw BattleAnim_Confused
-	dw BattleAnim_Slp
-	dw BattleAnim_Brn
-	dw BattleAnim_Psn
-	dw BattleAnim_Sap
-	dw BattleAnim_Frz
-	dw BattleAnim_Par
-	dw BattleAnim_InLove
-	dw BattleAnim_InSandstorm
-	dw BattleAnim_InNightmare
-	dw BattleAnim_InWhirlpool
-	dw BattleAnim_Miss
-	dw BattleAnim_EnemyDamage
-	dw BattleAnim_EnemyStatDown
-	dw BattleAnim_PlayerStatDown
-	dw BattleAnim_PlayerDamage
-	dw BattleAnim_Wobble
-	dw BattleAnim_Shake
-	dw BattleAnim_HitConfusion
-	assert_table_length NUM_BATTLE_ANIMS + 1
 
 BattleAnim_Dummy:
 BattleAnim_MirrorMove:
@@ -302,60 +305,72 @@ BattleAnim_SweetScent2:
 	anim_ret
 
 BattleAnim_ThrowPokeBall:
-	anim_if_param_equal NO_ITEM, .TheTrainerBlockedTheBall
-	anim_if_param_equal MASTER_BALL, .MasterBall
-	anim_if_param_equal ULTRA_BALL, .UltraBall
+	anim_1gfx BATTLE_ANIM_GFX_POKE_BALL
+;	anim_if_param_equal 0, BattleAnim_BlockedPokeBall
+    anim_if_param_equal POKE_BALL, .PokeBall
 	anim_if_param_equal GREAT_BALL, .GreatBall
+	anim_if_param_equal ULTRA_BALL, .UltraBall
+	anim_if_param_equal MASTER_BALL, .MasterBall
+	
+	anim_if_param_equal FAST_BALL, .FastBall
+	anim_if_param_equal LOVE_BALL, .LoveBall
+	anim_if_param_equal LURE_BALL, .LureBall
+	anim_if_param_equal MOON_BALL, .MoonBall
+	anim_if_param_equal HEAVY_BALL, .HeavyBall
+	anim_if_param_equal FRIEND_BALL, .FriendBall
+	anim_if_param_equal LEVEL_BALL, .LevelBall
+    anim_if_param_equal PARK_BALL, .ParkBall
+    anim_if_param_equal PREMIER_BALL, .PremierBall
+    anim_if_param_equal GS_BALL, .GSBall
+    anim_ret
+	
+
+.PokeBall	
 	; any other ball
 	anim_2gfx BATTLE_ANIM_GFX_POKE_BALL, BATTLE_ANIM_GFX_SMOKE
-	anim_sound 6, 2, SFX_THROW_BALL
-	anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
-	anim_wait 36
-	anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
-	anim_setobj $2, $7
-	anim_wait 16
-	anim_sound 0, 1, SFX_BALL_POOF
-	anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
-	anim_wait 16
-	anim_jump .Shake
-
-.TheTrainerBlockedTheBall:
-	anim_2gfx BATTLE_ANIM_GFX_POKE_BALL, BATTLE_ANIM_GFX_HIT
-	anim_sound 6, 2, SFX_THROW_BALL
-	anim_obj BATTLE_ANIM_OBJ_POKE_BALL_BLOCKED, 64, 92, $20
-	anim_wait 20
-	anim_obj BATTLE_ANIM_OBJ_HIT_YFIX, 112, 40, $0
-	anim_wait 32
-	anim_ret
-
-.UltraBall:
-	anim_2gfx BATTLE_ANIM_GFX_POKE_BALL, BATTLE_ANIM_GFX_SMOKE
-	anim_sound 6, 2, SFX_THROW_BALL
-	anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
-	anim_wait 36
-	anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
-	anim_setobj $2, $7
-	anim_wait 16
-	anim_sound 0, 1, SFX_BALL_POOF
-	anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
-	anim_wait 16
-	anim_jump .Shake
+	anim_jump .NormalBall		
+	; anim_sound 6, 2, SFX_THROW_BALL
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
+	; anim_wait 36
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
+	; anim_setobj $2, $7
+	; anim_wait 16
+	; anim_sound 0, 1, SFX_BALL_POOF
+	; anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
+	; anim_wait 16
+	; anim_jump .Shake		
+   
 
 .GreatBall:
-	anim_2gfx BATTLE_ANIM_GFX_POKE_BALL, BATTLE_ANIM_GFX_SMOKE
-	anim_sound 6, 2, SFX_THROW_BALL
-	anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
-	anim_wait 36
-	anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
-	anim_setobj $2, $7
-	anim_wait 16
-	anim_sound 0, 1, SFX_BALL_POOF
-	anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
-	anim_wait 16
-	anim_jump .Shake
-
+	anim_2gfx BATTLE_ANIM_GFX_GREAT_BALL, BATTLE_ANIM_GFX_SMOKE
+	anim_jump .NormalBall		
+	; anim_sound 6, 2, SFX_THROW_BALL
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
+	; anim_wait 36
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
+	; anim_setobj $2, $7
+	; anim_wait 16
+	; anim_sound 0, 1, SFX_BALL_POOF
+	; anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
+	; anim_wait 16
+	; anim_jump .Shake	
+	
+.UltraBall:
+	anim_2gfx BATTLE_ANIM_GFX_ULTRA_BALL, BATTLE_ANIM_GFX_SMOKE
+	anim_jump .NormalBall		
+	; anim_sound 6, 2, SFX_THROW_BALL
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
+	; anim_wait 36
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
+	; anim_setobj $2, $7
+	; anim_wait 16
+	; anim_sound 0, 1, SFX_BALL_POOF
+	; anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
+	; anim_wait 16
+	; anim_jump .Shake	
+	
 .MasterBall:
-	anim_3gfx BATTLE_ANIM_GFX_POKE_BALL, BATTLE_ANIM_GFX_SMOKE, BATTLE_ANIM_GFX_SPEED
+	anim_3gfx BATTLE_ANIM_GFX_MASTER_BALL, BATTLE_ANIM_GFX_SMOKE, BATTLE_ANIM_GFX_SPEED
 	anim_sound 6, 2, SFX_THROW_BALL
 	anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 64, 92, $20
 	anim_wait 36
@@ -375,6 +390,172 @@ BattleAnim_ThrowPokeBall:
 	anim_obj BATTLE_ANIM_OBJ_MASTER_BALL_SPARKLE, 136, 56, $36
 	anim_obj BATTLE_ANIM_OBJ_MASTER_BALL_SPARKLE, 136, 56, $37
 	anim_wait 64
+	anim_jump .Shake
+
+.FastBall	
+	; any other ball
+	anim_2gfx BATTLE_ANIM_GFX_FAST_BALL, BATTLE_ANIM_GFX_SMOKE
+	anim_jump .NormalBall		
+	; anim_sound 6, 2, SFX_THROW_BALL
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
+	; anim_wait 36
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
+	; anim_setobj $2, $7
+	; anim_wait 16
+	; anim_sound 0, 1, SFX_BALL_POOF
+	; anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
+	; anim_wait 16
+	; anim_jump .Shake
+
+.LoveBall	
+	; any other ball
+	anim_2gfx BATTLE_ANIM_GFX_LOVE_BALL, BATTLE_ANIM_GFX_SMOKE
+	anim_jump .NormalBall		
+	; anim_sound 6, 2, SFX_THROW_BALL
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
+	; anim_wait 36
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
+	; anim_setobj $2, $7
+	; anim_wait 16
+	; anim_sound 0, 1, SFX_BALL_POOF
+	; anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
+	; anim_wait 16
+	; anim_jump .Shake
+
+.LureBall	
+	; any other ball
+	anim_2gfx BATTLE_ANIM_GFX_LURE_BALL, BATTLE_ANIM_GFX_SMOKE
+	anim_jump .NormalBall		
+	; anim_sound 6, 2, SFX_THROW_BALL
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
+	; anim_wait 36
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
+	; anim_setobj $2, $7
+	; anim_wait 16
+	; anim_sound 0, 1, SFX_BALL_POOF
+	; anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
+	; anim_wait 16
+	; anim_jump .Shake
+
+.MoonBall	
+	; any other ball
+	anim_2gfx BATTLE_ANIM_GFX_MOON_BALL, BATTLE_ANIM_GFX_SMOKE
+	anim_jump .NormalBall		
+	; anim_sound 6, 2, SFX_THROW_BALL
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
+	; anim_wait 36
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
+	; anim_setobj $2, $7
+	; anim_wait 16
+	; anim_sound 0, 1, SFX_BALL_POOF
+	; anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
+	; anim_wait 16
+	; anim_jump .Shake
+
+.HeavyBall	
+	; any other ball
+	anim_2gfx BATTLE_ANIM_GFX_HEAVY_BALL, BATTLE_ANIM_GFX_SMOKE
+	anim_jump .NormalBall		
+	; anim_sound 6, 2, SFX_THROW_BALL
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
+	; anim_wait 36
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
+	; anim_setobj $2, $7
+	; anim_wait 16
+	; anim_sound 0, 1, SFX_BALL_POOF
+	; anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
+	; anim_wait 16
+	; anim_jump .Shake
+	
+
+.FriendBall	
+	; any other ball
+	anim_2gfx BATTLE_ANIM_GFX_FRIEND_BALL, BATTLE_ANIM_GFX_SMOKE
+	anim_jump .NormalBall		
+	; anim_sound 6, 2, SFX_THROW_BALL
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
+	; anim_wait 36
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
+	; anim_setobj $2, $7
+	; anim_wait 16
+	; anim_sound 0, 1, SFX_BALL_POOF
+	; anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
+	; anim_wait 16
+	; anim_jump .Shake	
+	
+
+.LevelBall	
+	; any other ball
+	anim_2gfx BATTLE_ANIM_GFX_LEVEL_BALL, BATTLE_ANIM_GFX_SMOKE
+	anim_jump .NormalBall		
+	; anim_sound 6, 2, SFX_THROW_BALL
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
+	; anim_wait 36
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
+	; anim_setobj $2, $7
+	; anim_wait 16
+	; anim_sound 0, 1, SFX_BALL_POOF
+	; anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
+	; anim_wait 16
+	; anim_jump .Shake
+	
+
+.ParkBall	
+	; any other ball
+	anim_2gfx BATTLE_ANIM_GFX_PARK_BALL, BATTLE_ANIM_GFX_SMOKE
+	anim_jump .NormalBall		
+	; anim_sound 6, 2, SFX_THROW_BALL
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
+	; anim_wait 36
+	; anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
+	; anim_setobj $2, $7
+	; anim_wait 16
+	; anim_sound 0, 1, SFX_BALL_POOF
+	; anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
+	; anim_wait 16
+	; anim_jump .Shake	
+	
+
+.PremierBall	
+	; any other ball
+	anim_2gfx BATTLE_ANIM_GFX_PREMIER_BALL, BATTLE_ANIM_GFX_SMOKE
+	anim_sound 6, 2, SFX_THROW_BALL
+	anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
+	anim_wait 36
+	anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
+	anim_setobj $2, $7
+	anim_wait 16
+	anim_sound 0, 1, SFX_BALL_POOF
+	anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
+	anim_wait 16
+	anim_jump .Shake	
+	
+.GSBall	
+	; any other ball
+	anim_2gfx BATTLE_ANIM_GFX_GS_BALL, BATTLE_ANIM_GFX_SMOKE
+	anim_sound 6, 2, SFX_THROW_BALL
+	anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
+	anim_wait 36
+	anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
+	anim_setobj $2, $7
+	anim_wait 16
+	anim_sound 0, 1, SFX_BALL_POOF
+	anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
+	anim_wait 16
+	anim_jump .Shake	
+
+.NormalBall
+	anim_sound 6, 2, SFX_THROW_BALL
+	anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 68, 92, $40
+	anim_wait 36
+	anim_obj BATTLE_ANIM_OBJ_POKE_BALL, 136, 65, $0
+	anim_setobj $2, $7
+	anim_wait 16
+	anim_sound 0, 1, SFX_BALL_POOF
+	anim_obj BATTLE_ANIM_OBJ_BALL_POOF, 136, 64, $10
+	anim_wait 16
+	anim_jump .Shake			
+	
 .Shake:
 	anim_bgeffect BATTLE_BG_EFFECT_RETURN_MON, $0, BG_EFFECT_TARGET, $0
 	anim_wait 8
@@ -410,11 +591,132 @@ BattleAnim_ThrowPokeBall:
 	anim_bgeffect BATTLE_BG_EFFECT_ENTER_MON, $0, BG_EFFECT_TARGET, $0
 	anim_wait 32
 	anim_ret
+	
+BattleAnim_BlockedPokeBall:	
+	anim_1gfx BATTLE_ANIM_GFX_POKE_BALL
+    anim_if_param_equal POKE_BALL, .PokeBall
+	anim_if_param_equal GREAT_BALL, .GreatBall
+	anim_if_param_equal ULTRA_BALL, .UltraBall
+	anim_if_param_equal MASTER_BALL, .MasterBall
+	
+	anim_if_param_equal FAST_BALL, .FastBall
+	anim_if_param_equal LOVE_BALL, .LoveBall
+	anim_if_param_equal LURE_BALL, .LureBall
+	anim_if_param_equal MOON_BALL, .MoonBall
+	anim_if_param_equal HEAVY_BALL, .HeavyBall
+	anim_if_param_equal FRIEND_BALL, .FriendBall
+	anim_if_param_equal LEVEL_BALL, .LevelBall
+    anim_if_param_equal PARK_BALL, .ParkBall
+    anim_if_param_equal PREMIER_BALL, .PremierBall
+    anim_if_param_equal GS_BALL, .GSBall
+	
+.PokeBall	
+	anim_2gfx BATTLE_ANIM_GFX_POKE_BALL, BATTLE_ANIM_GFX_HIT
+	anim_jump .Finish
+	
+.GreatBall	
+	anim_2gfx BATTLE_ANIM_GFX_GREAT_BALL, BATTLE_ANIM_GFX_HIT
+		anim_jump .Finish
+
+.UltraBall	
+	anim_2gfx BATTLE_ANIM_GFX_ULTRA_BALL, BATTLE_ANIM_GFX_HIT
+	anim_jump .Finish
+	
+.MasterBall	
+	anim_2gfx BATTLE_ANIM_GFX_MASTER_BALL, BATTLE_ANIM_GFX_HIT
+		anim_jump .Finish
+		
+.FastBall	
+	anim_2gfx BATTLE_ANIM_GFX_FAST_BALL, BATTLE_ANIM_GFX_HIT
+	anim_jump .Finish
+	
+.LoveBall	
+	anim_2gfx BATTLE_ANIM_GFX_LOVE_BALL, BATTLE_ANIM_GFX_HIT
+		anim_jump .Finish
+
+.LureBall	
+	anim_2gfx BATTLE_ANIM_GFX_LURE_BALL, BATTLE_ANIM_GFX_HIT
+	anim_jump .Finish
+	
+.MoonBall	
+	anim_2gfx BATTLE_ANIM_GFX_MOON_BALL, BATTLE_ANIM_GFX_HIT
+		anim_jump .Finish
+		
+.HeavyBall	
+	anim_2gfx BATTLE_ANIM_GFX_HEAVY_BALL, BATTLE_ANIM_GFX_HIT
+	anim_jump .Finish
+	
+.FriendBall	
+	anim_2gfx BATTLE_ANIM_GFX_FRIEND_BALL, BATTLE_ANIM_GFX_HIT
+		anim_jump .Finish
+
+.LevelBall	
+	anim_2gfx BATTLE_ANIM_GFX_LEVEL_BALL, BATTLE_ANIM_GFX_HIT
+	anim_jump .Finish
+	
+.ParkBall	
+	anim_2gfx BATTLE_ANIM_GFX_PARK_BALL, BATTLE_ANIM_GFX_HIT
+		anim_jump .Finish
+		
+.PremierBall	
+	anim_2gfx BATTLE_ANIM_GFX_PREMIER_BALL, BATTLE_ANIM_GFX_HIT
+	anim_jump .Finish
+	
+.GSBall	
+	anim_2gfx BATTLE_ANIM_GFX_GS_BALL, BATTLE_ANIM_GFX_HIT
+;		anim_jump .Finish			
+	
+.Finish	
+	anim_sound 6, 2, SFX_THROW_BALL
+	anim_obj BATTLE_ANIM_OBJ_POKE_BALL_BLOCKED, 64, 92, $20
+	anim_wait 20
+	anim_obj BATTLE_ANIM_OBJ_HIT_YFIX, 112, 40, $0
+	anim_wait 32
+	anim_ret
+	
+BattleAnim_ExitThrow:
+;	anim_1gfx ANIM_GFX_SMOKE
+	anim_bgeffect BATTLE_BG_EFFECT_REMOVE_MON, $0, BG_EFFECT_USER, $0
+	anim_wait 30
+	
+
+;	anim_raisesub
+;	anim_obj ANIM_OBJ_BALL_POOF, 48, 96, $0
+;	anim_bgeffect ANIM_BG_ENTER_MON, $0, BG_EFFECT_USER, $0
+;	anim_wait 32
+ 
+	anim_ret
+	
+BattleAnim_ExitThrow2:	
+	anim_bgeffect BATTLE_BG_EFFECT_HIDE_MON, $0, BG_EFFECT_USER, $0
+    anim_ret	
+	
+BattleAnim_GhostFade:	
+      anim_call BattleAnim_LockOn
+	; anim_bgeffect BATTLE_BG_EFFECT_FADE_MON_TO_LIGHT $0, BG_EFFECT_TARGET, $50
+	  anim_bgeffect BATTLE_BG_EFFECT_FADE_MON_TO_WHITE_WAIT_FADE_BACK, $0, BG_EFFECT_TARGET, $80
+	  anim_wait 64
+	  anim_bgeffect BATTLE_BG_EFFECT_HIDE_MON, $0, BG_EFFECT_TARGET, $0
+
+    anim_ret	
+	
+BattleAnim_GhostFade2:
+
+ 	anim_call BattleAnim_ShowMon_0
+  anim_bgeffect BATTLE_BG_EFFECT_FADE_MON_TO_WHITE_WAIT_FADE_BACK, $0, BG_EFFECT_TARGET, $20
+  anim_wait 10
+
+
+	anim_incbgeffect BATTLE_BG_EFFECT_FADE_MON_TO_WHITE_WAIT_FADE_BACK
+    anim_call BattleAnim_Smog
+	anim_wait 10
+
+    anim_ret	
 
 BattleAnim_SendOutMon:
 	anim_if_param_equal $0, .Normal
 	anim_if_param_equal $1, .Shiny
-	anim_if_param_equal $2, .Unknown
+	anim_if_param_equal $2, .Shiny
 	anim_1gfx BATTLE_ANIM_GFX_SMOKE
 	anim_call BattleAnim_TargetObj_1Row
 	anim_bgeffect BATTLE_BG_EFFECT_BETA_SEND_OUT_MON2, $0, BG_EFFECT_USER, $0
@@ -2082,9 +2384,9 @@ BattleAnim_Headbutt:
 	anim_ret
 
 BattleAnim_Tackle:
-; BUG: Tackle is missing part of its hit animation (see docs/bugs_and_glitches.md)
+
 	anim_1gfx BATTLE_ANIM_GFX_HIT
-	anim_call BattleAnim_TargetObj_2Row
+	anim_call BattleAnim_TargetObj_1Row
 	anim_bgeffect BATTLE_BG_EFFECT_TACKLE, $0, BG_EFFECT_USER, $0
 	anim_wait 4
 	anim_sound 0, 1, SFX_TACKLE
@@ -4595,6 +4897,7 @@ BattleAnim_BeatUp:
 	anim_wait 8
 	anim_call BattleAnim_ShowMon_0
 	anim_ret
+	
 
 BattleAnimSub_Drain:
 	anim_obj BATTLE_ANIM_OBJ_DRAIN, 132, 44, $0

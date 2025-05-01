@@ -63,19 +63,90 @@ NewGame:
 	ld [wDebugFlags], a
 	call ResetWRAM
 	call NewGame_ClearTilemapEtc
-	call PlayerProfileSetup
+	call PlayerProfileSetup ; AreYouABoyOrAreYouAGirl
 	call OakSpeech
 	call InitializeWorld
+	
+.CostumeCheck	
+	ld a, [wPlayerCostume]
+	cp 0
+	jr z, .Gender
+	cp 1
+	jr z, .Gender
+	cp 2
+	jr z, .Costume
+	cp 3
+	jr z, .Costume
+	cp 4
+	jr z, .Costume
 
-	ld a, LANDMARK_NEW_BARK_TOWN
+.Gender
+	ld a, [wPlayerGender]
+	cp 0
+    jr z, .AshStart
+	cp 1
+	jr z, .MistyStart
+
+.Costume	
+	ld a, [wPlayerCostume]
+	cp 2
+	jr z, .BrockStart
+	cp 3
+	jr z, .GaryStart
+	cp 4
+	jr z, .PikachuStart	
+	
+	
+.AshStart
+	ld a, LANDMARK_PALLET_TOWN
 	ld [wPrevLandmark], a
 
-	ld a, SPAWN_HOME
+	ld a, SPAWN_PALLET_RED
 	ld [wDefaultSpawnpoint], a
+	
+	farcall InitDecorations1
+	jr .FinishStart
+	
+.MistyStart
+	ld a, LANDMARK_CERULEAN_CITY
+	ld [wPrevLandmark], a
 
+	ld a, SPAWN_CERULEAN_GYM_INSIDE
+	;ld a, SPAWN_CERULEAN_GYM_DOOR
+	ld [wDefaultSpawnpoint], a	
+	jr .FinishStart
+	
+.BrockStart
+	ld a, LANDMARK_PEWTER_CITY
+	ld [wPrevLandmark], a
+
+	ld a, SPAWN_PEWTER_GYM_INSIDE
+	;ld a, SPAWN_PEWTER_GYM_DOOR
+	ld [wDefaultSpawnpoint], a	
+	jr .FinishStart
+
+.GaryStart
+	ld a, LANDMARK_PALLET_TOWN
+	ld [wPrevLandmark], a
+
+	ld a, SPAWN_PALLET_BLUE
+	ld [wDefaultSpawnpoint], a	
+	farcall InitDecorations1
+	jr .FinishStart
+
+.PikachuStart
+	ld a, LANDMARK_PALLET_TOWN
+	ld [wPrevLandmark], a
+
+	ld a, SPAWN_PALLET_RED
+	ld [wDefaultSpawnpoint], a	
+	jr .FinishStart		
+	
+.FinishStart
 	ld a, MAPSETUP_WARP
 	ldh [hMapEntryMethod], a
 	jp FinishContinueFunction
+
 
 PlayerProfileSetup:
 	farcall CheckMobileAdapterStatus
@@ -100,6 +171,19 @@ ResetWRAM:
 	ret
 
 _ResetWRAM:
+	ld a, BANK("16-bit WRAM tables")
+	ldh [rSVBK], a
+	ld hl, wPokemonIndexTable
+	ld bc, wPokemonIndexTableEnd - wPokemonIndexTable
+	xor a
+	call ByteFill
+	ld hl, wMoveIndexTable
+	ld bc, wMoveIndexTableEnd - wMoveIndexTable
+	call ByteFill
+
+	ld a, 1
+	ldh [rSVBK], a
+
 	ld hl, wShadowOAM
 	ld bc, wOptions - wShadowOAM
 	xor a
@@ -215,7 +299,7 @@ endc
 
 	call InitializeNPCNames
 
-	farcall InitDecorations
+	farcall InitDecorations1
 
 	farcall DeletePartyMonMail
 
@@ -279,34 +363,35 @@ InitializeMagikarpHouse:
 
 InitializeNPCNames:
 	ld hl, .Rival
-	ld de, wRivalName
+	ld de, wGarysName
 	call .Copy
 
 	ld hl, .Mom
-	ld de, wMomsName
+	ld de, wBrocksName
 	call .Copy
 
 	ld hl, .Red
-	ld de, wRedsName
+	ld de, wAshsName
 	call .Copy
 
 	ld hl, .Green
-	ld de, wGreensName
+	ld de, wMistysName
 
 .Copy:
 	ld bc, NAME_LENGTH
 	call CopyBytes
 	ret
 
-.Rival:  db "???@"
-.Red:    db "RED@"
-.Green:  db "GREEN@"
-.Mom:    db "MOM@"
+.Red:    db "ASH@"
+.Rival:  db "GARY@"
+.Green:  db "MISTY@"
+.Mom:    db "BROCK@"
 
 InitializeWorld:
 	call ShrinkPlayer
 	farcall SpawnPlayer
 	farcall _InitializeStartDay
+	farcall InitializeEvents
 	ret
 
 LoadOrRegenerateLuckyIDNumber:
@@ -607,16 +692,22 @@ Continue_DisplayPokedexNumCaught:
 	ret z
 	push hl
 	ld hl, wPokedexCaught
-if NUM_POKEMON % 8
-	ld b, NUM_POKEMON / 8 + 1
-else
-	ld b, NUM_POKEMON / 8
-endc
-	call CountSetBits
+	ld bc, wEndPokedexCaught - wPokedexCaught
+	call CountSetBits16
 	pop hl
-	ld de, wNumSetBits
-	lb bc, 1, 3
-	jp PrintNum
+	ld a, b
+	ld b, c
+	ld c, a
+	push bc
+	push hl
+	ld hl, sp + 2
+	ld d, h
+	ld e, l
+	lb bc, 2, 3
+	pop hl
+	call PrintNum
+	pop bc
+	ret
 
 Continue_DisplayGameTime:
 	ld de, wGameTimeHours
@@ -653,7 +744,8 @@ OakSpeech:
 	call RotateThreePalettesRight
 	call ClearTilemap
 
-	ld a, WOOPER
+	ld hl, WOOPER
+	call GetPokemonIDFromIndex
 	ld [wCurSpecies], a
 	ld [wCurPartySpecies], a
 	call GetBaseData
@@ -713,7 +805,8 @@ OakText1:
 OakText2:
 	text_far _OakText2
 	text_asm
-	ld a, WOOPER
+	ld hl, WOOPER
+	call GetPokemonIDFromIndex
 	call PlayMonCry
 	call WaitSFX
 	ld hl, OakText3
@@ -935,11 +1028,38 @@ Intro_PlacePlayerSprite:
 	inc de
 	ld [hli], a ; tile id
 
+    ld a, [wPlayerCostume]
+	cp 0
+	jr z, .Gender
+	cp 1
+	jr z, .Gender
+	cp 2
+	jr z, .GreenShrink
+	cp 3
+	jr z, .BlueShrink
+	cp 4
+	jr z, .RedShrink
+
+.RedShrink	
 	ld b, PAL_OW_RED
+    jr .male
+.PinkShrink	
+	ld b, PAL_OW_PINK
+	jr .male
+.GreenShrink
+	ld b, PAL_OW_GREEN
+	jr .male
+.BlueShrink	
+	ld b, PAL_OW_BLUE	
+    jr .male
+	
+.Gender
+	ld b, PAL_OW_RED	
 	ld a, [wPlayerGender]
 	bit PLAYERGENDER_FEMALE_F, a
 	jr z, .male
-	ld b, PAL_OW_BLUE
+	ld b, PAL_OW_PINK
+	
 .male
 	ld a, b
 

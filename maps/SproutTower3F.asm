@@ -199,7 +199,7 @@ SproutTowerRivalOnlyCareAboutStrongText:
 	done
 
 SproutTowerRivalUsedEscapeRopeText:
-	text "<RIVAL> used an"
+	text "<GARY> used an"
 	line "ESCAPE ROPE!"
 	done
 

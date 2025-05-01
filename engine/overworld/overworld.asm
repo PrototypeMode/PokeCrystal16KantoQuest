@@ -52,16 +52,53 @@ RefreshSprites::
 	call LoadAndSortSprites
 	ret
 
+; GetPlayerSprite:
+; ; Get Chris or Kris's sprite.
+	; ld hl, ChrisStateSprites
+	; ld a, [wPlayerSpriteSetupFlags]
+	; bit PLAYERSPRITESETUP_FEMALE_TO_MALE_F, a
+	; jr nz, .go
+	; ld a, [wPlayerGender]
+	; bit PLAYERGENDER_FEMALE_F, a
+	; jr z, .go
+	; ld hl, KrisStateSprites
 GetPlayerSprite:
 ; Get Chris or Kris's sprite.
-	ld hl, ChrisStateSprites
-	ld a, [wPlayerSpriteSetupFlags]
-	bit PLAYERSPRITESETUP_FEMALE_TO_MALE_F, a
-	jr nz, .go
-	ld a, [wPlayerGender]
-	bit PLAYERGENDER_FEMALE_F, a
-	jr z, .go
-	ld hl, KrisStateSprites
+	
+.CostumeCheck
+	ld a, [wPlayerCostume]
+	cp 0
+	jr z, .Ash
+	cp 1
+	jr z, .Misty
+    cp 2
+	jr z, .Brock
+     cp 3
+	jr z, .Gary
+	 cp 4
+	jr z, .Pikachu
+
+	
+.Ash	
+	ld hl, AshStateSprites
+	jp .go
+	
+.Misty	
+	ld hl, MistyStateSprites
+    jp .go
+
+.Brock	
+	ld hl, BrockStateSprites
+    jp .go		
+
+.Gary	
+	ld hl, GaryStateSprites
+    jp .go
+
+.Pikachu	
+	ld hl, PikachuStateSprites
+    jp .go			
+	
 
 .go
 	ld a, [wPlayerState]
@@ -77,7 +114,7 @@ GetPlayerSprite:
 ; Any player state not in the array defaults to Chris's sprite.
 	xor a ; ld a, PLAYER_NORMAL
 	ld [wPlayerState], a
-	ld a, SPRITE_CHRIS
+	ld a, SPRITE_ASH
 	jr .finish
 
 .good
@@ -128,15 +165,18 @@ AddOutdoorSprites:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld c, MAX_OUTDOOR_SPRITES
+;	ld c, MAX_OUTDOOR_SPRITES
 .loop
-	push bc
+;	push bc
 	ld a, [hli]
+    and a
+	ret z
 	call AddSpriteGFX
-	pop bc
-	dec c
-	jr nz, .loop
-	ret
+	jr .loop
+	; pop bc
+	; dec c
+	; jr nz, .loop
+	; ret
 
 LoadUsedSpritesGFX:
 	ld a, MAPCALLBACK_SPRITES
@@ -217,7 +257,11 @@ GetMonSprite:
 	ld d, 0
 	ld hl, SpriteMons
 	add hl, de
-	ld a, [hl]
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call GetPokemonIDFromIndex
 	jr .Mon
 
 .BreedMon1
@@ -303,7 +347,7 @@ _GetSpritePalette::
 
 LoadAndSortSprites:
 	call LoadSpriteGFX
-	call SortUsedSprites
+;	call SortUsedSprites
 	call ArrangeUsedSprites
 	ret
 
@@ -369,75 +413,75 @@ LoadSpriteGFX:
 	ld a, l
 	ret
 
-SortUsedSprites:
-; Bubble-sort sprites by type.
+;SortUsedSprites:
+; ; Bubble-sort sprites by type.
 
-; Run backwards through wUsedSprites to find the last one.
+; ; Run backwards through wUsedSprites to find the last one.
 
-	ld c, SPRITE_GFX_LIST_CAPACITY
-	ld de, wUsedSprites + (SPRITE_GFX_LIST_CAPACITY - 1) * 2
-.FindLastSprite:
-	ld a, [de]
-	and a
-	jr nz, .FoundLastSprite
-	dec de
-	dec de
-	dec c
-	jr nz, .FindLastSprite
-.FoundLastSprite:
-	dec c
-	jr z, .quit
+	; ld c, SPRITE_GFX_LIST_CAPACITY
+	; ld de, wUsedSprites + (SPRITE_GFX_LIST_CAPACITY - 1) * 2
+; .FindLastSprite:
+	; ld a, [de]
+	; and a
+	; jr nz, .FoundLastSprite
+	; dec de
+	; dec de
+	; dec c
+	; jr nz, .FindLastSprite
+; .FoundLastSprite:
+	; dec c
+	; jr z, .quit
 
-; If the length of the current sprite is
-; higher than a later one, swap them.
+; ; If the length of the current sprite is
+; ; higher than a later one, swap them.
 
-	inc de
-	ld hl, wUsedSprites + 1
+	; inc de
+	; ld hl, wUsedSprites + 1
 
-.CheckSprite:
-	push bc
-	push de
-	push hl
+; .CheckSprite:
+	; push bc
+	; push de
+	; push hl
 
-.CheckFollowing:
-	ld a, [de]
-	cp [hl]
-	jr nc, .loop
+; .CheckFollowing:
+	; ld a, [de]
+	; cp [hl]
+	; jr nc, .loop
 
-; Swap the two sprites.
+; ; Swap the two sprites.
 
-	ld b, a
-	ld a, [hl]
-	ld [hl], b
-	ld [de], a
-	dec de
-	dec hl
-	ld a, [de]
-	ld b, a
-	ld a, [hl]
-	ld [hl], b
-	ld [de], a
-	inc de
-	inc hl
+	; ld b, a
+	; ld a, [hl]
+	; ld [hl], b
+	; ld [de], a
+	; dec de
+	; dec hl
+	; ld a, [de]
+	; ld b, a
+	; ld a, [hl]
+	; ld [hl], b
+	; ld [de], a
+	; inc de
+	; inc hl
 
-; Keep doing this until everything's in order.
+; ; Keep doing this until everything's in order.
 
-.loop
-	dec de
-	dec de
-	dec c
-	jr nz, .CheckFollowing
+; .loop
+	; dec de
+	; dec de
+	; dec c
+	; jr nz, .CheckFollowing
 
-	pop hl
-	inc hl
-	inc hl
-	pop de
-	pop bc
-	dec c
-	jr nz, .CheckSprite
+	; pop hl
+	; inc hl
+	; inc hl
+	; pop de
+	; pop bc
+	; dec c
+	; jr nz, .CheckSprite
 
-.quit
-	ret
+; .quit
+	; ret
 
 ArrangeUsedSprites:
 ; Get the length of each sprite and space them out in VRAM.

@@ -87,11 +87,12 @@ Route29Tutorial2:
 	end
 
 Script_RefusedTutorial1:
-	writetext CatchingTutorialDeclinedText
+ 	writetext CatchingTutorialDeclinedText
 	waitbutton
 	closetext
 	applymovement ROUTE29_COOLTRAINER_M1, DudeMovementData1b
 	setscene SCENE_ROUTE29_NOOP
+
 	end
 
 Script_RefusedTutorial2:

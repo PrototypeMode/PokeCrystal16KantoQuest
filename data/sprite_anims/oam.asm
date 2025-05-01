@@ -147,6 +147,14 @@ SpriteAnimOAMData:
 	spriteanimoam $08, .OAMData_GameFreakLogo4_11        ; SPRITE_ANIM_OAMSET_GAMEFREAK_LOGO_9
 	spriteanimoam $04, .OAMData_GameFreakLogo4_11        ; SPRITE_ANIM_OAMSET_GAMEFREAK_LOGO_10
 	spriteanimoam $00, .OAMData_GameFreakLogo4_11        ; SPRITE_ANIM_OAMSET_GAMEFREAK_LOGO_11
+	spriteanimoam $00, .OAMData_PinkWalk                 ; SPRITE_ANIM_OAMSET_PINK_WALK_1
+	spriteanimoam $04, .OAMData_PinkWalk                 ; SPRITE_ANIM_OAMSET_PINK_WALK_2
+	spriteanimoam $00, .OAMData_MagnetTrainPink          ; SPRITE_ANIM_OAMSET_MAGNET_TRAIN_PINK_1
+	spriteanimoam $04, .OAMData_MagnetTrainPink          ; SPRITE_ANIM_OAMSET_MAGNET_TRAIN_PINK_2
+	spriteanimoam $00, .OAMData_GreenWalk                 ; SPRITE_ANIM_OAMSET_GREEN_WALK_1
+	spriteanimoam $04, .OAMData_GreenWalk                 ; SPRITE_ANIM_OAMSET_GREEN_WALK_2
+	spriteanimoam $00, .OAMData_MagnetTrainGreen          ; SPRITE_ANIM_OAMSET_MAGNET_TRAIN_GREEN_1
+	spriteanimoam $04, .OAMData_MagnetTrainGreen          ; SPRITE_ANIM_OAMSET_MAGNET_TRAIN_GREEN_2
 	assert_table_length NUM_SPRITE_ANIM_OAMSETS
 
 .OAMData_1x1_Palette0:
@@ -1133,3 +1141,31 @@ SpriteAnimOAMData:
 	dbsprite -1,  0,  4,  0, $51, 1
 	dbsprite  0,  0,  4,  0, $52, 1
 	dbsprite  1,  0,  4,  0, $53, 1
+
+.OAMData_PinkWalk:
+	db 4
+	dbsprite -1, -1,  0,  0, $00, PAL_OW_PINK
+	dbsprite  0, -1,  0,  0, $01, PAL_OW_PINK
+	dbsprite -1,  0,  0,  0, $02, PAL_OW_PINK
+	dbsprite  0,  0,  0,  0, $03, PAL_OW_PINK
+
+.OAMData_MagnetTrainPink:
+	db 4
+	dbsprite -1, -1,  0,  0, $00, PAL_OW_PINK | PRIORITY
+	dbsprite  0, -1,  0,  0, $01, PAL_OW_PINK | PRIORITY
+	dbsprite -1,  0,  0,  0, $02, PAL_OW_PINK | PRIORITY
+	dbsprite  0,  0,  0,  0, $03, PAL_OW_PINK | PRIORITY
+
+.OAMData_GreenWalk:
+	db 4
+	dbsprite -1, -1,  0,  0, $00, PAL_OW_GREEN
+	dbsprite  0, -1,  0,  0, $01, PAL_OW_GREEN
+	dbsprite -1,  0,  0,  0, $02, PAL_OW_GREEN
+	dbsprite  0,  0,  0,  0, $03, PAL_OW_GREEN
+
+.OAMData_MagnetTrainGreen:
+	db 4
+	dbsprite -1, -1,  0,  0, $00, PAL_OW_GREEN | PRIORITY
+	dbsprite  0, -1,  0,  0, $01, PAL_OW_GREEN | PRIORITY
+	dbsprite -1,  0,  0,  0, $02, PAL_OW_GREEN | PRIORITY
+	dbsprite  0,  0,  0,  0, $03, PAL_OW_GREEN | PRIORITY

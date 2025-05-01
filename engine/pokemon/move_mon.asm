@@ -92,7 +92,7 @@ GeneratePartyMonStats:
 	ld a, [wCurPartySpecies]
 	ld [wCurSpecies], a
 	call GetBaseData
-	ld a, [wBaseDexNo]
+	ld a, [wBaseSpecies]
 	ld [de], a
 	inc de
 
@@ -167,7 +167,7 @@ endr
 
 	; Initialize stat experience.
 	xor a
-	ld b, MON_DVS - MON_STAT_EXP
+	ld b, MON_DVS - MON_EVS
 .loop
 	ld [de], a
 	inc de
@@ -188,11 +188,9 @@ endr
 .registerpokedex
 	ld a, [wCurPartySpecies]
 	ld [wTempSpecies], a
-	dec a
 	push de
 	call CheckCaughtMon
 	ld a, [wTempSpecies]
-	dec a
 	call SetSeenAndCaughtMon
 	pop de
 
@@ -256,7 +254,7 @@ endr
 	inc de
 
 	; Initialize HP.
-	ld bc, MON_STAT_EXP - 1
+	ld bc, MON_EVS - 1
 	add hl, bc
 	ld a, 1
 	ld c, a
@@ -339,7 +337,7 @@ endr
 
 .generatestats
 	pop hl
-	ld bc, MON_STAT_EXP - 1
+	ld bc, MON_EVS - 1
 	add hl, bc
 	ld b, FALSE
 	call CalcMonStats
@@ -349,7 +347,20 @@ endr
 	and $f
 	jr nz, .done
 	ld a, [wCurPartySpecies]
-	cp UNOWN
+	call GetPokemonIndexFromID
+	ld a, l
+	sub LOW(UNOWN)
+	if HIGH(UNOWN) == 0
+		or h
+	else
+		jr nz, .done
+		if HIGH(UNOWN) == 1
+			dec h
+		else
+			ld a, h
+			cp HIGH(UNOWN)
+		endc
+	endc
 	jr nz, .done
 	ld hl, wPartyMon1DVs
 	ld a, [wPartyCount]
@@ -370,16 +381,11 @@ FillPP:
 	ld a, [hli]
 	and a
 	jr z, .next
-	dec a
 	push hl
 	push de
 	push bc
-	ld hl, Moves
-	ld bc, MOVE_LENGTH
-	call AddNTimes
 	ld de, wStringBuffer1
-	ld a, BANK(Moves)
-	call FarCopyBytes
+	call GetMoveData
 	pop bc
 	pop de
 	pop hl
@@ -447,7 +453,6 @@ AddTempmonToParty:
 	ld [wNamedObjectIndex], a
 	cp EGG
 	jr z, .egg
-	dec a
 	call SetSeenAndCaughtMon
 	ld hl, wPartyMon1Happiness
 	ld a, [wPartyCount]
@@ -458,7 +463,20 @@ AddTempmonToParty:
 .egg
 
 	ld a, [wCurPartySpecies]
-	cp UNOWN
+	call GetPokemonIndexFromID
+	ld a, l
+	sub LOW(UNOWN)
+	if HIGH(UNOWN) == 0
+		or h
+	else
+		jr nz, .done
+		if HIGH(UNOWN) == 1
+			dec h
+		else
+			ld a, h
+			cp HIGH(UNOWN)
+		endc
+	endc
 	jr nz, .done
 	ld hl, wPartyMon1DVs
 	ld a, [wPartyCount]
@@ -655,7 +673,7 @@ SendGetMonIntoFromBox:
 	add hl, bc
 	ld d, h
 	ld e, l
-	ld hl, MON_STAT_EXP - 1
+	ld hl, MON_EVS - 1
 	add hl, bc
 
 	push bc
@@ -1039,10 +1057,20 @@ SendMonIntoBox:
 	ld a, [wCurPartyLevel]
 	ld [de], a
 	ld a, [wCurPartySpecies]
-	dec a
 	call SetSeenAndCaughtMon
 	ld a, [wCurPartySpecies]
-	cp UNOWN
+	call GetPokemonIndexFromID
+	ld a, l
+	sub LOW(UNOWN)
+	jr nz, .not_unown
+	if HIGH(UNOWN) == 0
+		or h
+	elif HIGH(UNOWN) == 1
+		dec h
+	else
+		ld a, h
+		cp HIGH(UNOWN)
+	endc
 	jr nz, .not_unown
 	ld hl, sBoxMon1DVs
 	predef GetUnownLetter
@@ -1121,10 +1149,8 @@ ShiftBoxMon:
 GiveEgg::
 	ld a, [wCurPartySpecies]
 	push af
-	callfar GetPreEvolution
-	callfar GetPreEvolution
+	callfar GetLowestEvolutionStage
 	ld a, [wCurPartySpecies]
-	dec a
 
 ; TryAddMonToParty sets Seen and Caught flags
 ; when it is successful.  This routine will make
@@ -1146,12 +1172,15 @@ GiveEgg::
 	and a
 	jr nz, .skip_caught_flag
 	ld a, [wCurPartySpecies]
-	dec a
-	ld c, a
-	ld d, $0
+	call GetPokemonIndexFromID
+	ld d, h
+	ld e, l
+	dec de
+	push de
 	ld hl, wPokedexCaught
 	ld b, RESET_FLAG
-	predef SmallFarFlagAction
+	call FlagAction
+	pop de
 
 .skip_caught_flag
 ; If we haven't seen this Pokemon before receiving
@@ -1161,13 +1190,9 @@ GiveEgg::
 	ld a, c
 	and a
 	jr nz, .skip_seen_flag
-	ld a, [wCurPartySpecies]
-	dec a
-	ld c, a
-	ld d, $0
 	ld hl, wPokedexSeen
 	ld b, RESET_FLAG
-	predef SmallFarFlagAction
+	call FlagAction
 
 .skip_seen_flag
 	pop af
@@ -1385,7 +1410,7 @@ ComputeNPCTrademonStats:
 	ld d, h
 	ld e, l
 	push de
-	ld a, MON_STAT_EXP - 1
+	ld a, MON_EVS - 1
 	call GetPartyParamLocation
 	ld b, TRUE
 	call CalcMonStats
@@ -1401,9 +1426,9 @@ ComputeNPCTrademonStats:
 
 CalcMonStats:
 ; Calculates all 6 Stats of a mon
-; b: Take into account stat EXP if TRUE
+; b: Take into account EVs if TRUE
 ; 'c' counts from 1-6 and points with 'wBaseStats' to the base value
-; hl is the path to the Stat EXP
+; hl is the path to the EVs
 ; de points to where the final stats will be saved
 
 	ld c, STAT_HP - 1 ; first stat
@@ -1443,30 +1468,33 @@ CalcMonStatC:
 	ld e, a
 	pop hl
 	push hl
-	ld a, c
-	cp STAT_SDEF ; last stat
-	jr nz, .not_spdef
-	dec hl
-	dec hl
+	; ld a, c
+	; cp STAT_SDEF ; last stat
+	; jr nz, .not_spdef
+	; dec hl
+	; dec hl
 
-.not_spdef
-	sla c
+; .not_spdef
+	; sla c
 	ld a, d
 	and a
 	jr z, .no_stat_exp
 	add hl, bc
-	push de
-	ld a, [hld]
-	ld e, a
-	ld d, [hl]
-	farcall GetSquareRoot
-	pop de
+	; push de
+	; ld a, [hld]
+	; ld e, a
+	; ld d, [hl]
+	; farcall GetSquareRoot
+	; pop de
+	ld a, [hl]
+	ld b, a
+	
 
 .no_stat_exp
-	srl c
+;	srl c
 	pop hl
 	push bc
-	ld bc, MON_DVS - MON_HP_EXP + 1
+	ld bc, MON_DVS - MON_HP_EV + 1 ;EV was EXP
 	add hl, bc
 	pop bc
 	ld a, c
@@ -1775,8 +1803,11 @@ GivePoke::
 	farcall GiveANickname_YesNo
 	pop de
 	jr c, .skip_nickname
+	
+	 
+.Nick	 
 	call InitNickname
-
+  
 .skip_nickname
 	pop bc
 	pop de
@@ -1806,6 +1837,19 @@ WasSentToBillsPCText:
 	text_end
 
 InitNickname:
+      ld a, [wSkipName]
+	  cp 1
+	  jr z, .NoNick
+	  jr nz, .Nick
+	  ret
+     ; ld b, CHECK_FLAG
+     ; ld de, ENGINE_UNLOCKED_UNOWNS_UNUSED_4 ; This Flag enables/disables Givepoke Nicknaming.
+    
+	; farcall EngineFlagAction
+     ; jr z, .NoNick
+
+.Nick
+
 	push de
 	call LoadStandardMenuHeader
 	call DisableSpriteUpdates
@@ -1819,4 +1863,6 @@ InitNickname:
 	ld a, $4 ; ExitAllMenus is in bank 0; maybe it used to be in bank 4
 	ld hl, ExitAllMenus
 	rst FarCall
+     
+.NoNick
 	ret

@@ -121,9 +121,12 @@ DEF NUM_PARTYMENUACTIONS EQU const_value
 	const NAME_MON
 	const NAME_PLAYER
 	const NAME_RIVAL
-	const NAME_MOM
+	const NAME_ASH
 	const NAME_BOX
 	const NAME_FRIEND
 	const NAME_6 ; duplicate of NAME_MON
 	const NAME_7 ; duplicate of NAME_MON
+	const NAME_BROCK
+	const NAME_MISTY
+	const NAME_GARY
 DEF NUM_NAME_TYPES EQU const_value

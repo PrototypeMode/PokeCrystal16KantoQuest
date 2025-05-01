@@ -47,7 +47,12 @@ SpecialsPointers::
 	add_special MoveDeletion
 	add_special BankOfMom
 	add_special MagnetTrain
-	add_special NameRival
+;	add_special NameRival
+	add_special NameAsh ; Name Rival
+	add_special NameMisty ; Name Rival
+	add_special NameBrock ; Name Rival
+	add_special NameGary ; Name Rival
+	
 	add_special SetDayOfWeek
 	add_special OverworldTownMap
 	add_special UnownPrinter
@@ -57,11 +62,11 @@ SpecialsPointers::
 	add_special CardFlip
 	add_special UnusedMemoryGame ; unused
 	add_special ClearBGPalettesBufferScreen ; unused
-	add_special FadeOutToWhite
+	add_special FadeOutToWhite ; FadeOutPalettes
 	add_special BattleTowerFade
-	add_special FadeOutToBlack
-	add_special FadeInFromWhite
-	add_special FadeInFromBlack
+	add_special FadeOutToBlack ; FadeBlackQuickly
+	add_special FadeInFromWhite ; FadeInPalettes
+	add_special FadeInFromBlack ; FadeInQuickly
 	add_special ReloadSpritesNoPalettes ; bank 0
 	add_special ClearBGPalettes ; bank 0
 	add_special UpdateTimePals ; bank 0
@@ -69,6 +74,7 @@ SpecialsPointers::
 	add_special UpdateSprites ; bank 0
 	add_special UpdatePlayerSprite ; bank 0
 	add_special GameCornerPrizeMonCheckDex
+	add_special ShowPokedexEntry
 	add_special UnusedSetSeenMon ; unused
 	add_special WaitSFX ; bank 0
 	add_special PlayMapMusic ; bank 0
@@ -85,6 +91,8 @@ SpecialsPointers::
 	add_special SelectRandomBugContestContestants
 	add_special ActivateFishingSwarm
 	add_special ToggleMaptileDecorations
+	add_special CoverTilesWithCarpet
+	add_special CoverTilesWithWallpaper
 	add_special ToggleDecorationsVisibility
 	add_special GiveShuckle
 	add_special ReturnShuckie
@@ -183,3 +191,11 @@ SpecialsPointers::
 	add_special InitialSetDSTFlag
 	add_special InitialClearDSTFlag
 	add_special UnusedDummySpecial ; unused
+	
+    add_special TradebackNPC ; Not part of Crystal originally
+
+	add_special DeleteParty
+	add_special DeleteDex
+	add_special BankOfDaisy
+	add_special CharacterCycleScript
+

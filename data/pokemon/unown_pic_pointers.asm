@@ -53,4 +53,6 @@ UnownPicPointers::
 	dba UnownYBackpic
 	dba UnownZFrontpic
 	dba UnownZBackpic
+;	dba UnownGhostFrontpic
+;	dba UnownGhostBackpic
 	assert_table_length NUM_UNOWN

@@ -75,7 +75,7 @@ EngineFlags:
 	; fly
 	engine_flag wVisitedSpawns, SPAWN_HOME
 	engine_flag wVisitedSpawns, SPAWN_DEBUG
-	engine_flag wVisitedSpawns, SPAWN_PALLET
+	engine_flag wVisitedSpawns, SPAWN_PALLET_OAK
 	engine_flag wVisitedSpawns, SPAWN_VIRIDIAN
 	engine_flag wVisitedSpawns, SPAWN_PEWTER
 	engine_flag wVisitedSpawns, SPAWN_CERULEAN
@@ -195,8 +195,10 @@ EngineFlags:
 	engine_flag wDailyPhoneTimeOfDayFlags, 23 ; erin
 
 	engine_flag wPlayerSpriteSetupFlags, PLAYERSPRITESETUP_FEMALE_TO_MALE_F
-
+    
 	engine_flag wSwarmFlags, SWARMFLAGS_DUNSPARCE_SWARM_F
 	engine_flag wSwarmFlags, SWARMFLAGS_YANMA_SWARM_F
+
+
 
 	assert_table_length NUM_ENGINE_FLAGS

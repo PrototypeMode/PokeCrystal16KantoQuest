@@ -227,16 +227,33 @@ MartBlackthorn:
 	db -1 ; end
 
 MartViridian:
-	db 9 ; # items
+	; db 9 ; # items
+	; db POKE_BALL
+	; db HYPER_POTION
+	; db FULL_HEAL
+	; db REVIVE
+	; db ANTIDOTE
+	; db PARLYZ_HEAL
+	; db AWAKENING
+	; db BURN_HEAL
+	; db FLOWER_MAIL
+	db 16 ; # items
+	db POKE_BALL
+	db GREAT_BALL
 	db ULTRA_BALL
-	db HYPER_POTION
-	db FULL_HEAL
-	db REVIVE
-	db ANTIDOTE
-	db PARLYZ_HEAL
-	db AWAKENING
-	db BURN_HEAL
-	db FLOWER_MAIL
+	db MASTER_BALL
+	db FAST_BALL
+	db LOVE_BALL
+	db LURE_BALL
+	db MOON_BALL
+	db HEAVY_BALL
+	db BICYCLE
+	db HM_CUT
+	db HM_SURF
+	db HM_STRENGTH
+	db HM_FLY
+	db SUPER_ROD
+	db TOWN_MAP
 	db -1 ; end
 
 MartPewter:

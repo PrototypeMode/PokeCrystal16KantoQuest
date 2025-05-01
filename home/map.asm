@@ -143,10 +143,10 @@ LoadMetatiles::
 	ld e, l
 	ld d, h
 	; Set hl to the address of the current metatile data ([wTilesetBlocksAddress] + (a) tiles).
-; BUG: LoadMetatiles wraps around past 128 blocks (see docs/bugs_and_glitches.md)
-	add a
+
 	ld l, a
 	ld h, 0
+	add hl, hl
 	add hl, hl
 	add hl, hl
 	add hl, hl
@@ -556,15 +556,15 @@ ReadObjectEvents::
 	ld a, [wCurMapObjectEventCount]
 	call CopyMapObjectEvents
 
-; get NUM_OBJECTS - [wCurMapObjectEventCount]
-; BUG: ReadObjectEvents overflows into wObjectMasks (see docs/bugs_and_glitches.md)
+; get NUM_OBJECTS - [wCurMapObjectEventCount] - 1
+
 	ld a, [wCurMapObjectEventCount]
 	ld c, a
-	ld a, NUM_OBJECTS
+	ld a, NUM_OBJECTS - 1
 	sub c
-	jr z, .skip
+	jr c, .skip
 
-	; could have done "inc hl" instead
+; could have done "inc hl" instead
 	ld bc, 1
 	add hl, bc
 	ld bc, MAPOBJECT_LENGTH
@@ -1320,7 +1320,7 @@ LoadTilesetGFX::
 
 	ld hl, wDecompressScratch
 	ld de, vTiles2
-	ld bc, $60 tiles
+	ld bc, $7f tiles
 	call CopyBytes
 
 	ldh a, [rVBK]
@@ -1328,9 +1328,9 @@ LoadTilesetGFX::
 	ld a, BANK(vTiles5)
 	ldh [rVBK], a
 
-	ld hl, wDecompressScratch + $60 tiles
+	ld hl, wDecompressScratch + $80 tiles
 	ld de, vTiles5
-	ld bc, $60 tiles
+	ld bc, $80 tiles
 	call CopyBytes
 
 	pop af
@@ -1355,6 +1355,18 @@ LoadTilesetGFX::
 .skip_roof
 	xor a
 	ldh [hTileAnimFrame], a
+	
+	ld [wCarpetTile], a
+	ld [wFloorTile], a
+
+	ld a, MAPCALLBACK_CARPETGRAPHICS
+	call RunMapCallback	
+	
+	ld [wWallpaperTile], a
+	ld [wWallTile], a
+
+	ld a, MAPCALLBACK_WALLPAPERGRAPHICS
+	call RunMapCallback		
 	ret
 
 BufferScreen::

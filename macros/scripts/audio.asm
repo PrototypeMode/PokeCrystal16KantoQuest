@@ -177,6 +177,9 @@ MACRO pitch_offset
 	bigdw \1 ; pitch offset
 ENDM
 
+DEF toggle_perfect_pitch EQUS "pitch_offset 1"
+
+
 	const unknownmusic0xe7_cmd ; $e7
 MACRO unknownmusic0xe7
 	db unknownmusic0xe7_cmd
@@ -317,4 +320,42 @@ ENDM
 	const sound_ret_cmd ; $ff
 MACRO sound_ret
 	db sound_ret_cmd
+ENDM
+
+; custom commands:
+
+MACRO load_wave
+	db $f3
+	IF _NARG > 16
+		REPT 16
+		dn \1, \2
+		SHIFT
+		SHIFT
+		ENDR
+	ELSE
+		REPT 16
+		db \1
+		SHIFT
+		ENDR
+	ENDC
+ENDM
+
+MACRO inc_octave
+	db $f4
+ENDM
+
+MACRO dec_octave
+	db $f5
+ENDM
+
+MACRO speed
+	db $f6, \1
+ENDM
+
+MACRO channel_volume
+	db $f7, \1
+ENDM
+
+MACRO fade_wave
+	db $f8, \1
 ENDM

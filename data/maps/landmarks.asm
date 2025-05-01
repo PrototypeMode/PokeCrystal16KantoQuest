@@ -7,7 +7,8 @@ ENDM
 Landmarks:
 ; entries correspond to constants/landmark_constants.asm
 	table_width 4
-	landmark  -8, -16, SpecialMapName
+		landmark  -8, -16, SpecialMapName
+	landmark 140, 100, NewBarkTownHouseName
 	landmark 140, 100, NewBarkTownName
 	landmark 128, 100, Route29Name
 	landmark 100, 100, CherrygroveCityName
@@ -25,6 +26,7 @@ Landmarks:
 	landmark  52, 112, Route34Name
 	landmark  52,  92, GoldenrodCityName
 	landmark  50,  92, RadioTowerName
+	landmark  44,  92, GlobalTerminalName
 	landmark  52,  76, Route35Name
 	landmark  52,  60, NationalParkName
 	landmark  64,  60, Route36Name
@@ -55,6 +57,8 @@ Landmarks:
 	landmark 124,  88, Route46Name
 	landmark 148,  68, SilverCaveName
 	assert_table_length KANTO_LANDMARK
+	landmark  51, 108, PalletTownName1
+	landmark  53, 108, PalletTownName2
 	landmark  52, 108, PalletTownName
 	landmark  52,  92, Route1Name
 	landmark  52,  76, ViridianCityName
@@ -78,7 +82,8 @@ Landmarks:
 	landmark 132,  56, Route10Name
 	landmark 132,  60, PowerPlantName
 	landmark 132,  68, LavenderTownName
-	landmark 140,  68, LavRadioTowerName
+;	landmark 140,  68, LavRadioTowerName
+	landmark 140,  68, LavenderTowerName
 	landmark  76,  68, CeladonCityName
 	landmark 100,  68, SaffronCityName
 	landmark 116,  84, Route11Name
@@ -104,8 +109,10 @@ Landmarks:
 	landmark  12, 100, TohjoFallsName
 	landmark  20,  68, Route28Name
 	landmark 140, 116, FastShipName
+	landmark  52,  76, ViridianForestName
 	assert_table_length NUM_LANDMARKS
 
+NewBarkTownHouseName:     db "<MISTY>'s HOUSE@"
 NewBarkTownName:     db "NEW BARK<BSP>TOWN@"
 CherrygroveCityName: db "CHERRYGROVE<BSP>CITY@"
 VioletCityName:      db "VIOLET CITY@"
@@ -133,6 +140,8 @@ DragonsDenName:      db "DRAGON'S<BSP>DEN@"
 IcePathName:         db "ICE PATH@"
 NotApplicableName:   db "N/A@" ; unreferenced ; "オバケやしき" ("HAUNTED HOUSE") in Japanese
 PalletTownName:      db "PALLET TOWN@"
+PalletTownName1:      db "<ASH>'s HOUSE@"
+PalletTownName2:      db "<GARY>'s HOUSE@"
 ViridianCityName:    db "VIRIDIAN<BSP>CITY@"
 PewterCityName:      db "PEWTER CITY@"
 CeruleanCityName:    db "CERULEAN<BSP>CITY@"
@@ -146,7 +155,8 @@ IndigoPlateauName:   db "INDIGO<BSP>PLATEAU@"
 VictoryRoadName:     db "VICTORY<BSP>ROAD@"
 MtMoonName:          db "MT.MOON@"
 RockTunnelName:      db "ROCK TUNNEL@"
-LavRadioTowerName:   db "LAV<BSP>RADIO TOWER@"
+; LavRadioTowerName:   db "LAV<BSP>RADIO TOWER@" ; unreferenced, since we're contemporary to Gen I
+LavenderTowerName:   db "#MON<BSP>TOWER@"
 SilphCoName:         db "SILPH CO.@" ; unreferenced
 SafariZoneName:      db "SAFARI ZONE@" ; unreferenced
 SeafoamIslandsName:  db "SEAFOAM<BSP>ISLANDS@"
@@ -208,3 +218,4 @@ TohjoFallsName:      db "TOHJO FALLS@"
 UndergroundName:     db "UNDERGROUND@"
 BattleTowerName:     db "BATTLE<BSP>TOWER@"
 SpecialMapName:      db "SPECIAL@"
+GlobalTerminalName:  db "GLOBAL<BSP>TERMINAL@"

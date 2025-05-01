@@ -1,5 +1,5 @@
 GetTrainerClassName:
-	ld hl, wRivalName
+	ld hl, wGarysName
 	ld a, c
 	cp RIVAL1
 	jr z, .rival
@@ -25,7 +25,7 @@ GetOTName:
 	and a
 	jr nz, .ok
 
-	ld hl, wRivalName
+	ld hl, wGarysName
 	ld a, c
 	cp RIVAL1
 	jr z, .ok

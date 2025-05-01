@@ -74,15 +74,13 @@ PewterGymStatue:
 	jumpstd GymStatue2Script
 
 BrockIntroText:
-	text "BROCK: Wow, it's"
-	line "not often that we"
+	text "My name is"
+	line "<BROCK>!"
 
-	para "get a challenger"
-	line "from JOHTO."
-
-	para "I'm BROCK, the"
-	line "PEWTER GYM LEADER."
-
+	para "<BROCK>: I'm"
+	line "PEWTER CITY's"
+    cont "GYM LEADER!"
+	
 	para "I'm an expert on"
 	line "rock-type #MON."
 
@@ -95,7 +93,11 @@ BrockIntroText:
 	para "time inflicting"
 	line "any damage."
 
-	para "Come on!"
+	para "Do you still want"
+	line "to challenge me?"
+	
+	para "Fine, then!"
+	line "Show me your best!"
 	done
 
 BrockWinLossText:
@@ -145,34 +147,26 @@ BrockFightDoneText:
 	done
 
 CamperJerrySeenText:
-	text "The trainers of"
-	line "this GYM use rock-"
-	cont "type #MON."
-
-	para "The rock-type has"
-	line "high DEFENSE."
-
-	para "Battles could end"
-	line "up going a long"
-
-	para "time. Are you"
-	line "ready for this?"
+	text "Stop right there,"
+	line "kid!"
+	para "You're still light"
+	line "years away from"
+	cont "facing BROCK!"
 	done
 
 CamperJerryBeatenText:
-	text "I have to win"
-	line "these battles…"
+	text "Darn it!"
+	para "Light years isn't"
+	line "time! It measures"
+	cont "distance!"
 	done
 
 CamperJerryAfterBattleText:
-	text "Hey, you! Trainer"
-	line "from JOHTO! BROCK"
-
-	para "is tough. He'll"
-	line "punish you if you"
-
-	para "don't take him"
-	line "seriously."
+	text "Heh, well..."
+	line "You may have"
+    cont "beaten me, but"
+	cont "can you beat our"
+	cont "LEADER, BROCK?"
 	done
 
 PewterGymGuideText:

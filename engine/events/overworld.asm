@@ -61,6 +61,10 @@ CheckBadge:
 	text_far _BadgeRequiredText
 	text_end
 
+CheckPartyMoveIndex:
+; Check if a monster in your party has move hl.
+	call GetMoveIDFromIndex
+	ld d, a
 CheckPartyMove:
 ; Check if a monster in your party has move d.
 
@@ -344,9 +348,9 @@ SurfFunction:
 	dw .AlreadySurfing
 
 .TrySurf:
-	ld de, ENGINE_FOGBADGE
+	ld de, ENGINE_SOULBADGE
 	call CheckBadge
-	jr c, .nofogbadge
+	jr c, .nosoulbadge
 	ld hl, wBikeFlags
 	bit BIKEFLAGS_ALWAYS_ON_BIKE_F, [hl]
 	jr nz, .cannotsurf
@@ -365,7 +369,7 @@ SurfFunction:
 	jr c, .cannotsurf
 	ld a, $1
 	ret
-.nofogbadge
+.nosoulbadge
 	ld a, JUMPTABLE_EXIT
 	ret
 .alreadyfail
@@ -436,15 +440,19 @@ AlreadySurfingText:
 GetSurfType:
 ; Surfing on Pikachu uses an alternate sprite.
 ; This is done by using a separate movement type.
-
+    ld a, [wPlayerCostume]
+	cp 4
+	jr z, .SurfPika
+	
 	ld a, [wCurPartyMon]
 	ld e, a
 	ld d, 0
+	ld hl, PIKACHU
+	call GetPokemonIDFromIndex
 	ld hl, wPartySpecies
 	add hl, de
-
-	ld a, [hl]
-	cp PIKACHU
+	cp [hl]
+.SurfPika	
 	ld a, PLAYER_SURF_PIKA
 	ret z
 	ld a, PLAYER_SURF
@@ -502,12 +510,12 @@ TrySurfOW::
 	call CheckDirection
 	jr c, .quit
 
-	ld de, ENGINE_FOGBADGE
+	ld de, ENGINE_SOULBADGE
 	call CheckEngineFlag
 	jr c, .quit
 
-	ld d, SURF
-	call CheckPartyMove
+	ld hl, SURF
+	call CheckPartyMoveIndex
 	jr c, .quit
 
 	ld hl, wBikeFlags
@@ -703,8 +711,8 @@ Script_UsedWaterfall:
 	text_end
 
 TryWaterfallOW::
-	ld d, WATERFALL
-	call CheckPartyMove
+	ld hl, WATERFALL
+	call CheckPartyMoveIndex
 	jr c, .failed
 	ld de, ENGINE_RISINGBADGE
 	call CheckEngineFlag
@@ -1054,8 +1062,8 @@ BouldersMayMoveText:
 	text_end
 
 TryStrengthOW:
-	ld d, STRENGTH
-	call CheckPartyMove
+	ld hl, STRENGTH
+	call CheckPartyMoveIndex
 	jr c, .nope
 
 	ld de, ENGINE_PLAINBADGE
@@ -1188,8 +1196,8 @@ DisappearWhirlpool:
 	ret
 
 TryWhirlpoolOW::
-	ld d, WHIRLPOOL
-	call CheckPartyMove
+	ld hl, WHIRLPOOL
+	call CheckPartyMoveIndex
 	jr c, .failed
 	ld de, ENGINE_GLACIERBADGE
 	call CheckEngineFlag
@@ -1283,8 +1291,8 @@ HeadbuttScript:
 	end
 
 TryHeadbuttOW::
-	ld d, HEADBUTT
-	call CheckPartyMove
+	ld hl, HEADBUTT
+	call CheckPartyMoveIndex
 	jr c, .no
 
 	ld a, BANK(AskHeadbuttScript)
@@ -1407,8 +1415,8 @@ AskRockSmashText:
 	text_end
 
 HasRockSmash:
-	ld d, ROCK_SMASH
-	call CheckPartyMove
+	ld hl, ROCK_SMASH
+	call CheckPartyMoveIndex
 	jr nc, .yes
 ; no
 	ld a, 1
@@ -1444,8 +1452,8 @@ FishFunction:
 .TryFish:
 ; BUG: You can fish on top of NPCs (see docs/bugs_and_glitches.md)
 	ld a, [wPlayerState]
-	cp PLAYER_SURF
-	jr z, .fail
+	; cp PLAYER_SURF
+	; jr z, .fail
 	cp PLAYER_SURF_PIKA
 	jr z, .fail
 	call GetFacingTileCoord
@@ -1759,8 +1767,8 @@ GotOffBikeText:
 	text_end
 
 TryCutOW::
-	ld d, CUT
-	call CheckPartyMove
+	ld hl, CUT
+	call CheckPartyMoveIndex
 	jr c, .cant_cut
 
 	ld de, ENGINE_HIVEBADGE

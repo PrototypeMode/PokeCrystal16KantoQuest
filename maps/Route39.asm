@@ -2,10 +2,10 @@
 	const ROUTE39_SAILOR
 	const ROUTE39_POKEFAN_M
 	const ROUTE39_POKEFAN_F1
-	const ROUTE39_MILTANK1
-	const ROUTE39_MILTANK2
-	const ROUTE39_MILTANK3
-	const ROUTE39_MILTANK4
+	const ROUTE39_TAUROS1
+	 const ROUTE39_MILTANK2
+	 const ROUTE39_MILTANK3
+	 const ROUTE39_MILTANK4
 	const ROUTE39_PSYCHIC_NORMAN
 	const ROUTE39_FRUIT_TREE
 	const ROUTE39_POKEFAN_F2
@@ -16,12 +16,31 @@ Route39_MapScripts:
 	def_callbacks
 
 Route39Miltank:
+   refreshscreen
+	pokepic MILTANK
+	waitbutton
+	closepokepic
 	opentext
 	writetext Route39MiltankText
 	cry MILTANK
 	waitbutton
-	closetext
+	setval MILTANK
+	special ShowPokedexEntry
+    closetext
 	end
+	
+Route39Tauros:
+   refreshscreen
+	pokepic TAUROS
+	waitbutton
+	opentext
+	writetext Route39TaurosText
+	cry TAUROS
+	waitbutton
+	setval TAUROS
+	special ShowPokedexEntry
+    closetext
+	end	
 
 TrainerPokefanmDerek:
 	trainer POKEFANM, DEREK1, EVENT_BEAT_POKEFANM_DEREK, PokefanmDerekSeenText, PokefanmDerekBeatenText, 0, .Script
@@ -183,6 +202,10 @@ Route39HiddenNugget:
 Route39MiltankText:
 	text "MILTANK: Mooo!"
 	done
+
+Route39TaurosText:
+	text "TAUROS: Mooo!"
+	done	
 
 SailorEugeneSeenText:
 	text "I just got back to"
@@ -359,11 +382,11 @@ Route39_MapEvents:
 	def_object_events
 	object_event 13, 29, SPRITE_SAILOR, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_TRAINER, 5, TrainerSailorEugene, -1
 	object_event 10, 22, SPRITE_POKEFAN_M, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_TRAINER, 4, TrainerPokefanmDerek, -1
-	object_event 11, 19, SPRITE_POKEFAN_F, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_TRAINER, 4, TrainerPokefanfRuth, -1
-	object_event  3, 12, SPRITE_TAUROS, SPRITEMOVEDATA_POKEMON, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, Route39Miltank, -1
-	object_event  6, 11, SPRITE_TAUROS, SPRITEMOVEDATA_POKEMON, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, Route39Miltank, -1
-	object_event  4, 15, SPRITE_TAUROS, SPRITEMOVEDATA_POKEMON, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, Route39Miltank, -1
-	object_event  8, 13, SPRITE_TAUROS, SPRITEMOVEDATA_POKEMON, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, Route39Miltank, -1
-	object_event 13,  7, SPRITE_STANDING_YOUNGSTER, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_TRAINER, 1, TrainerPsychicNorman, -1
+	object_event  7, 26, SPRITE_POKEFAN_F, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_TRAINER, 4, TrainerPokefanfRuth, -1
+	object_event  3, 12, SPRITE_TAUROS, SPRITEMOVEDATA_WALK_UP_DOWN, 2, 2, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, Route39Tauros, -1
+    object_event  6, 11, SPRITE_MILTANK, SPRITEMOVEDATA_WALK_UP_DOWN, 2, 2, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, Route39Miltank, -1
+	object_event  4, 15, SPRITE_MILTANK, SPRITEMOVEDATA_STILL, 2, 2, -1, -1, 1, OBJECTTYPE_SCRIPT, 0, Route39Miltank, -1
+	object_event  8, 13, SPRITE_MILTANK, SPRITEMOVEDATA_STILL, 2, 2, -1, -1, 2, OBJECTTYPE_SCRIPT, 0, Route39Miltank, -1
+	object_event 13,  7, SPRITE_YOUNGSTER, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_TRAINER, 1, TrainerPsychicNorman, -1
 	object_event  9,  3, SPRITE_FRUIT_TREE, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, Route39FruitTree, -1
 	object_event  4, 22, SPRITE_POKEFAN_F, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, TrainerPokefanfJaime, -1

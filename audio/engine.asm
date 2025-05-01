@@ -48,6 +48,28 @@ _InitSound::
 	or d
 	jr nz, .clearaudio
 
+; channels 5 and 6
+	ld hl, wChannel5
+	ld de, CHANNEL_STRUCT_LENGTH * 2
+.clearaudio2
+	xor a
+	ld [hli], a
+	dec de
+	ld a, e
+	or d
+	jr nz, .clearaudio2
+
+; channels 7 and 8
+	ld hl, wChannel7
+	ld de, CHANNEL_STRUCT_LENGTH * 2
+.clearaudio3
+	xor a
+	ld [hli], a
+	dec de
+	ld a, e
+	or d
+	jr nz, .clearaudio3
+
 	ld a, MAX_VOLUME
 	ld [wVolume], a
 	call MusicOn
@@ -169,8 +191,25 @@ _UpdateSound::
 	ld a, [wCurChannel]
 	cp NUM_MUSIC_CHANS
 	jr nc, .sfx_channel
-	ld hl, CHANNEL_STRUCT_LENGTH * NUM_MUSIC_CHANS + CHANNEL_FLAGS1
+
+	push af
+	push bc
+	add 4 ; corresponding sfx channel
+	ld c, a
+	ld b, 0
+	ld hl, ChannelPointers
 	add hl, bc
+	add hl, bc
+	ld c, [hl]
+	inc hl
+	ld b, [hl] ; bc = channel pointer
+	ld hl, CHANNEL_FLAGS1
+	add hl, bc
+	pop bc
+	pop af
+;	ld hl, CHANNEL_STRUCT_LENGTH * NUM_MUSIC_CHANS + CHANNEL_FLAGS1
+;	add hl, bc
+
 	bit SOUND_CHANNEL_ON, [hl]
 	jr nz, .sound_channel_on
 .sfx_channel
@@ -188,12 +227,22 @@ _UpdateSound::
 	ld [hl], a
 .nextchannel
 	; next channel
-	ld hl, CHANNEL_STRUCT_LENGTH
-	add hl, bc
-	ld c, l
-	ld b, h
+;	ld hl, CHANNEL_STRUCT_LENGTH
+;	add hl, bc
+;	ld c, l
+;	ld b, h
 	ld a, [wCurChannel]
 	inc a
+
+	ld c, a
+	ld b, 0
+	ld hl, ChannelPointers
+	add hl, bc
+	add hl, bc
+	ld c, [hl]
+	inc hl
+	ld b, [hl] ; bc = channel pointer
+
 	ld [wCurChannel], a
 	cp NUM_CHANNELS ; are we done?
 	jp nz, .loop ; do it all again
@@ -223,7 +272,7 @@ UpdateChannels:
 	jp hl
 
 .ChannelFunctions:
-	table_width 2
+	table_width 2, UpdateChannels.ChannelFunctions
 ; music channels
 	dw .Channel1
 	dw .Channel2
@@ -319,8 +368,18 @@ UpdateChannels:
 	jr nz, .ch2_rest
 	bit NOTE_NOISE_SAMPLING, [hl]
 	jr nz, .ch2_noise_sampling
+	bit NOTE_FREQ_OVERRIDE, [hl]
+	jr nz, .ch2_frequency_override
 	bit NOTE_VIBRATO_OVERRIDE, [hl]
 	jr nz, .ch2_vibrato_override
+	jr .ch2_check_duty_override
+
+.ch2_frequency_override
+	ld a, [wCurTrackFrequency]
+	ldh [rNR23], a
+	ld a, [wCurTrackFrequency + 1]
+	ldh [rNR24], a
+.ch2_check_duty_override
 	bit NOTE_DUTY_OVERRIDE, [hl]
 	ret z
 	ld a, [wCurTrackDuty]
@@ -329,13 +388,6 @@ UpdateChannels:
 	and $3f ; sound length
 	or d
 	ldh [rNR21], a
-	ret
-
-.ch2_frequency_override ; unreferenced
-	ld a, [wCurTrackFrequency]
-	ldh [rNR23], a
-	ld a, [wCurTrackFrequency + 1]
-	ldh [rNR24], a
 	ret
 
 .ch2_vibrato_override
@@ -379,11 +431,13 @@ UpdateChannels:
 	jr nz, .ch3_rest
 	bit NOTE_NOISE_SAMPLING, [hl]
 	jr nz, .ch3_noise_sampling
+	bit NOTE_FREQ_OVERRIDE, [hl]
+	jr nz, .ch3_frequency_override
 	bit NOTE_VIBRATO_OVERRIDE, [hl]
 	jr nz, .ch3_vibrato_override
 	ret
 
-.ch3_frequency_override ; unreferenced
+.ch3_frequency_override
 	ld a, [wCurTrackFrequency]
 	ldh [rNR33], a
 	ld a, [wCurTrackFrequency + 1]
@@ -432,6 +486,8 @@ rept 4
 endr
 	ld de, WaveSamples
 	add hl, de
+	cp $f
+	jr z, .skip
 	; load wavepattern into rWave_0-rWave_f
 	ld a, [hli]
 	ldh [rWave_0], a
@@ -465,6 +521,7 @@ endr
 	ldh [rWave_e], a
 	ld a, [hli]
 	ldh [rWave_f], a
+.skip
 	pop hl
 	ld a, [wCurTrackVolumeEnvelope]
 	and $f0
@@ -645,9 +702,9 @@ FadeMusic:
 	xor a
 	ld [wVolume], a
 	; did we just get on a bike?
-	ld a, [wPlayerState]
-	cp PLAYER_BIKE
-	jr z, .bicycle
+;	ld a, [wPlayerState]
+;	cp PLAYER_BIKE
+;	jr z, .bicycle
 	push bc
 	; restart sound
 	call MusicFadeRestart
@@ -1212,8 +1269,26 @@ ParseMusic:
 	ld a, [wCurChannel]
 	cp NUM_MUSIC_CHANS
 	jr nc, .chan_5to8
-	ld hl, CHANNEL_STRUCT_LENGTH * NUM_MUSIC_CHANS + CHANNEL_FLAGS1
+	; ????
+
+	push af
+	push bc
+	add 4 ; corresponding sfx channel
+	ld c, a
+	ld b, 0
+	ld hl, ChannelPointers
 	add hl, bc
+	add hl, bc
+	ld c, [hl]
+	inc hl
+	ld b, [hl] ; bc = channel pointer
+	ld hl, CHANNEL_FLAGS1
+	add hl, bc
+	pop bc
+	pop af
+;	ld hl, CHANNEL_STRUCT_LENGTH * NUM_MUSIC_CHANS + CHANNEL_FLAGS1
+;	add hl, bc
+
 	bit SOUND_CHANNEL_ON, [hl]
 	jr nz, .ok
 .chan_5to8
@@ -1371,7 +1446,7 @@ ParseMusicCommand:
 
 MusicCommands:
 ; entries correspond to audio constants (see macros/scripts/audio.asm)
-	table_width 2
+	table_width 2, MusicCommands
 	dw Music_Octave8
 	dw Music_Octave7
 	dw Music_Octave6
@@ -1425,11 +1500,75 @@ MusicCommands:
 MusicF1:
 MusicF2:
 MusicF3:
+;custom waveform
+	ld e, 16
+	ld hl, rWave_0
+.read
+	call GetMusicByte
+	ld [hli], a
+	dec e
+	jr nz, .read
+	ret
+
 MusicF4:
+;inc_octave
+	ld hl, CHANNEL_OCTAVE
+	add hl, bc
+	ld a, [hl]
+	dec a
+	and 7
+	ld [hl], a
+	ret
+
 MusicF5:
+;dec_octave
+	ld hl, CHANNEL_OCTAVE
+	add hl, bc
+	ld a, [hl]
+	inc a
+	and 7
+	ld [hl], a
+	ret
+
 MusicF6:
+;speed
+	call GetMusicByte
+	ld hl, CHANNEL_NOTE_LENGTH
+	add hl, bc
+	ld [hl], a
+	ret
+
 MusicF7:
+;channel_volume
+	call GetMusicByte
+	ld hl, CHANNEL_VOLUME_ENVELOPE
+	add hl, bc
+	rla
+	rla
+	rla
+	rla
+	and $f0
+	push bc
+	ld b, a
+	ld a, [hl]
+	and $f
+	add b
+	pop bc
+	ld [hl], a
+	ret
+
 MusicF8:
+;fade_wave
+	call GetMusicByte
+	ld hl, CHANNEL_VOLUME_ENVELOPE
+	add hl, bc
+	push bc
+	ld b, a
+	ld a, [hl]
+	and $f0
+	add b
+	pop bc
+	ld [hl], a
 	ret
 
 Music_Ret:
@@ -1986,13 +2125,13 @@ Music_Transpose:
 Music_StereoPanning:
 ; stereo panning
 ; params: 1
-	; stereo on?
-	ld a, [wOptions]
-	bit STEREO, a
-	jr nz, Music_ForceStereoPanning
-	; skip param
-	call GetMusicByte
-	ret
+;	; stereo on?
+;	ld a, [wOptions]
+;	bit STEREO, a
+;	jr nz, Music_ForceStereoPanning
+;	; skip param
+;	call GetMusicByte
+;	ret
 
 Music_ForceStereoPanning:
 ; force panning
@@ -2205,7 +2344,7 @@ SetNoteDuration:
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
-	; add duration modifier to the next result
+	; add ??? to the next result
 	ld hl, CHANNEL_NOTE_DURATION_MODIFIER
 	add hl, bc
 	ld l, [hl]
@@ -2214,10 +2353,11 @@ SetNoteDuration:
 	; copy result to de
 	ld e, l
 	ld d, h
-	; store result in NoteDuration and NoteDurationModifier
+	; store result in ???
 	ld hl, CHANNEL_NOTE_DURATION_MODIFIER
 	add hl, bc
 	ld [hl], e
+	; store result in NoteDuration
 	ld hl, CHANNEL_NOTE_DURATION
 	add hl, bc
 	ld [hl], d
@@ -2282,7 +2422,7 @@ Tempo:
 	ld [hl], e
 	inc hl
 	ld [hl], d
-	; clear duration modifier
+	; clear ???
 	xor a
 	ld hl, CHANNEL_NOTE_DURATION_MODIFIER
 	add hl, bc
@@ -2331,6 +2471,15 @@ _PlayMusic::
 	ld e, [hl]
 	inc hl
 	ld d, [hl] ; music header address
+
+	; pre-emptively disable all channels.  for some reason, this
+	; does not happen.
+	xor a
+	ld [wChannel1 + CHANNEL_FLAGS1], a
+	ld [wChannel2 + CHANNEL_FLAGS1], a
+	ld [wChannel3 + CHANNEL_FLAGS1], a
+	ld [wChannel4 + CHANNEL_FLAGS1], a
+
 	call LoadMusicByte ; store first byte of music header in a
 	rlca
 	rlca
@@ -2433,9 +2582,9 @@ _PlayCry::
 ; Stereo only: Play cry from the monster's side.
 ; This only applies in-battle.
 
-	ld a, [wOptions]
-	bit STEREO, a
-	jr z, .next
+;	ld a, [wOptions]
+;	bit STEREO, a
+;	jr z, .next
 
 ; [CHANNEL_TRACKS] &= [wCryTracks]
 	ld hl, CHANNEL_TRACKS
@@ -2466,6 +2615,131 @@ _PlayCry::
 	ld a, 1 ; stop playing music
 	ld [wSFXPriority], a
 	call MusicOn
+	ret
+
+_PlayBattleSound::
+; clear channels if they aren't already
+	call MusicOff
+	ld hl, wChannel5Flags1
+	bit SOUND_CHANNEL_ON, [hl] ; ch5 on?
+	jr z, .ch6
+	res SOUND_CHANNEL_ON, [hl] ; turn it off
+	xor a
+	ldh [rNR11], a ; length/wavepattern = 0
+	ld a, $8
+	ldh [rNR12], a ; envelope = 0
+	xor a
+	ldh [rNR13], a ; frequency lo = 0
+	ld a, $80
+	ldh [rNR14], a ; restart sound (freq hi = 0)
+	xor a
+	ld [wPitchSweep], a ; pitch sweep off
+	ldh [rNR10], a ; pitch sweep off
+.ch6
+	ld hl, wChannel6Flags1
+	bit SOUND_CHANNEL_ON, [hl]
+	jr z, .ch7
+	res SOUND_CHANNEL_ON, [hl] ; turn it off
+	xor a
+	ldh [rNR21], a ; length/wavepattern = 0
+	ld a, $8
+	ldh [rNR22], a ; envelope = 0
+	xor a
+	ldh [rNR23], a ; frequency lo = 0
+	ld a, $80
+	ldh [rNR24], a ; restart sound (freq hi = 0)
+.ch7
+	ld hl, wChannel7Flags1
+	bit SOUND_CHANNEL_ON, [hl]
+	jr z, .ch8
+	res SOUND_CHANNEL_ON, [hl] ; turn it off
+	xor a
+	ldh [rNR30], a ; sound mode #3 off
+	ldh [rNR31], a ; length/wavepattern = 0
+	ld a, $8
+	ldh [rNR32], a ; envelope = 0
+	xor a
+	ldh [rNR33], a ; frequency lo = 0
+	ld a, $80
+	ldh [rNR34], a ; restart sound (freq hi = 0)
+.ch8
+	ld hl, wChannel8Flags1
+	bit SOUND_CHANNEL_ON, [hl]
+	jr z, .chscleared
+	res SOUND_CHANNEL_ON, [hl] ; turn it off
+	xor a
+	ldh [rNR41], a ; length/wavepattern = 0
+	ld a, $8
+	ldh [rNR42], a ; envelope = 0
+	xor a
+	ldh [rNR43], a ; frequency lo = 0
+	ld a, $80
+	ldh [rNR44], a ; restart sound (freq hi = 0)
+	xor a
+	ld [wNoiseSampleAddress], a
+	ld [wNoiseSampleAddress + 1], a
+.chscleared
+; start reading sfx header for # chs
+	ld hl, wMusicID
+	ld [hl], e
+	inc hl
+	ld [hl], d
+	ld hl, SFX
+	add hl, de ; three
+	add hl, de ; byte
+	add hl, de ; pointers
+	; get bank
+	ld a, [hli]
+	ld [wMusicBank], a
+	; get address
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	; get # channels
+	call LoadMusicByte
+	rlca ; top 2
+	rlca ; bits
+	maskbits NUM_MUSIC_CHANS
+	inc a ; # channels -> # loops
+.startchannels
+	push af
+	call LoadChannel ; bc = current channel
+	ld hl, CHANNEL_FLAGS1
+	add hl, bc
+	set SOUND_SFX, [hl]
+
+	ld hl, CHANNEL_FLAGS2
+	add hl, bc
+	set SOUND_PITCH_OFFSET, [hl]
+
+	ld hl, CHANNEL_PITCH_OFFSET
+	add hl, bc
+	ld a, [wCryPitch]
+	ld [hli], a
+	ld a, [wCryPitch + 1]
+	ld [hl], a
+
+; No tempo for channel 4
+	ld a, [wCurChannel]
+	maskbits NUM_MUSIC_CHANS
+	cp CHAN4
+	jr nc, .start
+
+; Tempo is effectively length
+	ld hl, CHANNEL_TEMPO
+	add hl, bc
+	ld a, [wCryLength]
+	ld [hli], a
+	ld a, [wCryLength + 1]
+	ld [hl], a
+.start
+	call StartChannel
+	pop af
+	dec a
+	jr nz, .startchannels
+	call MusicOn
+	xor a
+	ld [wSFXPriority], a
 	ret
 
 _PlaySFX::
@@ -2573,9 +2847,9 @@ PlayStereoSFX::
 	call MusicOff
 
 ; standard procedure if stereo's off
-	ld a, [wOptions]
-	bit STEREO, a
-	jp z, _PlaySFX
+;	ld a, [wOptions]
+;	bit STEREO, a
+;	jp z, _PlaySFX
 
 ; else, let's go ahead with this
 	ld hl, wMusicID
@@ -2759,12 +3033,12 @@ INCLUDE "audio/drumkits.asm"
 GetLRTracks:
 ; gets the default sound l/r channels
 ; stores mono/stereo table in hl
-	ld a, [wOptions]
-	bit STEREO, a
-	; made redundant, could have had a purpose in gold
-	jr nz, .stereo
-	ld hl, MonoTracks
-	ret
+;	ld a, [wOptions]
+;	bit STEREO, a
+;	; made redundant, could have had a purpose in gold
+;	jr nz, .stereo
+;	ld hl, MonoTracks
+;	ret
 
 .stereo
 	ld hl, StereoTracks
@@ -2782,7 +3056,7 @@ StereoTracks:
 	db $11, $22, $44, $88
 
 ChannelPointers:
-	table_width 2
+	table_width 2, ChannelPointers
 ; music channels
 	dw wChannel1
 	dw wChannel2
@@ -2830,7 +3104,7 @@ ClearChannel:
 	ret
 
 PlayTrainerEncounterMusic::
-; input: e = trainer type
+;input: e = trainer type
 	; turn fade off
 	xor a
 	ld [wMusicFade], a

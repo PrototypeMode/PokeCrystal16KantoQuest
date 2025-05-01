@@ -655,11 +655,37 @@ PokegearMap_ContinueMap:
 PokegearMap_InitPlayerIcon:
 	push af
 	depixel 0, 0
+	ld a, [wPlayerCostume]
+	cp 0
+	jr z, .GenderCheck
+    cp 1
+	jr z, .GenderCheck
+	cp 2
+	jr z, .CostumeCheckBrock
+	cp 3
+	jr z, .CostumeCheckBlue
+	cp 4
+	jr z, .CostumeCheckPikachu
+	
+.CostumeCheckBrock
+	ld b, SPRITE_ANIM_OBJ_GREEN_WALK
+	jr z, .got_gender
+	
+.CostumeCheckBlue
+	ld b, SPRITE_ANIM_OBJ_BLUE_WALK
+	jr z, .got_gender	
+	
+.CostumeCheckPikachu
+	ld b, SPRITE_ANIM_OBJ_RED_WALK
+	jr z, .got_gender
+	
+.GenderCheck	
 	ld b, SPRITE_ANIM_OBJ_RED_WALK
 	ld a, [wPlayerGender]
 	bit PLAYERGENDER_FEMALE_F, a
 	jr z, .got_gender
-	ld b, SPRITE_ANIM_OBJ_BLUE_WALK
+	ld b, SPRITE_ANIM_OBJ_PINK_WALK
+
 .got_gender
 	ld a, b
 	call InitSpriteAnimStruct
@@ -733,8 +759,8 @@ TownMap_GetKantoLandmarkLimits:
 	ret
 
 .not_hof
-	ld d, LANDMARK_ROUTE_28
-	ld e, LANDMARK_VICTORY_ROAD
+	ld d, LANDMARK_INDIGO_PLATEAU
+	ld e, LANDMARK_PALLET_TOWN
 	ret
 
 PokegearRadio_Init:
@@ -2745,7 +2771,7 @@ TownMapPlayerIcon:
 	ld e, l
 	ld hl, vTiles0 tile $14
 	ld c, 4 ; # tiles
-	ld a, BANK(ChrisSpriteGFX) ; does nothing
+	ld a, BANK(AshSpriteGFX) ; does nothing
 	call Request2bpp
 ; Animation/palette
 	depixel 0, 0

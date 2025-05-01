@@ -70,6 +70,7 @@ PredefPointers::
 	add_predef GetMonFrontpic
 	add_predef GetMonBackpic
 	add_predef GetAnimatedFrontpic
+	add_predef GetGhostAnimatedFrontpic
 	add_predef GetTrainerPic
 	add_predef DecompressGet2bpp
 	add_predef CheckTypeMatchup

@@ -26,4 +26,5 @@ UnownAnimationIdlePointers:
 	dw UnownXAnimationIdle
 	dw UnownYAnimationIdle
 	dw UnownZAnimationIdle
+;	dw UnownGhostAnimationIdle
 	assert_table_length NUM_UNOWN

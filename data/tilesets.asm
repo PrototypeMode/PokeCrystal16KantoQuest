@@ -50,4 +50,7 @@ Tilesets::
 	tileset TilesetKabutoWordRoom
 	tileset TilesetOmanyteWordRoom
 	tileset TilesetAerodactylWordRoom
+	tileset TilesetUnusedJohto
+	tileset TilesetNewCity
+	tileset TilesetCemetery
 	assert_table_length NUM_TILESETS + 1

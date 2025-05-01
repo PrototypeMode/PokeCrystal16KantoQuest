@@ -117,9 +117,13 @@ ENDM
 	map_attributes CianwoodCity, CIANWOOD_CITY, $35, EAST
 	connection east, Route41, ROUTE_41, 0
 
-	map_attributes GoldenrodCity, GOLDENROD_CITY, $35, NORTH | SOUTH
+	map_attributes GoldenrodCity, GOLDENROD_CITY, $35, NORTH | SOUTH | WEST
 	connection north, Route35, ROUTE_35, 5
 	connection south, Route34, ROUTE_34, 5
+	connection west, GlobalTerminalOutside, GLOBAL_TERMINAL_OUTSIDE, 2
+	
+    map_attributes GlobalTerminalOutside, GLOBAL_TERMINAL_OUTSIDE, $35, EAST
+	connection east, GoldenrodCity, GOLDENROD_CITY, -2
 
 	map_attributes OlivineCity, OLIVINE_CITY, $35, NORTH | WEST
 	connection north, Route39, ROUTE_39, 5
@@ -567,7 +571,10 @@ ENDM
 	map_attributes Route6UndergroundPathEntrance, ROUTE_6_UNDERGROUND_PATH_ENTRANCE, $00, 0
 	map_attributes RedsHouse1F, REDS_HOUSE_1F, $00, 0
 	map_attributes RedsHouse2F, REDS_HOUSE_2F, $00, 0
-	map_attributes BluesHouse, BLUES_HOUSE, $00, 0
+	map_attributes RedsHouseMom2F, REDS_HOUSE_MOM_2F, $00, 0
+	map_attributes BluesHouse1F, BLUES_HOUSE_1F, $00, 0
+	map_attributes BluesHouse2F, BLUES_HOUSE_2F, $00, 0
+	map_attributes BluesHouseDaisy2F, BLUES_HOUSE_DAISY_2F, $00, 0
 	map_attributes OaksLab, OAKS_LAB, $00, 0
 	map_attributes PewterNidoranSpeechHouse, PEWTER_NIDORAN_SPEECH_HOUSE, $00, 0
 	map_attributes PewterGym, PEWTER_GYM, $00, 0
@@ -575,6 +582,8 @@ ENDM
 	map_attributes PewterPokecenter1F, PEWTER_POKECENTER_1F, $00, 0
 	map_attributes PewterPokecenter2FBeta, PEWTER_POKECENTER_2F_BETA, $00, 0
 	map_attributes PewterSnoozeSpeechHouse, PEWTER_SNOOZE_SPEECH_HOUSE, $00, 0
+	map_attributes PewterMuseum1F, PEWTER_MUSEUM_1F, $00, 0
+	map_attributes PewterMuseum2F, PEWTER_MUSEUM_2F, $00, 0
 	map_attributes OlivinePort, OLIVINE_PORT, $0a, 0
 	map_attributes VermilionPort, VERMILION_PORT, $0a, 0
 	map_attributes FastShip1F, FAST_SHIP_1F, $00, 0
@@ -609,7 +618,14 @@ ENDM
 	map_attributes LavenderNameRater, LAVENDER_NAME_RATER, $00, 0
 	map_attributes LavenderMart, LAVENDER_MART, $00, 0
 	map_attributes SoulHouse, SOUL_HOUSE, $00, 0
-	map_attributes LavRadioTower1F, LAV_RADIO_TOWER_1F, $00, 0
+;	map_attributes LavRadioTower1F, LAV_RADIO_TOWER_1F, $00, 0
+	map_attributes LavenderTower1F, LAVENDER_TOWER_1F, $00, 0
+	map_attributes LavenderTower2F, LAVENDER_TOWER_2F, $00, 0
+	map_attributes LavenderTower3F, LAVENDER_TOWER_3F, $00, 0
+	map_attributes LavenderTower4F, LAVENDER_TOWER_4F, $00, 0
+	map_attributes LavenderTower5F, LAVENDER_TOWER_5F, $00, 0
+	map_attributes LavenderTower6F, LAVENDER_TOWER_6F, $00, 0
+	map_attributes LavenderTower7F, LAVENDER_TOWER_7F, $00, 0
 	map_attributes Route8SaffronGate, ROUTE_8_SAFFRON_GATE, $00, 0
 	map_attributes Route12SuperRodHouse, ROUTE_12_SUPER_ROD_HOUSE, $00, 0
 	map_attributes SilverCavePokecenter1F, SILVER_CAVE_POKECENTER_1F, $00, 0
@@ -695,3 +711,7 @@ ENDM
 	map_attributes Route30BerryHouse, ROUTE_30_BERRY_HOUSE, $00, 0
 	map_attributes MrPokemonsHouse, MR_POKEMONS_HOUSE, $00, 0
 	map_attributes Route31VioletGate, ROUTE_31_VIOLET_GATE, $00, 0
+	map_attributes GlobalTerminal1F, GLOBAL_TERMINAL_1F, $00, 0
+	map_attributes ViridianForest, VIRIDIAN_FOREST, $00, 0
+	map_attributes ViridianForestNorthGate, VIRIDIAN_FOREST_NORTH_GATE, $00, 0
+	map_attributes ViridianForestSouthGate, VIRIDIAN_FOREST_SOUTH_GATE, $00, 0

@@ -748,16 +748,16 @@ _MobilePickThreeMonForBattleText::
 	prompt
 
 _MobileUseTheseThreeMonText::
-	text_ram wMobileParticipant1Nickname
-	text ","
-	line "@"
-	text_ram wMobileParticipant2Nickname
-	text " and"
-	cont "@"
-	text_ram wMobileParticipant3Nickname
-	text "."
+	; text_ram wMobileParticipant1Nickname
+	; text ","
+	; line "@"
+	; text_ram wMobileParticipant2Nickname
+	; text " and"
+	; cont "@"
+	; text_ram wMobileParticipant3Nickname
+	; text "."
 
-	para "Use these three?"
+	; para "Use these three?"
 	done
 
 _MobileOnlyThreeMonMayEnterText::
@@ -1369,6 +1369,21 @@ _BallBlockedText::
 _BallDontBeAThiefText::
 	text "Don't be a thief!"
 	prompt
+	
+_BallGhostBlockedText::
+	text "The GHOST"
+	line "blocked the BALL!"
+	prompt
+
+_BallGhostDontBeAThiefText::
+	text "# BALLs don't"
+	line "work on GHOSTs!"
+	prompt
+
+_BallGhostGetOutText::
+	text "GHOST: Get out..."
+;	line "work on GHOSTs!"
+	prompt		
 
 _NoCyclingText::
 	text "Cycling isn't"

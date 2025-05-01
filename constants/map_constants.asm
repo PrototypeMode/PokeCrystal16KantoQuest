@@ -297,9 +297,13 @@ ENDM
 	newgroup PALLET                                               ; 13
 	map_const ROUTE_1,                                     10, 18 ;  1
 	map_const PALLET_TOWN,                                 10,  9 ;  2
-	map_const REDS_HOUSE_1F,                                4,  4 ;  3
-	map_const REDS_HOUSE_2F,                                4,  4 ;  4
-	map_const BLUES_HOUSE,                                  4,  4 ;  5
+	map_const REDS_HOUSE_1F,                                5,  4 ;  3
+	map_const REDS_HOUSE_2F,                                4,  3 ;  4
+;	map_const BLUES_HOUSE,                                  4,  4 ;  5
+	map_const REDS_HOUSE_MOM_2F,                            4,  3 ;  5
+	map_const BLUES_HOUSE_1F,                               5,  4 ;  6
+	map_const BLUES_HOUSE_2F,                               4,  3 ;  7
+	map_const BLUES_HOUSE_DAISY_2F,                         4,  3 ;  8
 	map_const OAKS_LAB,                                     5,  6 ;  6
 	endgroup
 
@@ -312,6 +316,9 @@ ENDM
 	map_const PEWTER_POKECENTER_1F,                         5,  4 ;  6
 	map_const PEWTER_POKECENTER_2F_BETA,                    8,  4 ;  7
 	map_const PEWTER_SNOOZE_SPEECH_HOUSE,                   4,  4 ;  8
+	map_const PEWTER_MUSEUM_1F,                             10,  4 ;  6
+	map_const PEWTER_MUSEUM_2F,                             7,  4 ;  6
+	map_const VIRIDIAN_FOREST_NORTH_GATE,                    5, 4 ; 15
 	endgroup
 
 	newgroup FAST_SHIP                                            ; 15
@@ -368,9 +375,17 @@ ENDM
 	map_const LAVENDER_NAME_RATER,                          4,  4 ;  9
 	map_const LAVENDER_MART,                                6,  4 ; 10
 	map_const SOUL_HOUSE,                                   5,  4 ; 11
-	map_const LAV_RADIO_TOWER_1F,                          10,  4 ; 12
+;	map_const LAV_RADIO_TOWER_1F,                          10,  4 ; 12
 	map_const ROUTE_8_SAFFRON_GATE,                         5,  4 ; 13
 	map_const ROUTE_12_SUPER_ROD_HOUSE,                     4,  4 ; 14
+	
+	map_const LAVENDER_TOWER_1F,                              10,  9 ;  15
+	map_const LAVENDER_TOWER_2F,                              10,  9 ;  16
+	map_const LAVENDER_TOWER_3F,                              10,  9 ;  17
+	map_const LAVENDER_TOWER_4F,                              10,  9 ;  18
+	map_const LAVENDER_TOWER_5F,                              10,  9 ;  19
+	map_const LAVENDER_TOWER_6F,                              10,  9 ;  20
+	map_const LAVENDER_TOWER_7F,                              10,  9 ;  21
 	endgroup
 
 	newgroup SILVER                                               ; 19
@@ -438,7 +453,7 @@ ENDM
 	endgroup
 
 	newgroup VIRIDIAN                                             ; 23
-	map_const ROUTE_2,                                     10, 27 ;  1
+	map_const ROUTE_2,                                     10, 36 ;  1
 	map_const ROUTE_22,                                    20,  9 ;  2
 	map_const VIRIDIAN_CITY,                               20, 18 ;  3
 	map_const VIRIDIAN_GYM,                                 5,  9 ;  4
@@ -451,6 +466,9 @@ ENDM
 	map_const ROUTE_2_NUGGET_HOUSE,                         4,  4 ; 11
 	map_const ROUTE_2_GATE,                                 5,  4 ; 12
 	map_const VICTORY_ROAD_GATE,                           10,  9 ; 13
+	map_const VIRIDIAN_FOREST,                              17, 24 ; 14
+
+	map_const VIRIDIAN_FOREST_SOUTH_GATE,                    5, 4 ; 16
 	endgroup
 
 	newgroup NEW_BARK                                             ; 24
@@ -499,6 +517,11 @@ ENDM
 	map_const ROUTE_30_BERRY_HOUSE,                         4,  4 ;  9
 	map_const MR_POKEMONS_HOUSE,                            4,  4 ; 10
 	map_const ROUTE_31_VIOLET_GATE,                         5,  4 ; 11
+	endgroup
+	
+	newgroup GLOBAL_TERMINAL                                      ; 27
+	map_const GLOBAL_TERMINAL_OUTSIDE,                     10, 13 ;  1
+	map_const GLOBAL_TERMINAL_1F,                           9,  6 ;  2
 	endgroup
 
 DEF NUM_MAP_GROUPS EQU const_value ; 26

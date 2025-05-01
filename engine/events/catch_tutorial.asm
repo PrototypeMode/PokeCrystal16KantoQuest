@@ -17,13 +17,70 @@ CatchTutorial::
 	dw .DudeTutorial
 
 .DudeTutorial:
-; Back up your name to your Mom's name.
+    ld a, [wPlayerCostume]
+	cp 0
+    jr z, .AshBackup
+	cp 1
+    jr z, .MistyBackup
+	cp 2
+    jr z, .BrockBackup
+	cp 3
+    jr z, .GaryBackup
+
+.AshBackup
 	ld hl, wPlayerName
-	ld de, wMomsName
+	ld de, wAshsName
 	ld bc, NAME_LENGTH
 	call CopyBytes
+	jr .DudeContinue
+	
+.MistyBackup
+	ld hl, wPlayerName
+	ld de, wMistysName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	jr .DudeContinue
+
+.BrockBackup
+	ld hl, wPlayerName
+	ld de, wBrocksName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	jr .DudeContinue	
+	
+.GaryBackup
+	ld hl, wPlayerName
+	ld de, wGarysName
+	ld bc, NAME_LENGTH
+	call CopyBytes	
+;	jr .DudeContinue
+
+; ; Back up your name to your Mom's name.
+	; ld hl, wPlayerName
+	; ld de, wBrocksName
+	; ld bc, NAME_LENGTH
+	; call CopyBytes
+	
+.DudeContinue	
+     ld a, [wMapGroup]
+	 ld b, a	
+	 ld a, [wMapNumber]
+	 ld c, a
+     call GetWorldMapLocation
+     cp LANDMARK_PALLET_TOWN
+	 jr z, .OakTutorialName
+     cp LANDMARK_VIRIDIAN_CITY
+	 jr z, .OldDudeTutorialName
+
+.OakTutorialName
 ; Copy Dude's name to your name
-	ld hl, .Dude
+	ld hl, .OakName
+	jr .IntoPlayerName
+.OldDudeTutorialName
+; Copy Dude's name to your name
+	ld hl, .OldDudeName
+
+.IntoPlayerName	
 	ld de, wPlayerName
 	ld bc, NAME_LENGTH
 	call CopyBytes
@@ -42,15 +99,12 @@ CatchTutorial::
 	ld a, BANK(.AutoInput)
 	call StartAutoInput
 	callfar StartBattle
-	call StopAutoInput
+	call StopAutoInput	
 	pop af
 
 	ld [wOptions], a
-	ld hl, wMomsName
-	ld de, wPlayerName
-	ld bc, NAME_LENGTH
-	call CopyBytes
-	ret
+	jr RestoreName
+
 
 .LoadDudeData:
 	ld hl, wDudeNumItems
@@ -74,8 +128,54 @@ CatchTutorial::
 	ld [hl], -1
 	ret
 
-.Dude:
-	db "DUDE@"
-
+.OakName:
+	db "PROF. OAK@"
+    end
+	
+.OldDudeName:
+	db "OLD DUDE@"
+    end 
+	
 .AutoInput:
 	db NO_INPUT, $ff ; end
+
+	
+RestoreName:	
+    ld a, [wPlayerCostume]
+	cp 0
+    jr z, .AshRestore
+	cp 1
+    jr z, .MistyRestore
+	cp 2
+    jr z, .BrockRestore
+	cp 3
+    jr z, .GaryRestore	
+
+
+.AshRestore
+	ld hl, wAshsName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	ret
+	
+.MistyRestore
+	ld hl, wMistysName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	ret	
+
+.BrockRestore
+	ld hl, wBrocksName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	ret
+	
+.GaryRestore
+	ld hl, wGarysName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	ret	

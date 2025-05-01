@@ -36,14 +36,7 @@ INCBIN "data/tilesets/ice_path_metatiles.bin"
 TilesetIcePathColl::
 INCLUDE "data/tilesets/ice_path_collision.asm"
 
-TilesetPlayersRoomGFX::
-INCBIN "gfx/tilesets/players_room.2bpp.lz"
 
-TilesetPlayersRoomMeta::
-INCBIN "data/tilesets/players_room_metatiles.bin"
-
-TilesetPlayersRoomColl::
-INCLUDE "data/tilesets/players_room_collision.asm"
 
 
 SECTION "Tileset Data 2", ROMX
@@ -188,10 +181,13 @@ INCLUDE "data/tilesets/underground_collision.asm"
 TilesetDarkCaveGFX::
 INCBIN "gfx/tilesets/dark_cave.2bpp.lz"
 
-UnusedTilesetJohtoMeta:: ; unreferenced
+TilesetUnusedJohtoGFX::
+INCBIN "gfx/tilesets/unused_johto.2bpp.lz"
+
+TilesetUnusedJohtoMeta:: ; unreferenced
 INCBIN "data/tilesets/unused_johto_metatiles.bin"
 
-UnusedTilesetJohtoColl:: ; unreferenced
+TilesetUnusedJohtoColl:: ; unreferenced
 INCLUDE "data/tilesets/unused_johto_collision.asm"
 
 
@@ -335,3 +331,32 @@ INCBIN "data/tilesets/omanyte_word_room_metatiles.bin"
 
 TilesetAerodactylWordRoomMeta::
 INCBIN "data/tilesets/aerodactyl_word_room_metatiles.bin"
+
+SECTION "Tileset Data 9", ROMX
+TilesetPlayersRoomGFX::
+INCBIN "gfx/tilesets/players_room.2bpp.lz"
+
+TilesetPlayersRoomMeta::
+INCBIN "data/tilesets/players_room_metatiles.bin"
+
+TilesetPlayersRoomColl::
+INCLUDE "data/tilesets/players_room_collision.asm"
+
+TilesetNewCityGFX::
+INCBIN "gfx/tilesets/new_city.2bpp.lz"
+
+TilesetNewCityMeta:: ; unreferenced
+INCBIN "data/tilesets/new_city_metatiles.bin"
+
+TilesetNewCityColl:: ; unreferenced
+INCLUDE "data/tilesets/new_city_collision.asm"
+
+SECTION "Tileset Data 10", ROMX
+TilesetCemeteryGFX::
+INCBIN "gfx/tilesets/cemetery.2bpp.lz"
+
+TilesetCemeteryMeta:: 
+INCBIN "data/tilesets/cemetery_metatiles.bin"
+
+TilesetCemeteryColl::  
+INCLUDE "data/tilesets/cemetery_collision.asm"

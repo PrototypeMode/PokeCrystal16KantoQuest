@@ -2,6 +2,7 @@
 	const_def
 	const LANDMARK_SPECIAL           ; 00
 ; Johto landmarks
+    const LANDMARK_NEW_BARK_TOWN_HOUSE     ; 01
 	const LANDMARK_NEW_BARK_TOWN     ; 01
 	const LANDMARK_ROUTE_29          ; 02
 	const LANDMARK_CHERRYGROVE_CITY  ; 03
@@ -19,6 +20,7 @@
 	const LANDMARK_ROUTE_34          ; 0f
 	const LANDMARK_GOLDENROD_CITY    ; 10
 	const LANDMARK_RADIO_TOWER       ; 11
+	const LANDMARK_GLOBAL_TERMINAL
 	const LANDMARK_ROUTE_35          ; 12
 	const LANDMARK_NATIONAL_PARK     ; 13
 	const LANDMARK_ROUTE_36          ; 14
@@ -49,6 +51,8 @@
 	const LANDMARK_ROUTE_46          ; 2d
 	const LANDMARK_SILVER_CAVE       ; 2e
 DEF KANTO_LANDMARK EQU const_value
+	const LANDMARK_PALLET_RED_HOUSE       ; 2f
+	const LANDMARK_PALLET_BLUE_HOUSE     ; 2f
 	const LANDMARK_PALLET_TOWN       ; 2f
 	const LANDMARK_ROUTE_1           ; 30
 	const LANDMARK_VIRIDIAN_CITY     ; 31
@@ -72,7 +76,8 @@ DEF KANTO_LANDMARK EQU const_value
 	const LANDMARK_ROUTE_10          ; 43
 	const LANDMARK_POWER_PLANT       ; 44
 	const LANDMARK_LAVENDER_TOWN     ; 45
-	const LANDMARK_LAV_RADIO_TOWER   ; 46
+;	const LANDMARK_LAV_RADIO_TOWER   ; 46
+	const LANDMARK_LAVENDER_TOWER   ; 46
 	const LANDMARK_CELADON_CITY      ; 47
 	const LANDMARK_SAFFRON_CITY      ; 48
 	const LANDMARK_ROUTE_11          ; 49
@@ -98,6 +103,7 @@ DEF KANTO_LANDMARK EQU const_value
 	const LANDMARK_TOHJO_FALLS       ; 5d
 	const LANDMARK_ROUTE_28          ; 5e
 	const LANDMARK_FAST_SHIP         ; 5f
+	const LANDMARK_VIRIDIAN_FOREST
 DEF NUM_LANDMARKS EQU const_value
 
 ; used in CaughtData

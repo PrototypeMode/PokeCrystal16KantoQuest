@@ -42,7 +42,7 @@ TilesetKantoAnim:
 	dw NULL,  WaitTileAnimation
 	dw NULL,  WaitTileAnimation
 	dw NULL,  WaitTileAnimation
-	dw NULL,  AnimateWaterPalette
+	dw NULL,  WaitTileAnimation
 	dw NULL,  WaitTileAnimation
 	dw NULL,  AnimateFlowerTile
 	dw NULL,  WaitTileAnimation
@@ -55,7 +55,7 @@ TilesetParkAnim:
 	dw NULL,  WaitTileAnimation
 	dw vTiles2 tile $5f, AnimateFountainTile
 	dw NULL,  WaitTileAnimation
-	dw NULL,  AnimateWaterPalette
+	dw NULL,  WaitTileAnimation
 	dw NULL,  WaitTileAnimation
 	dw NULL,  AnimateFlowerTile
 	dw NULL,  WaitTileAnimation
@@ -73,7 +73,7 @@ TilesetForestAnim:
 	dw NULL,  ForestTreeRightAnimation2
 	dw NULL,  AnimateFlowerTile
 	dw vTiles2 tile $14, AnimateWaterTile
-	dw NULL,  AnimateWaterPalette
+	dw NULL,  WaitTileAnimation
 	dw NULL,  StandingTileFrame8
 	dw NULL,  DoneTileAnimation
 
@@ -81,7 +81,7 @@ TilesetJohtoAnim:
 	dw vTiles2 tile $14, AnimateWaterTile
 	dw NULL,  WaitTileAnimation
 	dw NULL,  WaitTileAnimation
-	dw NULL,  AnimateWaterPalette
+	dw NULL,  WaitTileAnimation
 	dw NULL,  WaitTileAnimation
 	dw NULL,  AnimateFlowerTile
 	dw WhirlpoolFrames1, AnimateWhirlpoolTile
@@ -91,6 +91,38 @@ TilesetJohtoAnim:
 	dw NULL,  WaitTileAnimation
 	dw NULL,  StandingTileFrame8
 	dw NULL,  DoneTileAnimation
+	
+TilesetUnusedJohtoAnim:
+	dw vTiles2 tile $14, AnimateWaterTile
+;	dw vTiles2 tile $31, AnimateChimneyTile
+	dw NULL,  WaitTileAnimation
+	dw NULL,  WaitTileAnimation
+	dw NULL,  WaitTileAnimation
+	dw NULL,  WaitTileAnimation
+	dw NULL,  AnimateFlowerTile
+	dw WhirlpoolFrames1, AnimateWhirlpoolTile
+	dw WhirlpoolFrames2, AnimateWhirlpoolTile
+	dw WhirlpoolFrames3, AnimateWhirlpoolTile
+	dw WhirlpoolFrames4, AnimateWhirlpoolTile
+	dw NULL,  WaitTileAnimation
+	dw NULL,  StandingTileFrame8
+	dw NULL,  DoneTileAnimation
+	
+TilesetNewCityAnim:
+	dw vTiles2 tile $14, AnimateWaterTile
+;	dw vTiles2 tile $31, AnimateChimneyTile
+	dw NULL,  WaitTileAnimation
+	dw NULL,  WaitTileAnimation
+	dw NULL,  WaitTileAnimation
+	dw NULL,  WaitTileAnimation
+	dw NULL,  AnimateFlowerTile
+	; dw WhirlpoolFrames1, AnimateWhirlpoolTile
+	; dw WhirlpoolFrames2, AnimateWhirlpoolTile
+	; dw WhirlpoolFrames3, AnimateWhirlpoolTile
+	; dw WhirlpoolFrames4, AnimateWhirlpoolTile
+	dw NULL,  WaitTileAnimation
+	dw NULL,  StandingTileFrame8
+	dw NULL,  DoneTileAnimation		
 
 UnusedTilesetAnim1: ; unreferenced
 ; Scrolls tile $03 like cave water, but also has the standard $03 flower tile.
@@ -126,7 +158,7 @@ TilesetPortAnim:
 	dw NULL,  WaitTileAnimation
 	dw NULL,  WaitTileAnimation
 	dw NULL,  WaitTileAnimation
-	dw NULL,  AnimateWaterPalette
+	dw NULL,  WaitTileAnimation
 	dw NULL,  WaitTileAnimation
 	dw NULL,  WaitTileAnimation
 	dw NULL,  WaitTileAnimation
@@ -159,22 +191,21 @@ UnusedTilesetAnim3: ; unreferenced
 	dw vTiles2 tile $53, WriteTileFromAnimBuffer
 	dw NULL,  DoneTileAnimation
 
-UnusedTilesetAnim4: ; unreferenced
-; Scrolls tile $54 like a waterfall; scrolls tile $03 like cave water.
-	dw vTiles2 tile $54, ReadTileToAnimBuffer
-	dw wTileAnimBuffer, ScrollTileDown
-	dw wTileAnimBuffer, ScrollTileDown
-	dw vTiles2 tile $54, WriteTileFromAnimBuffer
+TilesetPlayersRoomAnim: ; unreferenced
+	dw TV_On_Frames1, AnimateTVTile
+	dw TV_On_Frames2, AnimateTVTile
+	dw TV_On_Frames3, AnimateTVTile
+	dw TV_On_Frames4, AnimateTVTile
+	dw TV_On_Frames5, AnimateTVTile
+	dw TV_On_Frames6, AnimateTVTile
+	dw TV_On_Frames7, AnimateTVTile
+	dw TV_On_Frames8, AnimateTVTile
+	dw TV_On_Frames9, AnimateTVTile
+	dw TV_On_Frames10, AnimateTVTile
 	dw NULL,  WaitTileAnimation
-	dw vTiles2 tile $03, ReadTileToAnimBuffer
-	dw wTileAnimBuffer, ScrollTileRightLeft
-	dw vTiles2 tile $03, WriteTileFromAnimBuffer
-	dw NULL,  WaitTileAnimation
-	dw vTiles2 tile $54, ReadTileToAnimBuffer
-	dw wTileAnimBuffer, ScrollTileDown
-	dw wTileAnimBuffer, ScrollTileDown
-	dw vTiles2 tile $54, WriteTileFromAnimBuffer
+	dw NULL,  StandingTileFrame8
 	dw NULL,  DoneTileAnimation
+
 
 TilesetCaveAnim:
 TilesetDarkCaveAnim:
@@ -184,7 +215,7 @@ TilesetDarkCaveAnim:
 	dw NULL,  FlickeringCaveEntrancePalette
 	dw vTiles2 tile $14, WriteTileFromAnimBuffer
 	dw NULL,  FlickeringCaveEntrancePalette
-	dw NULL,  AnimateWaterPalette
+	dw NULL,  WaitTileAnimation
 	dw NULL,  FlickeringCaveEntrancePalette
 	dw vTiles2 tile $40, ReadTileToAnimBuffer
 	dw NULL,  FlickeringCaveEntrancePalette
@@ -205,7 +236,7 @@ TilesetIcePathAnim:
 	dw NULL,  FlickeringCaveEntrancePalette
 	dw vTiles2 tile $35, WriteTileFromAnimBuffer
 	dw NULL,  FlickeringCaveEntrancePalette
-	dw NULL,  AnimateWaterPalette
+	dw NULL,  WaitTileAnimation
 	dw NULL,  FlickeringCaveEntrancePalette
 	dw vTiles2 tile $31, ReadTileToAnimBuffer
 	dw NULL,  FlickeringCaveEntrancePalette
@@ -264,7 +295,7 @@ TilesetTraditionalHouseAnim:
 TilesetTrainStationAnim:
 TilesetChampionsRoomAnim:
 TilesetLighthouseAnim:
-TilesetPlayersRoomAnim:
+;TilesetPlayersRoomAnim:
 TilesetPokeComCenterAnim:
 TilesetBattleTowerInsideAnim:
 TilesetRuinsOfAlphAnim:
@@ -275,6 +306,7 @@ TilesetHoOhWordRoomAnim:
 TilesetKabutoWordRoomAnim:
 TilesetOmanyteWordRoomAnim:
 TilesetAerodactylWordRoomAnim:
+TilesetCemeteryAnim:
 	dw NULL,  WaitTileAnimation
 	dw NULL,  WaitTileAnimation
 	dw NULL,  WaitTileAnimation
@@ -474,6 +506,38 @@ AnimateWaterTile:
 
 .WaterTileFrames:
 	INCBIN "gfx/tilesets/water/water.2bpp"
+
+
+; AnimateChimneyTile:
+; ; Save the stack pointer in bc for WriteTile to restore
+	; ld hl, sp+0
+	; ld b, h
+	; ld c, l
+
+; ; A cycle of 4 frames, updating every other tick
+	; ld a, [wTileAnimationTimer]
+	; and %110
+
+; ; hl = .WaterTileFrames + a * 8
+; ; (a was pre-multiplied by 2 from 'and %110')
+	; add a
+	; add a
+	; add a
+	; add LOW(.ChimneyTileFrames)
+	; ld l, a
+	; ld a, 0
+	; adc HIGH(.ChimneyTileFrames)
+	; ld h, a
+
+; ; Write the tile graphic from hl (now sp) to de (now hl)
+	; ld sp, hl
+	; ld l, e
+	; ld h, d
+	; jp WriteTile
+
+; .ChimneyTileFrames:
+	; INCBIN "gfx/tilesets/chimney/chimney.2bpp"
+
 
 ForestTreeLeftAnimation:
 ; Save the stack pointer in bc for WriteTile to restore
@@ -850,6 +914,45 @@ AnimateWhirlpoolTile:
 	ld h, d
 	jr WriteTile
 
+
+AnimateTVTile:
+; Input de points to the destination in VRAM, then the source tile frames
+
+; Save the stack pointer in bc for WriteTile to restore
+	ld hl, sp+0
+	ld b, h
+	ld c, l
+
+; de = the destination in VRAM
+	ld l, e
+	ld h, d
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	inc hl
+
+; A cycle of 4 frames, updating every tick
+	ld a, [wTileAnimationTimer]
+	and %11
+
+; hl = the source tile frames + a * 16
+	swap a
+	add [hl]
+	inc hl
+	ld h, [hl]
+	ld l, a
+	ld a, 0
+	adc h
+	ld h, a
+
+; Write the tile graphic from hl (now sp) to de (now hl)
+	ld sp, hl
+	ld l, e
+	ld h, d
+	jr WriteTile
+
+
+
 WriteTileFromAnimBuffer:
 ; Save the stack pointer in bc for WriteTile to restore
 	ld hl, sp+0
@@ -902,7 +1005,7 @@ endr
 	ld sp, hl
 	ret
 
-AnimateWaterPalette:
+AnimateTVPalette:
 ; Transition between color values 0-2 for color 0 in palette 3.
 
 ; Don't update the palette on DMG
@@ -1047,3 +1150,35 @@ WhirlpoolTiles1: INCBIN "gfx/tilesets/whirlpool/1.2bpp"
 WhirlpoolTiles2: INCBIN "gfx/tilesets/whirlpool/2.2bpp"
 WhirlpoolTiles3: INCBIN "gfx/tilesets/whirlpool/3.2bpp"
 WhirlpoolTiles4: INCBIN "gfx/tilesets/whirlpool/4.2bpp"
+
+TV_On_Frames1: dw vTiles2 tile $3b, TV_On_Tiles1 ; TV Top Left
+TV_On_Frames2: dw vTiles2 tile $3c, TV_On_Tiles2 ; TV Top Right
+
+TV_On_Frames3: dw vTiles2 tile $5b, TV_On_Tiles3 ; TV Bottom Left Screen 1 ; nes
+TV_On_Frames4: dw vTiles2 tile $5c, TV_On_Tiles4 ; TV Bottom Right Screen 1 ; nes
+
+TV_On_Frames5: dw vTiles2 tile $6b, TV_On_Tiles3 ; TV Bottom Left Screen 1 ; snes
+TV_On_Frames6: dw vTiles2 tile $6c, TV_On_Tiles4 ; TV Bottom Right Screen 1 ; snes
+
+TV_On_Frames7: dw vTiles2 tile $7b, TV_On_Tiles3 ; TV Bottom Left Screen 1 ; n64
+TV_On_Frames8: dw vTiles2 tile $7c, TV_On_Tiles4 ; TV Bottom Right Screen 1 ; n64
+
+TV_On_Frames9: dw vTiles2 tile $05, TV_On_Tiles3 ; TV Bottom Left Screen 1
+TV_On_Frames10: dw vTiles2 tile $06, TV_On_Tiles4 ; TV Bottom Right Screen 1
+
+
+TV_On_Tiles1: INCBIN "gfx/tilesets/tv/TV_On/1.2bpp"
+TV_On_Tiles2: INCBIN "gfx/tilesets/tv/TV_On/2.2bpp"
+TV_On_Tiles3: INCBIN "gfx/tilesets/tv/TV_On/3.2bpp"
+TV_On_Tiles4: INCBIN "gfx/tilesets/tv/TV_On/4.2bpp"
+
+; TV_Off_Frames1: dw vTiles2 tile $b4, TV_Off_Tiles1
+; TV_Off_Frames2: dw vTiles2 tile $b5, TV_Off_Tiles2
+; TV_Off_Frames3: dw vTiles2 tile $6b, TV_Off_Tiles3
+; TV_Off_Frames4: dw vTiles2 tile $6c, TV_Off_Tiles4
+
+; TV_Off_Tiles1: INCBIN "gfx/tilesets/tv/TV_Off/1.2bpp"
+; TV_Off_Tiles2: INCBIN "gfx/tilesets/tv/TV_Off/2.2bpp"
+; TV_Off_Tiles3: INCBIN "gfx/tilesets/tv/TV_Off/3.2bpp"
+; TV_Off_Tiles4: INCBIN "gfx/tilesets/tv/TV_Off/4.2bpp"
+

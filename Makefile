@@ -21,8 +21,8 @@ rom_obj := \
 	lib/mobile/main.o \
 	lib/mobile/mail.o
 
-pokecrystal_obj         := $(rom_obj:.o=.o)
-pokecrystal11_vc_obj    := $(rom_obj:.o=_vc.o)
+pokecrystal_obj    := $(rom_obj:.o=.o)
+pokecrystal_vc_obj := $(rom_obj:.o=_vc.o)
 
 
 ### Build tools
@@ -238,27 +238,69 @@ gfx/battle_anims/lightning.2bpp: tools/gfx += --remove-whitespace
 gfx/battle_anims/misc.2bpp: tools/gfx += --remove-duplicates --remove-xflip
 gfx/battle_anims/noise.2bpp: tools/gfx += --remove-whitespace
 gfx/battle_anims/objects.2bpp: tools/gfx += --remove-whitespace --remove-xflip
-gfx/battle_anims/pokeball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
+
 gfx/battle_anims/reflect.2bpp: tools/gfx += --remove-whitespace
 gfx/battle_anims/rocks.2bpp: tools/gfx += --remove-whitespace
 gfx/battle_anims/skyattack.2bpp: tools/gfx += --remove-whitespace
 gfx/battle_anims/status.2bpp: tools/gfx += --remove-whitespace
 
-gfx/player/chris.2bpp: rgbgfx += --columns
-gfx/player/chris_back.2bpp: rgbgfx += --columns
-gfx/player/kris.2bpp: rgbgfx += --columns
-gfx/player/kris_back.2bpp: rgbgfx += --columns
+gfx/battle_anims/battle_balls/pokeball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
+gfx/battle_anims/battle_balls/greatball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
+gfx/battle_anims/battle_balls/ultraball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
+gfx/battle_anims/battle_balls/masterball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
 
-gfx/trainer_card/chris_card.2bpp: rgbgfx += --columns
-gfx/trainer_card/kris_card.2bpp: rgbgfx += --columns
-gfx/trainer_card/leaders.2bpp: tools/gfx += --trim-whitespace
+gfx/battle_anims/battle_balls/fastball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
+gfx/battle_anims/battle_balls/loveball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
+gfx/battle_anims/battle_balls/lureball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
+gfx/battle_anims/battle_balls/moonball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
+gfx/battle_anims/battle_balls/heavyball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
+gfx/battle_anims/battle_balls/friendball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
+gfx/battle_anims/battle_balls/levelball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
+gfx/battle_anims/battle_balls/parkball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
+gfx/battle_anims/battle_balls/premierball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
+gfx/battle_anims/battle_balls/gsball.2bpp: tools/gfx += --remove-xflip --keep-whitespace
+
+
+# gfx/player/chris.2bpp: rgbgfx += --columns
+# gfx/player/chris_back.2bpp: rgbgfx += --columns
+
+# gfx/player/kris.2bpp: rgbgfx += --columns
+# gfx/player/kris_back.2bpp: rgbgfx += --columns
+
+
+gfx/player/player_front/ash.2bpp: rgbgfx += --columns
+gfx/player/player_back/ash_back.2bpp: rgbgfx += --columns
+
+gfx/player/player_front/old_misty.2bpp: rgbgfx += --columns
+gfx/player/player_back/old_misty_back.2bpp: rgbgfx += --columns
+
+gfx/player/player_front/brock.2bpp: rgbgfx += --columns
+gfx/player/player_back/brock_back.2bpp: rgbgfx += --columns
+
+gfx/player/player_front/gary.2bpp: rgbgfx += --columns
+gfx/player/player_back/gary_back.2bpp: rgbgfx += --columns
+
+gfx/player/player_front/pikachu.2bpp: rgbgfx += --columns
+gfx/player/player_back/pikachu_back.2bpp: rgbgfx += --columns
+
+gfx/player/player_back/prof_oak_back.2bpp: rgbgfx += --columns
+gfx/player/player_back/dude_back.2bpp: rgbgfx += --columns
+gfx/player/player_back/old_dude_back.2bpp: rgbgfx += --columns
+
+gfx/trainer_card/ash_card.2bpp: rgbgfx += --columns
+gfx/trainer_card/old_misty_card.2bpp: rgbgfx += --columns
+gfx/trainer_card/brock_card.2bpp: rgbgfx += --columns
+gfx/trainer_card/gary_card.2bpp: rgbgfx += --columns
+gfx/trainer_card/pikachu_card.2bpp: rgbgfx += --columns
+
+
+gfx/trainer_card/kanto_leaders.2bpp: tools/gfx += --trim-whitespace
+gfx/trainer_card/johto_leaders.2bpp: tools/gfx += --trim-whitespace
 
 gfx/overworld/chris_fish.2bpp: tools/gfx += --trim-whitespace
 gfx/overworld/kris_fish.2bpp: tools/gfx += --trim-whitespace
 
 gfx/sprites/big_onix.2bpp: tools/gfx += --remove-whitespace --remove-xflip
-
-gfx/battle/dude.2bpp: rgbgfx += --columns
 
 gfx/font/unused_bold_font.1bpp: tools/gfx += --trim-whitespace
 

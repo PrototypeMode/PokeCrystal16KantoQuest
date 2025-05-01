@@ -1,6 +1,6 @@
 ; base data struct members (see data/pokemon/base_stats/*.asm)
 rsreset
-DEF BASE_DEX_NO      rb
+DEF BASE_SPECIES     rb
 DEF BASE_STATS       rb NUM_STATS
 rsset BASE_STATS
 DEF BASE_HP          rb
@@ -9,6 +9,12 @@ DEF BASE_DEF         rb
 DEF BASE_SPD         rb
 DEF BASE_SAT         rb
 DEF BASE_SDF         rb
+
+DEF BASE_EVS         rw
+rsset BASE_EVS
+DEF BASE_HP_ATK_DEF_SPD_EVS  rb
+DEF BASE_SAT_SDF_EVS         rb
+
 DEF BASE_TYPES       rw
 rsset BASE_TYPES
 DEF BASE_TYPE_1      rb
@@ -20,9 +26,9 @@ rsset BASE_ITEMS
 DEF BASE_ITEM_1      rb
 DEF BASE_ITEM_2      rb
 DEF BASE_GENDER      rb
-                     rb_skip
+                     ;rb_skip
 DEF BASE_EGG_STEPS   rb
-                     rb_skip
+                     ;rb_skip
 DEF BASE_PIC_SIZE    rb
 DEF BASE_FRONTPIC    rw
 DEF BASE_BACKPIC     rw
@@ -76,13 +82,25 @@ DEF MON_ITEM               rb
 DEF MON_MOVES              rb NUM_MOVES
 DEF MON_OT_ID              rw
 DEF MON_EXP                rb 3
-DEF MON_STAT_EXP           rw NUM_EXP_STATS
-rsset MON_STAT_EXP
-DEF MON_HP_EXP             rw
-DEF MON_ATK_EXP            rw
-DEF MON_DEF_EXP            rw
-DEF MON_SPD_EXP            rw
-DEF MON_SPC_EXP            rw
+; DEF MON_STAT_EXP           rw NUM_EXP_STATS
+; rsset MON_STAT_EXP
+; DEF MON_HP_EXP             rw
+; DEF MON_ATK_EXP            rw
+; DEF MON_DEF_EXP            rw
+; DEF MON_SPD_EXP            rw
+; DEF MON_SPC_EXP            rw
+
+DEF MON_EVS                rb NUM_STATS
+rsset MON_EVS
+DEF MON_HP_EV              rb
+DEF MON_ATK_EV             rb
+DEF MON_DEF_EV             rb
+DEF MON_SPD_EV             rb
+DEF MON_SAT_EV             rb
+DEF MON_SDF_EV             rb
+                           rb_skip 4
+
+
 DEF MON_DVS                rw
 DEF MON_PP                 rb NUM_MOVES
 DEF MON_HAPPINESS          rb
@@ -139,9 +157,9 @@ DEF NUM_BOXES EQU 14
 
 ; hall of fame
 ; hof_mon: species, id, dvs, level, nicknames
-DEF HOF_MON_LENGTH EQU 1 + 2 + 2 + 1 + (MON_NAME_LENGTH - 1) ; $10
+DEF HOF_MON_LENGTH EQU 2 + 2 + 2 + 1 + (MON_NAME_LENGTH - 1)
 ; hall_of_fame: win count, party, terminator
-DEF HOF_LENGTH EQU 1 + HOF_MON_LENGTH * PARTY_LENGTH + 1 ; $62
+DEF HOF_LENGTH EQU 1 + HOF_MON_LENGTH * PARTY_LENGTH + 2
 DEF NUM_HOF_TEAMS EQU 30
 
 ; evolution types (used in data/pokemon/evos_attacks.asm)
@@ -169,8 +187,8 @@ DEF NUM_HOF_TEAMS EQU 30
 DEF NUM_GRASSMON EQU 7 ; data/wild/*_grass.asm table size
 DEF NUM_WATERMON EQU 3 ; data/wild/*_water.asm table size
 
-DEF GRASS_WILDDATA_LENGTH EQU 2 + 3 + NUM_GRASSMON * 2 * 3
-DEF WATER_WILDDATA_LENGTH EQU 2 + 1 + NUM_WATERMON * 2
+DEF GRASS_WILDDATA_LENGTH EQU 2 + (1 + NUM_GRASSMON * 3) * 3
+DEF WATER_WILDDATA_LENGTH EQU 2 + (1 + NUM_WATERMON * 3) * 1
 DEF FISHGROUP_DATA_LENGTH EQU 1 + 2 * 3
 
 DEF NUM_ROAMMON_MAPS EQU 16 ; RoamMaps table size (see data/wild/roammon_maps.asm)
@@ -228,3 +246,7 @@ DEF HAPPINESS_THRESHOLD_2 EQU 200
 DEF PP_UP_MASK EQU %11000000
 DEF PP_UP_ONE  EQU %01000000
 DEF PP_MASK    EQU %00111111
+
+; significant EV values
+DEF MAX_EV EQU 252
+DEF MAX_TOTAL_EV EQU 510

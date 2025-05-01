@@ -3,7 +3,7 @@
 	RGB 21,21,21, 11,11,11 ; nite
 
 ; group 1 (Olivine)
-	RGB 14,17,31, 07,11,15 ; morn/day
+	RGB 18,17,31, 12,11,15 ; morn/day
 	RGB 09,09,17, 05,07,13 ; nite
 
 ; group 2 (Mahogany)
@@ -43,8 +43,11 @@
 	RGB 12,03,18, 09,03,15 ; nite
 
 ; group 11 (Goldenrod)
-	RGB 25,25,00, 20,17,08 ; morn/day
-	RGB 12,12,00, 10,09,05 ; nite
+	RGB 15,25,25, 02,17,18 ; morn/day
+	RGB 08,11,21, 02,08,16 ; nite
+
+;	RGB 25,25,00, 20,17,08 ; morn/day
+;	RGB 12,12,00, 10,09,05 ; nite
 
 ; group 12 (Vermilion)
 	RGB 27,23,01, 23,11,00 ; morn/day
@@ -105,3 +108,8 @@
 ; group 26 (Cherrygrove)
 	RGB 31,14,28, 31,05,21 ; morn/day
 	RGB 14,07,17, 13,00,08 ; nite
+
+; group 27 (Global Terminal)
+	RGB 15,25,25, 02,17,18 ; morn/day
+	RGB 08,11,21, 02,08,16 ; nite
+

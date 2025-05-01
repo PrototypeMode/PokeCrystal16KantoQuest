@@ -26,35 +26,95 @@ InitGender:
 	call LoadGenderScreenLightBlueTile
 	call WaitBGMap2
 	call SetDefaultBGPAndOBP
-	ld hl, AreYouABoyOrAreYouAGirlText
+	;ld hl, AreYouABoyOrAreYouAGirlText
+	ld hl, ChooseCharacterText
 	call PrintText
 	ld hl, .MenuHeader
 	call LoadMenuHeader
 	call WaitBGMap2
 	call VerticalMenu
 	call CloseWindow
+	; ld a, [wMenuCursorY]
+	; dec a
+	; ld [wPlayerGender], a
+	; ld c, 10
+	; call DelayFrames
+	; ret
+	
+.ChooseCharacter	
 	ld a, [wMenuCursorY]
-	dec a
+	cp 1
+	jr z, .Ash
+	cp 2
+	jr z, .Misty
+	cp 3
+	jr z, .Brock
+	cp 4
+	jr z, .Gary
+	cp 5
+	jr z, .Pikachu
+	
+.Ash
+	xor a
 	ld [wPlayerGender], a
+	ld [wPlayerCostume], a
+	jr .Next
+	
+.Misty
+    ld a, 1
+	ld [wPlayerGender], a
+	ld [wPlayerCostume], a	
+	jr .Next
+	
+.Brock
+    ld a, 0
+	ld [wPlayerGender], a
+	ld a, 2
+	ld [wPlayerCostume], a	
+	jr .Next	
+	
+.Gary
+    ld a, 0
+	ld [wPlayerGender], a
+	ld a, 3
+	ld [wPlayerCostume], a	
+	jr .Next
+	
+.Pikachu
+    xor a
+	ld [wPlayerGender], a
+	ld a, 4
+	ld [wPlayerCostume], a	
+	jr .Next
+	
+.Next	
 	ld c, 10
 	call DelayFrames
 	ret
+	
 
 .MenuHeader:
 	db MENU_BACKUP_TILES ; flags
-	menu_coords 6, 4, 12, 9
+	menu_coords 0, 0, 12, 9
 	dw .MenuData
 	db 1 ; default option
 
 .MenuData:
 	db STATICMENU_CURSOR | STATICMENU_WRAP | STATICMENU_DISABLE_B ; flags
-	db 2 ; items
-	db "Boy@"
-	db "Girl@"
+	db 4 ; items
+	db "Ash@"
+	db "Misty@"
+	db "Brock@"
+	db "Gary@"
+;	db "Pikachu@"
 
-AreYouABoyOrAreYouAGirlText:
-	text_far _AreYouABoyOrAreYouAGirlText
-	text_end
+; AreYouABoyOrAreYouAGirlText:
+	; text_far _AreYouABoyOrAreYouAGirlText
+	; text_end
+	
+ChooseCharacterText:
+	text_far _ChooseCharacterText
+	text_end	
 
 InitGenderScreen:
 	ld a, $10

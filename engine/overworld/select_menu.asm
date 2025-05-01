@@ -4,13 +4,111 @@ SelectMenu::
 	jp UseRegisteredItem
 
 .NotRegistered:
-	call OpenText
-	ld b, BANK(MayRegisterItemText)
-	ld hl, MayRegisterItemText
-	call MapTextbox
-	call WaitButton
-	jp CloseText
 
+    ld a, [wPlayerCostume]
+	inc a
+	ld [wPlayerCostume], a
+    ld a, [wPlayerCostume]
+	cp 0
+	jr z, .AshCostume
+	cp 1
+	jr z, .MistyCostume
+	cp 2
+	jr z, .BrockCostume
+	cp 3
+	jr z, .GaryCostume
+	cp 4
+	jp z, .PikachuCostume
+
+	
+.AshCostume:
+ld a, 0
+ld [wPlayerCostume], a
+ld [wPlayerGender], a
+
+    farcall SpawnPlayer
+;	special SetPlayerPalette	
+	farcall UpdatePlayerSprite
+	ld hl, wAshsName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	ret
+
+	
+.MistyCostume:
+ld a, 1
+ld [wPlayerCostume], a
+ld [wPlayerGender], a
+
+     farcall SpawnPlayer
+;	special SetPlayerPalette	
+  ;  farcall ReloadTilesetAndPalettes
+
+	farcall UpdatePlayerSprite
+	ld hl, wMistysName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	ret	
+	
+.BrockCostume:
+ld a, 2
+ld [wPlayerCostume], a
+xor a
+ld [wPlayerGender], a
+
+
+    farcall SpawnPlayer
+;	special SetPlayerPalette	
+	farcall UpdatePlayerSprite
+	ld hl, wBrocksName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	ret
+	
+.GaryCostume:
+ld a, 3
+ld [wPlayerCostume], a
+xor a
+ld [wPlayerGender], a
+    farcall SpawnPlayer
+;	special SetPlayerPalette	
+	farcall UpdatePlayerSprite
+	ld hl, wGarysName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	ret		
+	
+.PikachuCostume:
+	ld a, 4
+ld [wPlayerCostume], a
+xor a
+ld [wPlayerGender], a
+
+    farcall SpawnPlayer
+;	special SetPlayerPalette	
+	farcall UpdatePlayerSprite
+	
+	ld hl, .PikachuName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	 ret
+	 
+ .PikachuName:
+	 db "PIKACHU@"	
+	ret		
+	; call OpenText
+	; ld b, BANK(MayRegisterItemText)
+	; ld hl, MayRegisterItemText
+	; call MapTextbox
+	; call WaitButton
+	; jp CloseText
+
+	
 MayRegisterItemText:
 	text_far _MayRegisterItemText
 	text_end

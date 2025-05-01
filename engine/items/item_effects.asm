@@ -38,7 +38,7 @@ ItemEffects:
 	dw EvoStoneEffect      ; FIRE_STONE
 	dw EvoStoneEffect      ; THUNDERSTONE
 	dw EvoStoneEffect      ; WATER_STONE
-	dw NoEffect            ; ITEM_19
+	dw PokeBallEffect       ; PREMIER_BALL
 	dw VitaminEffect       ; HP_UP
 	dw VitaminEffect       ; PROTEIN
 	dw VitaminEffect       ; IRON
@@ -58,12 +58,12 @@ ItemEffects:
 	dw SuperRepelEffect    ; SUPER_REPEL
 	dw MaxRepelEffect      ; MAX_REPEL
 	dw DireHitEffect       ; DIRE_HIT
-	dw NoEffect            ; ITEM_2D
+	dw PokeBallEffect      ; GS_BALL (usable)
 	dw RestoreHPEffect     ; FRESH_WATER
 	dw RestoreHPEffect     ; SODA_POP
 	dw RestoreHPEffect     ; LEMONADE
 	dw XItemEffect         ; X_ATTACK
-	dw NoEffect            ; ITEM_32
+	dw NoEffect            ; ; OAKS_PARCEL ; 32
 	dw XItemEffect         ; X_DEFEND
 	dw XItemEffect         ; X_SPEED
 	dw XItemEffect         ; X_SPECIAL
@@ -128,7 +128,7 @@ ItemEffects:
 	dw NoEffect            ; EVERSTONE
 	dw NoEffect            ; SPELL_TAG
 	dw RestoreHPEffect     ; RAGECANDYBAR
-	dw NoEffect            ; GS_BALL
+	dw NoEffect            ; GS_BALL_KEY
 	dw BlueCardEffect      ; BLUE_CARD
 	dw NoEffect            ; MIRACLE_SEED
 	dw NoEffect            ; THICK_CLUB
@@ -148,7 +148,7 @@ ItemEffects:
 	dw NoEffect            ; STAR_PIECE
 	dw BasementKeyEffect   ; BASEMENT_KEY
 	dw NoEffect            ; PASS
-	dw NoEffect            ; ITEM_87
+	dw NoEffect            ; SILPH SCOPE - ITEM_87
 	dw NoEffect            ; ITEM_88
 	dw NoEffect            ; ITEM_89
 	dw NoEffect            ; CHARCOAL
@@ -211,10 +211,18 @@ ItemEffects:
 
 PokeBallEffect:
 ; BUG: The Dude's catching tutorial may crash if his Poké Ball can't be used (see docs/bugs_and_glitches.md)
+	
 	ld a, [wBattleMode]
 	dec a
 	jp nz, UseBallInTrainerBattle
 
+    ld a, [wBattleType]
+	cp BATTLETYPE_GHOST
+	jp z, UseBallInTrainerBattle
+    cp BATTLETYPE_SCOPE
+	jp z, UseBallInTrainerBattle
+
+.ContinuePokeBall
 	ld a, [wPartyCount]
 	cp PARTY_LENGTH
 	jr nz, .room_in_party
@@ -230,9 +238,9 @@ PokeBallEffect:
 ; BUG: Using a Park Ball in non-Contest battles has a corrupt animation (see docs/bugs_and_glitches.md)
 	xor a
 	ld [wWildMon], a
-	ld a, [wCurItem]
-	cp PARK_BALL
-	call nz, ReturnToBattle_UseBall
+
+	call ReturnToBattle_UseBall
+
 
 	ld hl, wOptions
 	res NO_TEXT_SCROLL, [hl]
@@ -241,11 +249,15 @@ PokeBallEffect:
 
 	ld a, [wEnemyMonCatchRate]
 	ld b, a
+	
+
 	ld a, [wBattleType]
 	cp BATTLETYPE_TUTORIAL
 	jp z, .catch_without_fail
 	ld a, [wCurItem]
 	cp MASTER_BALL
+	jp z, .catch_without_fail
+	cp GS_BALL
 	jp z, .catch_without_fail
 	ld a, [wCurItem]
 	ld c, a
@@ -336,12 +348,12 @@ PokeBallEffect:
 	jr nz, .statuscheck
 	ld a, 1
 .statuscheck
-; BUG: BRN/PSN/PAR do not affect catch rate (see docs/bugs_and_glitches.md)
 	ld b, a
 	ld a, [wEnemyMonStatus]
 	and 1 << FRZ | SLP_MASK
 	ld c, 10
 	jr nz, .addstatus
+	ld a, [wEnemyMonStatus]
 	and a
 	ld c, 5
 	jr nz, .addstatus
@@ -385,12 +397,7 @@ PokeBallEffect:
 	ld [wWildMon], a
 	ld c, 20
 	call DelayFrames
-
-	ld a, [wCurItem]
-	cp POKE_BALL + 1 ; Assumes Master/Ultra/Great come before
-	jr c, .not_kurt_ball
-	ld a, POKE_BALL
-.not_kurt_ball
+	ld a, [wCurItemBackup]
 	ld [wBattleAnimParam], a
 
 	ld de, ANIM_THROW_POKE_BALL
@@ -403,6 +410,14 @@ PokeBallEffect:
 	ld [wThrownBallWobbleCount], a
 	ld [wNumHits], a
 	predef PlayBattleAnim
+	
+ 	; xor a
+    ; ld [wCurItemBackup], a
+	
+		;farcall GetBattleMonBackpic
+	; ld a, 1
+    ; ld [hCGBPalUpdate], a
+	; farcall _CGB_BattleColors
 
 	ld a, [wWildMon]
 	and a
@@ -501,13 +516,11 @@ PokeBallEffect:
 	call ClearSprites
 
 	ld a, [wTempSpecies]
-	dec a
 	call CheckCaughtMon
 
 	ld a, c
 	push af
 	ld a, [wTempSpecies]
-	dec a
 	call SetSeenAndCaughtMon
 	pop af
 	and a
@@ -681,8 +694,50 @@ PokeBallEffect:
 .shake_and_break_free
 	call PrintText
 	call ClearSprites
+	ld a, [wBattleType]
+	cp BATTLETYPE_CONTEST
+	jr nz, .ExitThrow1
+	jr z, .ExitThrow2
+	
+	
+.ExitThrow1
 
+	;ld [wBattleAnimParam], a
+	ld de, ANIM_EXIT_THROW
+	ld a, e
+	ld [wFXAnimID], a
+	ld a, d
+	ld [wFXAnimID + 1], a
+	predef PlayBattleAnim
+	
+		xor a
+    ld [wCurItemBackup], a
+	farcall _CGB_BattleColors
+	ld a, 1
+	ld [hCGBPalUpdate], a
+	;call RotateThreePalettesRight
+
+	jr .return_from_capture
+	
+	
+.ExitThrow2
+
+	ld [wBattleAnimParam], a
+	ld de, ANIM_EXIT_THROW
+	ld a, e
+	ld [wFXAnimID], a
+	ld a, d
+	ld [wFXAnimID + 1], a
+
+	predef PlayBattleAnim
+	call RotateThreePalettesRight	
+    ld a, 0
+    ld [wCurItem], a
+	
 .return_from_capture
+	xor a
+    ld [wCurItemBackup], a
+	
 	ld a, [wBattleType]
 	cp BATTLETYPE_TUTORIAL
 	ret z
@@ -750,12 +805,13 @@ HeavyBallMultiplier:
 ; else add 30 to catch rate if weight < 409.6 kg
 ; else add 40 to catch rate
 	ld a, [wEnemyMonSpecies]
-	ld hl, PokedexDataPointerTable
-	dec a
-	ld e, a
-	ld d, 0
+	call GetPokemonIndexFromID
+	dec hl
+	ld d, h
+	ld e, l
+	add hl, hl
 	add hl, de
-	add hl, de
+	ld de, PokedexDataPointerTable
 	add hl, de
 	ld a, BANK(PokedexDataPointerTable)
 	call GetFarByte
@@ -868,36 +924,31 @@ LureBallMultiplier:
 	ret
 
 MoonBallMultiplier:
+; Multiply catch rate by 4 if mon evolves with moon stone
+	push de
 	push bc
 	ld a, [wTempEnemyMonSpecies]
-	dec a
-	ld c, a
-	ld b, 0
+	call GetPokemonIndexFromID
+	ld b, h
+	ld c, l
 	ld hl, EvosAttacksPointers
-	add hl, bc
-	add hl, bc
 	ld a, BANK(EvosAttacksPointers)
-	call GetFarWord
-	pop bc
+	call LoadDoubleIndirectPointer
 
-	push bc
-	ld a, BANK("Evolutions and Attacks")
-	call GetFarByte
-	cp EVOLVE_ITEM
+	ld a, [wCurItem]
+	ld c, a
+	ld a, MOON_STONE
+	ld [wCurItem], a
+	ld d, h
+	ld e, l
+	farcall DetermineEvolutionItemResults
+	ld a, c
+	ld [wCurItem], a
+	ld a, d
+	or e
 	pop bc
-	ret nz
-
-; BUG: Moon Ball does not boost catch rate (see docs/bugs_and_glitches.md)
-	inc hl
-	inc hl
-	inc hl
-
-	push bc
-	ld a, BANK("Evolutions and Attacks")
-	call GetFarByte
-	cp MOON_STONE_RED ; BURN_HEAL
-	pop bc
-	ret nz
+	pop de
+	ret z
 
 	sla b
 	jr c, .max
@@ -947,12 +998,12 @@ LoveBallMultiplier:
 	inc d   ; female
 .got_wild_gender
 
-; BUG: Love Ball boosts catch rate for the wrong gender (see docs/bugs_and_glitches.md)
+
 	ld a, d
 	pop de
 	cp d
 	pop bc
-	ret nz
+	ret z
 
 	sla b
 	jr c, .max
@@ -972,35 +1023,49 @@ LoveBallMultiplier:
 	ret
 
 FastBallMultiplier:
+; multiply catch rate by 4 if the enemy mon is in the FleeMons tables
 	ld a, [wTempEnemyMonSpecies]
-	ld c, a
+	call GetPokemonIndexFromID
+	ld d, h
+	ld e, l
 	ld hl, FleeMons
-	ld d, 3
+	ld c, 3
+	push bc
 
 .loop
 ; BUG: Fast Ball only boosts catch rate for three Pokémon (see docs/bugs_and_glitches.md)
 	ld a, BANK(FleeMons)
 	call GetFarByte
-
+	ld c, a
 	inc hl
-	cp -1
-	jr z, .next
-	cp c
-	jr nz, .next
+	ld a, BANK(FleeMons)
+	call GetFarByte
+	ld b, a
+	and c
+	inc a
+	jr z, .next_list
+	ld a, b
+	cp d
+	jr nz, .loop
+	ld a, c
+	cp e
+	jr nz, .loop
+
+	pop bc
 	sla b
 	jr c, .max
-
 	sla b
 	ret nc
-
 .max
 	ld b, $ff
 	ret
 
-.next
-	dec d
-	jr nz, .loop
-	ret
+.next_list
+	pop bc
+	dec c
+	ret z
+	push bc
+	jr .loop
 
 LevelBallMultiplier:
 ; multiply catch rate by 8 if player mon level / 4 > enemy mon level
@@ -1138,24 +1203,63 @@ VitaminEffect:
 
 	call RareCandy_StatBooster_GetParameters
 
-	call GetStatExpRelativePointer
+	;call GetStatExpRelativePointer
+	call GetEVRelativePointer
 
-	ld a, MON_STAT_EXP
+	;ld a, MON_STAT_EXP
+	ld a, MON_EVS
 	call GetPartyParamLocation
+	
+	ld d, 10
+	push bc
+	push hl
+	ld e, NUM_STATS
+	ld bc, 0
+.count_evs
+	ld a, [hli]
+	add c
+	ld c, a
+	jr nc, .cont
+	inc b
+.cont
+	dec e
+	jr nz, .count_evs
+	ld a, d
+	add c
+	ld c, a
+	adc b
+	sub c 
+	ld b, a
+	ld e, d
+.decrease_evs_gained
+	farcall IsEvsGreaterThan510
+	jr nc, .check_ev_overflow
+	dec e
+	dec bc
+	jr .decrease_evs_gained
+.check_ev_overflow
+	pop hl 
+	pop bc 
+
+	ld a, e
+	and a
+	jr z, NoEffectMessage
 
 	add hl, bc
 	ld a, [hl]
 	cp 100
 	jr nc, NoEffectMessage
 
-	add 10
+	add e
 	ld [hl], a
 	call UpdateStatsAfterItem
 
-	call GetStatExpRelativePointer
+	;call GetStatExpRelativePointer
+	call GetEVRelativePointer
 
 	ld hl, StatStrings
 	add hl, bc
+	add hl, bc ; +
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -1183,7 +1287,7 @@ UpdateStatsAfterItem:
 	call GetPartyParamLocation
 	ld d, h
 	ld e, l
-	ld a, MON_STAT_EXP - 1
+	ld a, MON_EVS - 1
 	call GetPartyParamLocation
 	ld b, TRUE
 	predef_jump CalcMonStats
@@ -1202,17 +1306,23 @@ StatStrings:
 	dw .attack
 	dw .defense
 	dw .speed
-	dw .special
+	dw .sp_atk
+	dw .sp_def
 
 .health  db "HEALTH@"
 .attack  db "ATTACK@"
 .defense db "DEFENSE@"
 .speed   db "SPEED@"
-.special db "SPECIAL@"
+.sp_atk db "SPCL.ATK@"
+.sp_def db "SPCL.DEF@"
 
-GetStatExpRelativePointer:
-	ld a, [wCurItem]
-	ld hl, StatExpItemPointerOffsets
+; GetStatExpRelativePointer:
+	; ld a, [wCurItem]
+	; ld hl, StatExpItemPointerOffsets
+GetEVRelativePointer:
+ 	ld a, [wCurItem]
+    ld hl, EVItemPointerOffsets	
+	
 .next
 	cp [hl]
 	inc hl
@@ -1226,12 +1336,19 @@ GetStatExpRelativePointer:
 	ld b, 0
 	ret
 
-StatExpItemPointerOffsets:
-	db HP_UP,    MON_HP_EXP - MON_STAT_EXP
-	db PROTEIN, MON_ATK_EXP - MON_STAT_EXP
-	db IRON,    MON_DEF_EXP - MON_STAT_EXP
-	db CARBOS,  MON_SPD_EXP - MON_STAT_EXP
-	db CALCIUM, MON_SPC_EXP - MON_STAT_EXP
+; StatExpItemPointerOffsets:
+	; db HP_UP,    MON_HP_EXP - MON_STAT_EXP
+	; db PROTEIN, MON_ATK_EXP - MON_STAT_EXP
+	; db IRON,    MON_DEF_EXP - MON_STAT_EXP
+	; db CARBOS,  MON_SPD_EXP - MON_STAT_EXP
+	; db CALCIUM, MON_SPC_EXP - MON_STAT_EXP
+EVItemPointerOffsets:
+	db HP_UP,    MON_HP_EV - MON_EVS
+	db PROTEIN, MON_ATK_EV - MON_EVS
+	db IRON,    MON_DEF_EV - MON_EVS
+	db CARBOS,  MON_SPD_EV - MON_EVS
+    db CALCIUM, MON_SAT_EV - MON_EVS
+	db ZINC,    MON_SDF_EV - MON_EVS
 
 RareCandy_StatBooster_GetParameters:
 	ld a, [wCurPartySpecies]
@@ -2311,8 +2428,20 @@ RestorePPEffect:
 	jp nz, Not_PP_Up
 
 	ld a, [hl]
-	cp SKETCH
+	push hl
+	call GetMoveIndexFromID
+	ld a, h
+	if HIGH(SKETCH)
+		cp HIGH(SKETCH)
+	else
+		and a
+	endc
+	ld a, l
+	pop hl
+	jr nz, .not_sketch
+	cp LOW(SKETCH)
 	jr z, .CantUsePPUpOnSketch
+.not_sketch
 
 	ld bc, MON_PP - MON_MOVES
 	add hl, bc
@@ -2567,21 +2696,123 @@ UseDisposableItem:
 
 UseBallInTrainerBattle:
 	call ReturnToBattle_UseBall
-	ld de, ANIM_THROW_POKE_BALL
+	ld a, [wBattleType]
+	cp BATTLETYPE_GHOST
+	jr z, .GhostBlocked
+	cp BATTLETYPE_SCOPE
+	jr z, .GhostBlocked
+	
+.TrainerBlocked	
+
+	ld de, ANIM_BLOCKED_POKE_BALL
 	ld a, e
 	ld [wFXAnimID], a
 	ld a, d
 	ld [wFXAnimID + 1], a
-	xor a
+	ld a, [wCurItemBackup]
 	ld [wBattleAnimParam], a
+	 xor a
 	ldh [hBattleTurn], a
 	ld [wNumHits], a
 	predef PlayBattleAnim
+	
+	 ; ld a, 0 ; Set Turn to 1 to play effect on opponent
+    ; ld [hBattleTurn], a ; Set Turn to 1 to play effect on opponent
+	
+	ld de, ANIM_SHAKE
+	ld a, e
+	ld [wFXAnimID], a
+	ld a, d
+	ld [wFXAnimID + 1], a
+	predef PlayBattleAnim
+
+
 	ld hl, BallBlockedText
 	call PrintText
 	ld hl, BallDontBeAThiefText
+    jr .FinishPrint
+
+.GhostBlocked
+
+	ld de, ANIM_BLOCKED_POKE_BALL
+	ld a, e
+	ld [wFXAnimID], a
+	ld a, d
+	ld [wFXAnimID + 1], a
+	ld a, [wCurItemBackup]
+	ld [wBattleAnimParam], a
+	 xor a
+	ldh [hBattleTurn], a
+	ld [wNumHits], a
+	predef PlayBattleAnim
+	
+
+	ld a, 1
+	ldh [hBattleTurn], a
+	
+		ld de, $68
+	ld a, e
+	ld [wFXAnimID], a
+	ld a, d
+	ld [wFXAnimID + 1], a
+	predef PlayBattleAnim
+	
+
+
+    ; ld a, 1 ; Set Turn to 1 to play effect on opponent
+    ; ld [hBattleTurn], a ; Set Turn to 1 to play effect on opponent
+	
+	; ld de, $64 ; Double Team Effect
+	; ld a, e
+	; ld [wFXAnimID], a
+	; ld a, d
+	; ld [wFXAnimID + 1], a
+	; predef PlayBattleAnim
+	
+	ld hl, BallGhostBlockedText
 	call PrintText
-	jr UseDisposableItem
+	ld hl, BallGhostDontBeAThiefText
+
+.FinishPrint
+	call PrintText
+	
+.ExitThrow1
+	xor a
+	ld [wCurItemBackup], a ; Clear the Item Backup correctly restores the HUD after throwing
+	ld [hBattleTurn], a
+;	ld [wBattleAnimParam], a
+	ld de, ANIM_EXIT_THROW
+	ld a, e
+	ld [wFXAnimID], a
+	ld a, d
+	ld [wFXAnimID + 1], a
+	predef PlayBattleAnim
+
+	farcall _CGB_BattleColors
+	ld a, 1
+	ld [hCGBPalUpdate], a
+	
+;	xor a ; This Fixes the Pokeball Blocked Animation
+;	ld [wBattleAnimParam], a ; This Fixes the Pokeball Blocked Animation
+
+    ld a, [wBattleType]
+	cp BATTLETYPE_GHOST
+	jr z, .GhostGetOut
+	jr nz, .UseDisposableItem
+	
+
+.GhostGetOut
+
+	ld hl, BallGhostGetOutText
+	call PrintText
+	
+
+.UseDisposableItem
+	jp UseDisposableItem
+	
+	ret
+	
+	
 
 WontHaveAnyEffect_NotUsedMessage:
 	ld hl, ItemWontHaveEffectText
@@ -2662,6 +2893,18 @@ BallBlockedText:
 BallDontBeAThiefText:
 	text_far _BallDontBeAThiefText
 	text_end
+	
+BallGhostBlockedText:
+	text_far _BallGhostBlockedText
+	text_end
+
+BallGhostDontBeAThiefText:
+	text_far _BallGhostDontBeAThiefText
+	text_end
+
+BallGhostGetOutText:
+	text_far _BallGhostGetOutText
+	text_end	
 
 NoCyclingText:
 	text_far _NoCyclingText
@@ -2842,14 +3085,11 @@ GetMaxPPOfMove:
 
 .gotdatmove
 	ld a, [hl]
-	dec a
 
 	push hl
-	ld hl, Moves + MOVE_PP
-	ld bc, MOVE_LENGTH
-	call AddNTimes
-	ld a, BANK(Moves)
-	call GetFarByte
+	ld l, a
+	ld a, MOVE_PP
+	call GetMoveAttribute
 	ld b, a
 	ld de, wStringBuffer1
 	ld [de], a

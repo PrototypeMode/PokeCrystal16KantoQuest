@@ -1,12 +1,30 @@
 SECTION "Sprites 1", ROMX
 
-ChrisSpriteGFX::               INCBIN "gfx/sprites/chris.2bpp"
-ChrisBikeSpriteGFX::           INCBIN "gfx/sprites/chris_bike.2bpp"
+AshSpriteGFX::               INCBIN "gfx/sprites/ash.2bpp"
+AshBikeSpriteGFX::           INCBIN "gfx/sprites/ash_bike.2bpp"
+AshRunSpriteGFX::           INCBIN "gfx/sprites/ash_run.2bpp"
+
+OldMistySpriteGFX::               INCBIN "gfx/sprites/old_misty.2bpp"
+OldMistyBikeSpriteGFX::           INCBIN "gfx/sprites/old_misty_bike.2bpp"
+OldMistyRunSpriteGFX::           INCBIN "gfx/sprites/old_misty_run.2bpp"
+
+BrockSpriteGFX::               INCBIN "gfx/sprites/brock.2bpp"
+BrockBikeSpriteGFX::           INCBIN "gfx/sprites/brock_bike.2bpp"
+BrockRunSpriteGFX::           INCBIN "gfx/sprites/brock_run.2bpp"
+
+GarySpriteGFX::               INCBIN "gfx/sprites/gary.2bpp"
+GaryBikeSpriteGFX::           INCBIN "gfx/sprites/gary_bike.2bpp"
+GaryRunSpriteGFX::           INCBIN "gfx/sprites/gary_run.2bpp"
+
+WalkingPikachuSpriteGFX::    INCBIN "gfx/sprites/pikachu_walk.2bpp"
+RunningPikachuSpriteGFX::    INCBIN "gfx/sprites/pikachu_run.2bpp"
+SurfingPikachuSpriteGFX::      INCBIN "gfx/sprites/surfing_pikachu.2bpp"
+
 GameboyKidSpriteGFX::          INCBIN "gfx/sprites/gameboy_kid.2bpp"
 RivalSpriteGFX::               INCBIN "gfx/sprites/rival.2bpp"
 OakSpriteGFX::                 INCBIN "gfx/sprites/oak.2bpp"
 RedSpriteGFX::                 INCBIN "gfx/sprites/red.2bpp"
-BlueSpriteGFX::                INCBIN "gfx/sprites/blue.2bpp"
+
 BillSpriteGFX::                INCBIN "gfx/sprites/bill.2bpp"
 ElderSpriteGFX::               INCBIN "gfx/sprites/elder.2bpp"
 JanineSpriteGFX::              INCBIN "gfx/sprites/janine.2bpp"
@@ -25,7 +43,9 @@ ChuckSpriteGFX::               INCBIN "gfx/sprites/chuck.2bpp"
 JasmineSpriteGFX::             INCBIN "gfx/sprites/jasmine.2bpp"
 PryceSpriteGFX::               INCBIN "gfx/sprites/pryce.2bpp"
 ClairSpriteGFX::               INCBIN "gfx/sprites/clair.2bpp"
-BrockSpriteGFX::               INCBIN "gfx/sprites/brock.2bpp"
+
+
+SECTION "Sprites 2", ROMX
 KarenSpriteGFX::               INCBIN "gfx/sprites/karen.2bpp"
 BrunoSpriteGFX::               INCBIN "gfx/sprites/bruno.2bpp"
 MistySpriteGFX::               INCBIN "gfx/sprites/misty.2bpp"
@@ -46,7 +66,7 @@ SuperNerdSpriteGFX::           INCBIN "gfx/sprites/super_nerd.2bpp"
 RockerSpriteGFX::              INCBIN "gfx/sprites/rocker.2bpp"
 
 
-SECTION "Sprites 2", ROMX
+SECTION "Sprites 3", ROMX
 
 PokefanMSpriteGFX::            INCBIN "gfx/sprites/pokefan_m.2bpp"
 PokefanFSpriteGFX::            INCBIN "gfx/sprites/pokefan_f.2bpp"
@@ -55,7 +75,7 @@ GrannySpriteGFX::              INCBIN "gfx/sprites/granny.2bpp"
 SwimmerGuySpriteGFX::          INCBIN "gfx/sprites/swimmer_guy.2bpp"
 SwimmerGirlSpriteGFX::         INCBIN "gfx/sprites/swimmer_girl.2bpp"
 BigSnorlaxSpriteGFX::          INCBIN "gfx/sprites/big_snorlax.2bpp"
-SurfingPikachuSpriteGFX::      INCBIN "gfx/sprites/surfing_pikachu.2bpp"
+
 RocketSpriteGFX::              INCBIN "gfx/sprites/rocket.2bpp"
 RocketGirlSpriteGFX::          INCBIN "gfx/sprites/rocket_girl.2bpp"
 NurseSpriteGFX::               INCBIN "gfx/sprites/nurse.2bpp"
@@ -90,8 +110,8 @@ SurfSpriteGFX::                INCBIN "gfx/sprites/surf.2bpp"
 PokeBallSpriteGFX::            INCBIN "gfx/sprites/poke_ball.2bpp"
 PokedexSpriteGFX::             INCBIN "gfx/sprites/pokedex.2bpp"
 PaperSpriteGFX::               INCBIN "gfx/sprites/paper.2bpp"
-VirtualBoySpriteGFX::          INCBIN "gfx/sprites/virtual_boy.2bpp"
-OldLinkReceptionistSpriteGFX:: INCBIN "gfx/sprites/old_link_receptionist.2bpp"
+GamecubeSpriteGFX::          INCBIN "gfx/sprites/gamecube.2bpp"
+
 RockSpriteGFX::                INCBIN "gfx/sprites/rock.2bpp"
 BoulderSpriteGFX::             INCBIN "gfx/sprites/boulder.2bpp"
 SnesSpriteGFX::                INCBIN "gfx/sprites/snes.2bpp"
@@ -99,10 +119,63 @@ FamicomSpriteGFX::             INCBIN "gfx/sprites/famicom.2bpp"
 FruitTreeSpriteGFX::           INCBIN "gfx/sprites/fruit_tree.2bpp"
 GoldTrophySpriteGFX::          INCBIN "gfx/sprites/gold_trophy.2bpp"
 SilverTrophySpriteGFX::        INCBIN "gfx/sprites/silver_trophy.2bpp"
-KrisSpriteGFX::                INCBIN "gfx/sprites/kris.2bpp"
-KrisBikeSpriteGFX::            INCBIN "gfx/sprites/kris_bike.2bpp"
-KurtOutsideSpriteGFX::         INCBIN "gfx/sprites/kurt_outside.2bpp"
+
+
 SuicuneSpriteGFX::             INCBIN "gfx/sprites/suicune.2bpp"
 EnteiSpriteGFX::               INCBIN "gfx/sprites/entei.2bpp"
 RaikouSpriteGFX::              INCBIN "gfx/sprites/raikou.2bpp"
-StandingYoungsterSpriteGFX::   INCBIN "gfx/sprites/standing_youngster.2bpp"
+
+
+
+SECTION "Sprites 4", ROMX
+
+BulbasaurSpriteGFX::             INCBIN "gfx/sprites/bulbasaur.2bpp"
+CharmanderSpriteGFX::             INCBIN "gfx/sprites/charmander.2bpp"
+PikachuSpriteGFX::             INCBIN "gfx/sprites/pikachu.2bpp"
+SurfPikachuSpriteGFX::             INCBIN "gfx/sprites/surfpikachu.2bpp"
+ClefairySpriteGFX::             INCBIN "gfx/sprites/clefairy.2bpp"
+JigglypuffSpriteGFX::             INCBIN "gfx/sprites/jigglypuff.2bpp"
+
+SquirtleSpriteGFX::             INCBIN "gfx/sprites/squirtle.2bpp"
+PoliwagSpriteGFX::             INCBIN "gfx/sprites/poliwag.2bpp"
+DiglettSpriteGFX::             INCBIN "gfx/sprites/diglett.2bpp"
+StarmieSpriteGFX::             INCBIN "gfx/sprites/starmie.2bpp"
+MagikarpSpriteGFX::             INCBIN "gfx/sprites/magikarp.2bpp"
+OddishSpriteGFX::             INCBIN "gfx/sprites/oddish.2bpp"
+
+GengarSpriteGFX::             INCBIN "gfx/sprites/gengar.2bpp"
+ShellderSpriteGFX::             INCBIN "gfx/sprites/shellder.2bpp"
+GrimerSpriteGFX::             INCBIN "gfx/sprites/grimer.2bpp"
+VoltorbSpriteGFX::             INCBIN "gfx/sprites/voltorb.2bpp"
+WeedleSpriteGFX::             INCBIN "gfx/sprites/weedle.2bpp"
+UnownSpriteGFX::             INCBIN "gfx/sprites/unown.2bpp"
+
+GeodudeSpriteGFX::             INCBIN "gfx/sprites/geodude.2bpp"
+MachopSpriteGFX::             INCBIN "gfx/sprites/machop.2bpp"
+TentacoolSpriteGFX::             INCBIN "gfx/sprites/tentacool.2bpp"
+
+GrowlitheSpriteGFX::          INCBIN "gfx/sprites/growlithe.2bpp"
+ZubatSpriteGFX::              INCBIN "gfx/sprites/zubat.2bpp"
+TogepiSpriteGFX::             INCBIN "gfx/sprites/togepi.2bpp"
+ButterfreeSpriteGFX::          INCBIN "gfx/sprites/butterfree.2bpp"
+JynxSpriteGFX::              INCBIN "gfx/sprites/jynx.2bpp"
+EkansSpriteGFX::             INCBIN "gfx/sprites/ekans.2bpp"
+ParasSpriteGFX::              INCBIN "gfx/sprites/paras.2bpp"
+TaurosSpriteGFX::             INCBIN "gfx/sprites/tauros.2bpp"
+MiltankSpriteGFX::             INCBIN "gfx/sprites/miltank.2bpp"
+LaprasSpriteGFX::              INCBIN "gfx/sprites/lapras.2bpp"
+RhydonSpriteGFX::             INCBIN "gfx/sprites/rhydon.2bpp"
+
+FarfetchdSpriteGFX::              INCBIN "gfx/sprites/farfetchd.2bpp"
+SnorlaxSpriteGFX::             INCBIN "gfx/sprites/snorlax.2bpp"
+GyaradosSpriteGFX::              INCBIN "gfx/sprites/gyarados.2bpp"
+ArticunoSpriteGFX::              INCBIN "gfx/sprites/articuno.2bpp"
+ZapdosSpriteGFX::             INCBIN "gfx/sprites/zapdos.2bpp"
+MoltresSpriteGFX::             INCBIN "gfx/sprites/moltres.2bpp"
+LugiaSpriteGFX::             INCBIN "gfx/sprites/lugia.2bpp"
+Ho_OhSpriteGFX::             INCBIN "gfx/sprites/ho_oh.2bpp"
+
+
+OldAmberSpriteGFX::    INCBIN "gfx/sprites/old_amber.2bpp"
+GamblerSpriteGFX::    INCBIN "gfx/sprites/gambler.2bpp"
+GamblerAsleepSpriteGFX::    INCBIN "gfx/sprites/gambler_asleep.2bpp"

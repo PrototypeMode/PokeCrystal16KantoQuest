@@ -366,7 +366,7 @@ PokemaniacRonSeenText:
 	text "Would you get"
 	line "this?"
 
-	para "Some <RIVAL> guy"
+	para "Some <GARY> guy"
 	line "made fun of my"
 	cont "#MON!"
 

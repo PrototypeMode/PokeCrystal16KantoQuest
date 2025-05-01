@@ -4,7 +4,8 @@
 	const PLAYERSHOUSE1F_MOM3
 	const PLAYERSHOUSE1F_MOM4
 	const PLAYERSHOUSE1F_POKEFAN_F
-
+	const PLAYERSHOUSE1F_TRADER
+	const PLAYERSHOUSE1F_GYARADOS
 PlayersHouse1F_MapScripts:
 	def_scene_scripts
 	scene_script PlayersHouse1FNoop1Scene, SCENE_PLAYERSHOUSE1F_MEET_MOM
@@ -17,6 +18,14 @@ PlayersHouse1FNoop1Scene:
 
 PlayersHouse1FNoop2Scene:
 	end
+
+Trader: ; not from Crystal
+ faceplayer
+ opentext
+ special TradebackNPC
+ waitbutton
+ closetext
+ end
 
 MeetMomLeftScript:
 	setevent EVENT_TEMPORARY_UNTIL_MAP_RELOAD_1
@@ -383,6 +392,42 @@ PlayersHouse1FTVText:
 	line "rolling too!"
 	done
 
+RedGyarados1:
+	opentext
+	writetext LakeOfRageGyaradosCryText1
+	pause 15
+	cry GYARADOS
+	closetext
+	loadwildmon GYARADOS, 30
+	loadvar VAR_BATTLETYPE, BATTLETYPE_FORCESHINY
+	startbattle
+	ifequal LOSE, .NotBeaten1
+	disappear PLAYERSHOUSE1F_GYARADOS
+.NotBeaten1:
+	reloadmapafterbattle
+	opentext
+	giveitem RED_SCALE
+	waitsfx
+	writetext PlayersHouse1FGotRedScaleText
+	playsound SFX_ITEM
+	waitsfx
+	itemnotify
+	closetext
+	setscene 0 ; Lake of Rage does not have a scene variable
+;	appear LAKEOFRAGE_LANCE
+	end
+	
+	
+LakeOfRageGyaradosCryText1:
+	text "GYARADOS: Gyashaa!"
+	done
+
+
+PlayersHouse1FGotRedScaleText:
+	text "<PLAYER> obtained a"
+	line "RED SCALE."
+	done
+
 PlayersHouse1F_MapEvents:
 	db 0, 0 ; filler
 
@@ -399,7 +444,7 @@ PlayersHouse1F_MapEvents:
 	bg_event  0,  1, BGEVENT_READ, PlayersHouse1FStoveScript
 	bg_event  1,  1, BGEVENT_READ, PlayersHouse1FSinkScript
 	bg_event  2,  1, BGEVENT_READ, PlayersHouse1FFridgeScript
-	bg_event  4,  1, BGEVENT_READ, PlayersHouse1FTVScript
+	bg_event  6,  0, BGEVENT_READ, PlayersHouse1FTVScript
 
 	def_object_events
 	object_event  7,  4, SPRITE_MOM, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, MomScript, EVENT_PLAYERS_HOUSE_MOM_1
@@ -407,3 +452,5 @@ PlayersHouse1F_MapEvents:
 	object_event  7,  4, SPRITE_MOM, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, DAY, 0, OBJECTTYPE_SCRIPT, 0, MomScript, EVENT_PLAYERS_HOUSE_MOM_2
 	object_event  0,  2, SPRITE_MOM, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, NITE, 0, OBJECTTYPE_SCRIPT, 0, MomScript, EVENT_PLAYERS_HOUSE_MOM_2
 	object_event  4,  4, SPRITE_POKEFAN_F, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, NeighborScript, EVENT_PLAYERS_HOUSE_1F_NEIGHBOR
+    object_event  2,  2, SPRITE_RED, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, Trader, -1
+	object_event 1, 2, SPRITE_GYARADOS, SPRITEMOVEDATA_POKEMON, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, RedGyarados1, EVENT_LAKE_OF_RAGE_RED_GYARADOS

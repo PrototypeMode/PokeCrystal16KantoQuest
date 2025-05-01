@@ -16,8 +16,7 @@ Special::
 INCLUDE "data/events/special_pointers.asm"
 
 UnusedDummySpecial:
-	ret
-
+    ret
 SetPlayerPalette:
 	ld a, [wScriptVar]
 	ld d, a
@@ -26,11 +25,9 @@ SetPlayerPalette:
 
 GameCornerPrizeMonCheckDex:
 	ld a, [wScriptVar]
-	dec a
 	call CheckCaughtMon
 	ret nz
 	ld a, [wScriptVar]
-	dec a
 	call SetSeenAndCaughtMon
 	call FadeToMenu
 	ld a, [wScriptVar]
@@ -39,9 +36,19 @@ GameCornerPrizeMonCheckDex:
 	call ExitAllMenus
 	ret
 
+ShowPokedexEntry:
+    ld a, [wScriptVar]
+    dec a
+    call SetSeenMon
+    call FadeToMenu
+    ld a, [wScriptVar]
+    ld [wNamedObjectIndex], a
+    farcall NewPokedexEntry
+    call ExitAllMenus
+    ret	
+
 UnusedSetSeenMon:
 	ld a, [wScriptVar]
-	dec a
 	call SetSeenMon
 	ret
 
@@ -83,17 +90,65 @@ FoundNone:
 	ld [wScriptVar], a
 	ret
 
-NameRival:
-	ld b, NAME_RIVAL
-	ld de, wRivalName
+NameAsh:
+	ld b, NAME_ASH
+	ld de, wAshsName
 	farcall _NamingScreen
-	ld hl, wRivalName
-	ld de, .DefaultName
+	ld hl, wAshsName
+	ld de, .DefaultAshName
 	call InitName
 	ret
 
-.DefaultName:
-	db "SILVER@"
+.DefaultAshName:
+	db "ASH@"
+
+NameMisty:
+	ld b, NAME_MISTY
+	ld de, wMistysName
+	farcall _NamingScreen
+	ld hl, wMistysName
+	ld de, .DefaultMistyName
+	call InitName
+	ret
+
+.DefaultMistyName:
+	db "MISTY@"
+
+NameBrock:
+	ld b, NAME_BROCK
+	ld de, wBrocksName
+	farcall _NamingScreen
+	ld hl, wBrocksName
+	ld de, .DefaultBrockName
+	call InitName
+	ret
+
+.DefaultBrockName:
+	db "BROCK@"
+	
+NameGary:
+	ld b, NAME_GARY
+	ld de, wGarysName
+	farcall _NamingScreen
+	ld hl, wGarysName
+	ld de, .DefaultGaryName
+	call InitName
+	ret
+
+.DefaultGaryName:
+	db "GARY@"	
+
+; NameRival:
+	; ld b, NAME_RIVAL
+	; ld de, wGarysName
+	; farcall _NamingScreen
+	; ld hl, wGarysName
+	; ld de, .DefaultName
+	; call InitName
+	; ret
+
+; .DefaultName:
+	; db "SILVER@"
 
 NameRater:
 	farcall _NameRater
@@ -423,3 +478,31 @@ TrainerHouse:
 	ld a, [sMysteryGiftTrainerHouseFlag]
 	ld [wScriptVar], a
 	jp CloseSRAM
+
+TradebackNPC:
+	farcall TradebackGuy
+	ret
+	 
+DeleteParty:
+	ld hl, wPartyCount
+	xor a
+	ld [hli], a
+	dec a
+	ld [hl], a
+	inc a
+	ret
+	
+
+DeleteDex:
+	ld hl, wPokedexSeen
+	ld bc, wEndPokedexSeen - wPokedexSeen
+	xor a
+	call ByteFill
+	
+	ld hl, wPokedexCaught
+	ld bc, wEndPokedexCaught - wPokedexCaught
+	xor a
+	call ByteFill	
+	ret
+	
+

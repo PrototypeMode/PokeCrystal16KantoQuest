@@ -1,11 +1,24 @@
 SECTION "Trainer Backpics", ROMX
 
 ChrisBackpic::
-INCBIN "gfx/player/chris_back.2bpp.lz"
+INCBIN "gfx/player/player_back/ash_back.2bpp.lz"
 DudeBackpic::
-INCBIN "gfx/battle/dude.2bpp.lz"
-
-
+INCBIN "gfx/player/player_back/dude_back.2bpp.lz"
+OldDudeBackpic::
+INCBIN "gfx/player/player_back/old_dude_back.2bpp.lz"
+OakBackpic::
+INCBIN "gfx/player/player_back/prof_oak_back.2bpp.lz"
+MistyBackpic::
+INCBIN "gfx/player/player_back/old_misty_back.2bpp"	
+BrockBackpic::
+INCBIN "gfx/player/player_back/brock_back.2bpp"
+	
+GaryBackpic::
+INCBIN "gfx/player/player_back/gary_back.2bpp"	
+	
+PikachuBackpic::
+INCBIN "gfx/player/player_back/pikachu_back.2bpp"
+	
 SECTION "Shrink Pics", ROMX
 
 Shrink1Pic::

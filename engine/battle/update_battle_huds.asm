@@ -1,4 +1,5 @@
 _UpdateBattleHUDs:
+    farcall _CGB_BattleColors
 	farcall DrawPlayerHUD
 	ld hl, wPlayerHPPal
 	call SetHPPal

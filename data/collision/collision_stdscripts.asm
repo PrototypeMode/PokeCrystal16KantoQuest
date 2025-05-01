@@ -12,7 +12,7 @@ TileCollisionStdScripts:
 	stdcoll COLL_RADIO,          Radio1Script
 	stdcoll COLL_TOWN_MAP,       TownMapScript
 	stdcoll COLL_MART_SHELF,     MerchandiseShelfScript
-	stdcoll COLL_TV,             TVScript
+	stdcoll COLL_TV,             CharacterCycleScript
 	stdcoll COLL_WINDOW,         WindowScript
 	stdcoll COLL_INCENSE_BURNER, IncenseBurnerScript
 	db -1 ; end

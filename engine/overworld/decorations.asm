@@ -1,8 +1,63 @@
-InitDecorations:
-	ld a, DECO_FEATHERY_BED
+InitDecorations1:
+
+	ld a, DECO_PIKACHU_BED
 	ld [wDecoBed], a
-	ld a, DECO_TOWN_MAP
-	ld [wDecoPoster], a
+	; ld a, [wDecoPoster]
+	; ld [wDecoPoster], a
+	; ld a, DECO_PIKACHU_DOLL
+	; ld [wDecoLeftOrnament], a
+	; ld a, [wDecoRightOrnament]
+	; ld [wDecoRightOrnament], a
+	; ld a, [wDecoBigDoll]
+	; ld [wDecoBigDoll], a
+    ret
+
+; InitDecorations2:
+
+	; ld a, DECO_GREEN_BED
+	; ld [wDecoBed], a
+	; ld a, [wDecoPoster]
+	; ld [wDecoPoster], a
+	; ld a, DECO_SQUIRTLE_DOLL
+	; ld [wDecoLeftOrnament], a
+	; ld a, [wDecoRightOrnament]
+	; ld [wDecoRightOrnament], a
+	; ld a, [wDecoBigDoll]
+	; ld [wDecoBigDoll], a
+    ; ret
+	
+    ; ld a, [wPlayerCostume]
+	; cp 0
+    ; jr z, .Ash
+	; cp 1
+    ; jr z, .Gary
+	; jr nz, .Gary
+	
+; .Ash
+	; ld a, DECO_PIKACHU_BED
+	; ld [wDecoBed], a
+	; ld a, DECO_PIKACHU_POSTER
+	; ld [wDecoPoster], a
+	; ld a, DECO_PIKACHU_DOLL
+	; ld [wDecoLeftOrnament], a
+	; ld a, DECO_SURF_PIKACHU_DOLL
+	; ld [wDecoRightOrnament], a
+	; ld a, DECO_BIG_LAPRAS_DOLL
+	; ld [wDecoBigDoll], a
+	; ret
+	
+; .Gary
+	; ld a, DECO_POLKADOT_BED
+	; ld [wDecoBed], a
+	; ld a, DECO_CLEFAIRY_POSTER
+	; ld [wDecoPoster], a
+	; ld a, DECO_CLEFAIRY_DOLL
+	; ld [wDecoLeftOrnament], a
+	; ld a, DECO_FARFETCHD_DOLL
+	; ld [wDecoRightOrnament], a
+	; ld a, DECO_BIG_SNORLAX_DOLL
+	; ld [wDecoBigDoll], a
+	; ret
 	ret
 
 _PlayerDecorationMenu:
@@ -49,24 +104,32 @@ _PlayerDecorationMenu:
 	dw .category_pointers
 
 .category_pointers:
-	table_width 2 + 2
+	table_width 2 + 2, _PlayerDecorationMenu.category_pointers
 	dw DecoBedMenu,      .bed
 	dw DecoCarpetMenu,   .carpet
+	dw DecoWallpaperMenu,  .wallpaper
 	dw DecoPlantMenu,    .plant
 	dw DecoPosterMenu,   .poster
 	dw DecoConsoleMenu,  .game
 	dw DecoOrnamentMenu, .ornament
 	dw DecoBigDollMenu,  .big_doll
+	; dw DecoSeasonDirtMenu,      .season_dirt
+	; dw DecoSeasonGrassMenu,      .season_grass
 	dw DecoExitMenu,     .exit
+	
+	
 	assert_table_length NUM_DECO_CATEGORIES + 1
 
 .bed:      db "BED@"
 .carpet:   db "CARPET@"
+.wallpaper: db "WALLPAPER@"
 .plant:    db "PLANT@"
 .poster:   db "POSTER@"
 .game:     db "GAME CONSOLE@"
 .ornament: db "ORNAMENT@"
 .big_doll: db "BIG DOLL@"
+; .season_dirt: db "DIRT@"
+; .season_grass: db "GRASS@"
 .exit:     db "EXIT@"
 
 .FindCategoriesWithOwnedDecos:
@@ -74,7 +137,7 @@ _PlayerDecorationMenu:
 	ld [wWhichIndexSet], a
 	call .ClearStringBuffer2
 	call .FindOwnedDecos
-	ld a, 7
+	ld a, 8
 	call .AppendToStringBuffer2
 	ld hl, wStringBuffer2
 	ld de, wDecoNameBuffer
@@ -124,14 +187,17 @@ _PlayerDecorationMenu:
 	ret
 
 .owned_pointers:
-	table_width 3
-	dwb FindOwnedBeds,      0 ; bed
-	dwb FindOwnedCarpets,   1 ; carpet
-	dwb FindOwnedPlants,    2 ; plant
-	dwb FindOwnedPosters,   3 ; poster
-	dwb FindOwnedConsoles,  4 ; game console
-	dwb FindOwnedOrnaments, 5 ; ornament
-	dwb FindOwnedBigDolls,  6 ; big doll
+	table_width 3, _PlayerDecorationMenu.owned_pointers
+	dwb FindOwnedBeds,       0 ; bed
+	dwb FindOwnedCarpets,    1 ; carpet
+	dwb FindOwnedWallpapers, 2 ; wallpaper
+	dwb FindOwnedPlants,     3 ; plant
+	dwb FindOwnedPosters,    4 ; poster
+	dwb FindOwnedConsoles,   5 ; game console
+	dwb FindOwnedOrnaments,  6 ; ornament
+	dwb FindOwnedBigDolls,   7 ; big doll
+	; dwb FindOwnedSeasonDirts,    8 ; season dirt
+	; dwb FindOwnedSeasonGrasses,   9 ; season grass
 	assert_table_length NUM_DECO_CATEGORIES
 	dw 0 ; end
 
@@ -209,6 +275,7 @@ FindOwnedBeds:
 	db DECO_PINK_BED ; 3
 	db DECO_POLKADOT_BED ; 4
 	db DECO_PIKACHU_BED ; 5
+	db DECO_GREEN_BED ; 5
 	db -1
 
 DecoCarpetMenu:
@@ -228,6 +295,25 @@ FindOwnedCarpets:
 	db DECO_YELLOW_CARPET ; 9
 	db DECO_GREEN_CARPET ; a
 	db -1
+
+DecoWallpaperMenu:
+	call FindOwnedWallpapers
+	call PopulateDecoCategoryMenu
+	xor a
+	ret
+
+FindOwnedWallpapers:
+	ld hl, .wallpapers
+	ld c, WALLPAPERS
+	jp FindOwnedDecosInCategory
+
+.wallpapers:
+	db DECO_RED_WALLPAPER ; 7
+	db DECO_BLUE_WALLPAPER ; 8
+	db DECO_YELLOW_WALLPAPER ; 9
+	db DECO_GREEN_WALLPAPER ; a
+	db -1
+	
 
 DecoPlantMenu:
 	call FindOwnedPlants
@@ -279,7 +365,7 @@ FindOwnedConsoles:
 	db DECO_FAMICOM ; 15
 	db DECO_SNES ; 16
 	db DECO_N64 ; 17
-	db DECO_VIRTUAL_BOY ; 18
+	db DECO_GAMECUBE ; 18
 	db -1
 
 DecoOrnamentMenu:
@@ -294,16 +380,17 @@ FindOwnedOrnaments:
 	jp FindOwnedDecosInCategory
 
 .ornaments:
+
 	db DECO_PIKACHU_DOLL ; 1e
 	db DECO_SURF_PIKACHU_DOLL ; 1f
 	db DECO_CLEFAIRY_DOLL ; 20
 	db DECO_JIGGLYPUFF_DOLL ; 21
-	db DECO_BULBASAUR_DOLL ; 22
-	db DECO_CHARMANDER_DOLL ; 23
-	db DECO_SQUIRTLE_DOLL ; 24
+	 db DECO_BULBASAUR_DOLL ; 22
+	 db DECO_CHARMANDER_DOLL ; 23
+	 db DECO_SQUIRTLE_DOLL ; 24
 	db DECO_POLIWAG_DOLL ; 25
 	db DECO_DIGLETT_DOLL ; 26
-	db DECO_STARYU_DOLL ; 27
+	db DECO_STARMIE_DOLL ; 27
 	db DECO_MAGIKARP_DOLL ; 28
 	db DECO_ODDISH_DOLL ; 29
 	db DECO_GENGAR_DOLL ; 2a
@@ -315,8 +402,31 @@ FindOwnedOrnaments:
 	db DECO_GEODUDE_DOLL ; 30
 	db DECO_MACHOP_DOLL ; 31
 	db DECO_TENTACOOL_DOLL ; 32
-	db DECO_GOLD_TROPHY_DOLL ; 33
-	db DECO_SILVER_TROPHY_DOLL ; 34
+	
+	; db DECO_GROWLITHE_DOLL ; 29
+	; db DECO_ZUBAT_DOLL ; 2a
+	; db DECO_TOGEPI_DOLL ; 2b
+	; db DECO_BUTTERFREE_DOLL ; 2c
+	; db DECO_JYNX_DOLL ; 2d
+	; db DECO_EKANS_DOLL ; 2e
+	; db DECO_PARAS_DOLL ; 2f
+	; db DECO_TAUROS_DOLL ; 30
+	; db DECO_LAPRAS_DOLL ; 31
+	
+	; db DECO_RHYDON_DOLL ; 2e
+	; db DECO_FARFETCHD_DOLL ; 2f
+	; db DECO_SNORLAX_DOLL ; 30
+	
+	; db DECO_ARTICUNO_DOLL ; 31
+	; db DECO_ZAPDOS_DOLL ; 32
+	; db DECO_MOLTRES_DOLL ; 33
+	
+	; db DECO_GYARADOS_DOLL ; 34
+	; db DECO_LUGIA_DOLL ; 35
+	; db DECO_HO_OH_DOLL ; 36
+	
+	db DECO_GOLD_TROPHY_DOLL ; 37
+	db DECO_SILVER_TROPHY_DOLL ; 38
 	db -1
 
 DecoBigDollMenu:
@@ -339,6 +449,35 @@ FindOwnedBigDolls:
 DecoExitMenu:
 	scf
 	ret
+    ; ld a, [wMusicPlaying]
+	; cp MUSIC_MOBILE_ADAPTER
+	; jr nz, .NES
+    ; ld a, [wMusicPlaying]
+	; cp MUSIC_MOBILE_ADAPTER_MENU
+	; jr nz, .SNES
+	; cp MUSIC_GS_OPENING
+	; jr nz, .N64
+	; cp MUSIC_GS_OPENING_2
+	; jr nz, .GCN
+
+
+; .NES
+ ; scf
+ ; changeblock 3, 3, $1c ; nes controller
+ ; ret
+
+; .SNES
+ ; scf
+ ; changeblock 3, 3, $1d ; snes controller
+ ; ret
+
+; .N64
+ ; scf
+ ; ret
+
+; .GCN
+ ; scf
+ ; ret
 
 PopulateDecoCategoryMenu:
 	ld a, [wNumOwnedDecoCategories]
@@ -455,23 +594,31 @@ DoDecorationAction2:
 	ret
 
 .DecoActions:
-	table_width 2
+	table_width 2, DoDecorationAction2.DecoActions
 	dw DecoAction_nothing
 	dw DecoAction_setupbed
 	dw DecoAction_putawaybed
 	dw DecoAction_setupcarpet
 	dw DecoAction_putawaycarpet
+	dw DecoAction_setupwallpaper
+	dw DecoAction_putawaywallpaper
 	dw DecoAction_setupplant
 	dw DecoAction_putawayplant
 	dw DecoAction_setupposter
 	dw DecoAction_putawayposter
-	dw DecoAction_setupconsole
+	dw DecoAction_setupconsole 
 	dw DecoAction_putawayconsole
 	dw DecoAction_setupbigdoll
 	dw DecoAction_putawaybigdoll
 	dw DecoAction_setupornament
 	dw DecoAction_putawayornament
+	; dw DecoAction_setupseasondirt
+	; dw DecoAction_putawayseasondirt
+	; dw DecoAction_setupseasongrass
+	; dw DecoAction_putawayseasongrass
 	assert_table_length NUM_DECO_ACTIONS + 1
+
+DoDecorationAction3:
 
 GetDecorationFlag:
 	call GetDecorationData
@@ -513,14 +660,17 @@ GetDecoName:
 	ret
 
 .NameFunctions:
-	table_width 2
+	table_width 2, GetDecoName.NameFunctions
 	dw .invalid
 	dw .plant
 	dw .bed
 	dw .carpet
+	dw .wallpaper
 	dw .poster
 	dw .doll
 	dw .bigdoll
+;	dw .seasondirt
+;	dw .seasongrass
 	assert_table_length NUM_DECO_TYPES + 1
 
 .invalid:
@@ -539,6 +689,11 @@ GetDecoName:
 	call .plant
 	ld a, _CARPET
 	jr .getdeconame
+	
+.wallpaper:
+	call .plant
+	ld a, _WALLPAPER
+	jr .getdeconame	
 
 .poster:
 	ld a, e
@@ -559,7 +714,17 @@ GetDecoName:
 	pop de
 	ld a, e
 	jr .getpokename
+	
+; .seasondirt:
+	; call .plant
+	; ld a, _DIRT
+	; jr .getdeconame	
 
+; .seasongrass:
+	; call .plant
+	; ld a, _GRASS
+	; jr .getdeconame	
+	
 .unused: ; unreferenced
 	push de
 	call .getdeconame
@@ -569,6 +734,15 @@ GetDecoName:
 
 .getpokename:
 	push bc
+	ld c, a
+	ld b, 0
+	ld hl, DecorationAttributePokemonNames
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call GetPokemonIDFromIndex
 	ld [wNamedObjectIndex], a
 	call GetPokemonName
 	pop bc
@@ -615,6 +789,14 @@ DecoAction_setupcarpet:
 DecoAction_putawaycarpet:
 	ld hl, wDecoCarpet
 	jp DecoAction_TryPutItAway
+	
+DecoAction_setupwallpaper:
+	ld hl, wDecoWallpaper
+	jp DecoAction_TrySetItUp
+
+DecoAction_putawaywallpaper:
+	ld hl, wDecoWallpaper
+	jp DecoAction_TryPutItAway	
 
 DecoAction_setupplant:
 	ld hl, wDecoPlant
@@ -633,6 +815,7 @@ DecoAction_putawayposter:
 	jp DecoAction_TryPutItAway
 
 DecoAction_setupconsole:
+;	call RestartMapMusic
 	ld hl, wDecoConsole
 	jp DecoAction_TrySetItUp
 
@@ -647,6 +830,24 @@ DecoAction_setupbigdoll:
 DecoAction_putawaybigdoll:
 	ld hl, wDecoBigDoll
 	jp DecoAction_TryPutItAway
+	
+; DecoAction_setupseasondirt:
+	; ld hl, wDecoSeasonDirt
+	; jp DecoAction_TrySetItUp
+
+; DecoAction_putawayseasondirt:
+	; ld hl, wDecoSeasonDirt
+	; jp DecoAction_TryPutItAway
+	
+		
+; DecoAction_setupseasongrass:
+	; ld hl, wDecoSeasonGrass
+	; jp DecoAction_TrySetItUp
+	
+; DecoAction_putawayseasongrass:
+	; ld hl, wDecoSeasonGrass
+	; jp DecoAction_TryPutItAway
+
 
 DecoAction_TrySetItUp:
 	ld a, [hl]
@@ -687,6 +888,8 @@ DecoAction_SetItUp:
 	ld hl, PutAwayAndSetUpText
 	call MenuTextboxBackup
 	xor a
+
+	;call RestartMapMusic
 	ret
 
 .nothingthere
@@ -888,8 +1091,8 @@ DecoSideMenuHeader:
 .MenuData:
 	db STATICMENU_CURSOR ; flags
 	db 3 ; items
-	db "RIGHT SIDE@"
 	db "LEFT SIDE@"
+	db "RIGHT SIDE@"
 	db "CANCEL@"
 
 PutAwayTheDecoText:
@@ -976,7 +1179,7 @@ DescribeDecoration::
 
 .Jumptable:
 ; entries correspond to DECODESC_* constants
-	table_width 2
+	table_width 2, DescribeDecoration.Jumptable
 	dw DecorationDesc_Poster
 	dw DecorationDesc_LeftOrnament
 	dw DecorationDesc_RightOrnament
@@ -1009,17 +1212,18 @@ DecorationDesc_PosterPointers:
 	dbw DECO_JIGGLYPUFF_POSTER, DecorationDesc_JigglypuffPoster
 	db -1
 
-DecorationDesc_TownMapPoster:
-	opentext
-	writetext .LookTownMapText
-	waitbutton
-	special OverworldTownMap
-	closetext
-	end
+ DecorationDesc_TownMapPoster:
+	; opentext
+	; writetext .LookTownMapText
+	; waitbutton
+	; special OverworldTownMap
+	; closetext
+	 end
 
-.LookTownMapText:
-	text_far _LookTownMapText
-	text_end
+; .LookTownMapText:
+	; text_far _LookTownMapText
+	; text_end
+	
 
 DecorationDesc_PikachuPoster:
 	jumptext .LookPikachuPosterText
@@ -1053,9 +1257,9 @@ DecorationDesc_RightOrnament:
 	ld a, [wDecoRightOrnament]
 	jr DecorationDesc_OrnamentOrConsole
 
-DecorationDesc_Console:
-	ld a, [wDecoConsole]
-	jr DecorationDesc_OrnamentOrConsole
+; DecorationDesc_Console:
+	; ld a, [wDecoConsole]
+	; jr DecorationDesc_OrnamentOrConsole
 
 DecorationDesc_OrnamentOrConsole:
 	ld c, a
@@ -1065,12 +1269,102 @@ DecorationDesc_OrnamentOrConsole:
 	ld de, .OrnamentConsoleScript
 	ret
 
-.OrnamentConsoleScript:
-	jumptext .LookAdorableDecoText
+ .OrnamentConsoleScript:
+	 jumptext .LookAdorableDecoText
 
-.LookAdorableDecoText:
-	text_far _LookAdorableDecoText
+ .LookAdorableDecoText:
+	 text_far _LookAdorableDecoText
+	 text_end
+	
+DecorationDesc_Console:
+	ld a, [wDecoConsole]
+	ld hl, DecorationDesc_ConsolePointers
+	ld de, 3
+	call IsInArray
+	jr c, .nope
+	ld de, DecorationDesc_NESConsole
+	ld b, BANK(DecorationDesc_NESConsole)
+	ret
+
+.nope
+	ld b, BANK(DecorationDesc_TownMapPoster)
+	inc hl
+	ld a, [hli]
+	ld d, [hl]
+	ld e, a
+	ret
+
+DecorationDesc_ConsolePointers:
+;	dbw DECO_TOWN_MAP, DecorationDesc_TownMapConsole
+	dbw DECO_FAMICOM, DecorationDesc_NESConsole
+	dbw DECO_SNES, DecorationDesc_SNESConsole
+	dbw DECO_N64, DecorationDesc_N64Console
+	dbw DECO_GAMECUBE, DecorationDesc_GamecubeConsole
+	db -1
+
+;DecorationDesc_TownMapConsole:
+;	opentext
+;	writetext .LookTownMapText
+;	waitbutton
+;	special OverworldTownMap
+;	closetext
+;	end
+
+;.LookTownMapText:
+;	text_far _LookTownMapText
+;	text_end
+
+DecorationDesc_NESConsole: ; Change Channel on Console Usage
+    changeblock 3, 1, $1a ; wall plug + screen
+;   changeblock 3, 3, $1c ; nes controller
+	playmusic MUSIC_MOBILE_ADAPTER
+	jumptext .LookNESConsoleText
+
+.LookNESConsoleText:
+	text_far _LookNESConsoleText
 	text_end
+
+DecorationDesc_SNESConsole:
+   changeblock 3, 1, $20 ; wall plug + screen
+;  changeblock 3, 3, $1d ; snes controller
+;	reloadmappart
+	playmusic MUSIC_MOBILE_ADAPTER_MENU
+	; special SlotMachine
+	; special RestartMapMusic
+	jumptext .LookSNESConsoleText
+
+.LookSNESConsoleText:
+	text_far _LookSNESConsoleText
+	text_end
+     
+DecorationDesc_N64Console:
+;   changeblock 3, 3, $01 ; plain floor ; remove controller
+;reloadmappart
+   changeblock 3, 1, $1b ; wall plug + screen
+;	reloadmappart
+	playmusic MUSIC_GS_OPENING
+;    special CardFlip
+;	special RestartMapMusic
+	jumptext .LookN64ConsoleText
+
+.LookN64ConsoleText:
+	text_far _LookN64ConsoleText
+	text_end
+	
+DecorationDesc_GamecubeConsole:
+;  changeblock 3, 3, $01 ; plain floor ; remove controller
+;	reloadmappart
+    changeblock 3, 1, $21 ; wall plug + screen
+;	reloadmappart
+	playmusic MUSIC_GS_OPENING_2
+	jumptext .LookGamecubeConsoleText
+
+.LookGamecubeConsoleText:
+	text_far _LookGamecubeConsoleText
+	text_end	
+
+DecorationDesc_NullConsole:
+	end	
 
 DecorationDesc_GiantOrnament:
 	ld b, BANK(.BigDollScript)
@@ -1085,35 +1379,42 @@ DecorationDesc_GiantOrnament:
 	text_end
 
 ToggleMaptileDecorations:
+	
 	; tile coordinates work the same way as for changeblock
 	lb de, 0, 4 ; bed coordinates
 	ld a, [wDecoBed]
 	call SetDecorationTile
-	lb de, 7, 4 ; plant coordinates
+	
+	lb de, 7, 1 ; plant coordinates
 	ld a, [wDecoPlant]
 	call SetDecorationTile
-	lb de, 6, 0 ; poster coordinates
+
+
+	lb de, 5, 0 ; poster coordinates
 	ld a, [wDecoPoster]
 	call SetDecorationTile
 	call SetPosterVisibility
-	lb de, 0, 0 ; carpet top-left coordinates
-	call PadCoords_de
-	ld a, [wDecoCarpet]
-	and a
-	ret z
-	call _GetDecorationSprite
-	ld [hl], a
-	push af
-	lb de, 0, 2 ; carpet bottom-left coordinates
-	call PadCoords_de
-	pop af
-	inc a
-	ld [hli], a ; carpet bottom-left block
-	inc a
-	ld [hli], a ; carpet bottom-middle block
-	dec a
-	ld [hl], a ; carpet bottom-right block
-	ret
+	
+
+	
+	; lb de, 0, 0 ; carpet top-left coordinates
+	; call PadCoords_de
+	; ld a, [wDecoCarpet]
+	; and a
+	; ret z
+	; call _GetDecorationSprite
+	; ld [hl], a
+	; push af
+	; lb de, 0, 2 ; carpet bottom-left coordinates
+	; call PadCoords_de
+	; pop af
+	; inc a
+	; ld [hli], a ; carpet bottom-left block
+	; inc a
+	; ld [hli], a ; carpet bottom-middle block
+	; dec a
+	; ld [hl], a ; carpet bottom-right block
+	; ret
 
 SetPosterVisibility:
 	ld b, SET_FLAG
@@ -1125,6 +1426,7 @@ SetPosterVisibility:
 .ok
 	ld de, EVENT_PLAYERS_ROOM_POSTER
 	jp EventFlagAction
+		
 
 SetDecorationTile:
 	push af
@@ -1150,6 +1452,40 @@ ToggleDecorationsVisibility:
 	ld a, [wDecoRightOrnament]
 	call ToggleDecorationVisibility
 	ld de, EVENT_PLAYERS_HOUSE_2F_BIG_DOLL
+	ld hl, wVariableSprites + SPRITE_BIG_DOLL - SPRITE_VARS
+	ld a, [wDecoBigDoll]
+	call ToggleDecorationVisibility
+	
+	ld de, EVENT_REDS_HOUSE_2F_CONSOLE
+	ld hl, wVariableSprites + SPRITE_CONSOLE - SPRITE_VARS
+	ld a, [wDecoConsole]
+	call ToggleDecorationVisibility
+	ld de, EVENT_REDS_HOUSE_2F_DOLL_1
+	ld hl, wVariableSprites + SPRITE_DOLL_1 - SPRITE_VARS
+	ld a, [wDecoLeftOrnament]
+	call ToggleDecorationVisibility
+	ld de, EVENT_REDS_HOUSE_2F_DOLL_2
+	ld hl, wVariableSprites + SPRITE_DOLL_2 - SPRITE_VARS
+	ld a, [wDecoRightOrnament]
+	call ToggleDecorationVisibility
+	ld de, EVENT_REDS_HOUSE_2F_BIG_DOLL
+	ld hl, wVariableSprites + SPRITE_BIG_DOLL - SPRITE_VARS
+	ld a, [wDecoBigDoll]
+	call ToggleDecorationVisibility
+	
+	ld de, EVENT_BLUES_HOUSE_2F_CONSOLE
+	ld hl, wVariableSprites + SPRITE_CONSOLE - SPRITE_VARS
+	ld a, [wDecoConsole]
+	call ToggleDecorationVisibility
+	ld de, EVENT_BLUES_HOUSE_2F_DOLL_1
+	ld hl, wVariableSprites + SPRITE_DOLL_1 - SPRITE_VARS
+	ld a, [wDecoLeftOrnament]
+	call ToggleDecorationVisibility
+	ld de, EVENT_BLUES_HOUSE_2F_DOLL_2
+	ld hl, wVariableSprites + SPRITE_DOLL_2 - SPRITE_VARS
+	ld a, [wDecoRightOrnament]
+	call ToggleDecorationVisibility
+	ld de, EVENT_BLUES_HOUSE_2F_BIG_DOLL
 	ld hl, wVariableSprites + SPRITE_BIG_DOLL - SPRITE_VARS
 	ld a, [wDecoBigDoll]
 	call ToggleDecorationVisibility
@@ -1187,3 +1523,205 @@ PadCoords_de:
 	ld e, a
 	call GetBlockLocation
 	ret
+
+
+
+
+CoverTilesWithCarpet::
+; Check if a carpet decoration is being used
+	ld a, [wDecoCarpet]
+	and a
+	ret z
+
+; [wCarpetTile] = the carpet tile ID from DecorationAttributes
+	ld c, a
+	call GetDecorationSprite
+	ld a, c
+	ld [wCarpetTile], a
+
+; [wFloorTile] = $01
+; This tile will use the palette of [wCarpetTile] instead
+	ld a, $01
+	ld [wFloorTile], a
+
+; Cover each tile listed in CarpetCoveredTiles 
+	ld hl, CarpetCoveredTiles
+.loop
+; Stop when we reach -1
+	ld a, [hli]
+	cp -1
+	ret z
+; [wCoveredTile] = the tile ID to cover with carpet
+	ld [wCoveredTile], a
+; bc = the mask for which pixels to cover
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+; Copy the carpet pixels over the covered pixels
+	push hl
+	call CoverCarpetTile
+	pop hl
+	jr .loop
+
+CoverCarpetTile:
+; Copy pixels from tile #[wCarpetTile] to tile #[wCoveredTile]
+; based on the bitmask in bc.
+; Both tile IDs must be less than $80 (i.e. in bank 0).
+
+	push bc
+
+; de = covered tile in VRAM (destination)
+	ld a, [wCoveredTile]
+	ld hl, vTiles2
+	ld bc, 1 tiles
+	call AddNTimes
+	ld d, h
+	ld e, l
+
+; hl = carpet tile in VRAM (source)
+	ld a, [wCarpetTile]
+	ld hl, vTiles2
+	ld bc, 1 tiles
+	call AddNTimes
+
+	pop bc
+
+; bc = one byte before the pixel mask
+	dec bc
+
+; Cover all 8 rows of the tile
+rept TILE_WIDTH - 1
+	call .CoverRow
+endr
+.CoverRow:
+	inc bc ; advance to the next 1bpp mask byte
+	call .CoverHalfRow
+.CoverHalfRow:
+	push hl
+; h = carpet byte
+	ld a, [hl]
+	ld h, a
+; l = covered byte
+	ld a, [de]
+	ld l, a
+; h = carpet & mask
+	ld a, [bc]
+	and h
+	ld h, a
+; l = covered & ~mask
+	ld a, [bc]
+	cpl
+	and l
+	ld l, a
+; covered = (carpet & mask) | (covered & ~mask) = if mask then carpet else covered
+	or h
+	ld [de], a
+	pop hl
+	inc hl ; advance to the next 2bpp carpet byte
+	inc de ; advance to the next 2bpp covered byte
+	ret
+
+INCLUDE "data/decorations/carpet_covered_tiles.asm"
+
+
+
+
+
+
+
+CoverTilesWithWallpaper::
+; Check if a wallpaper decoration is being used
+	ld a, [wDecoWallpaper]
+	and a
+	ret z
+
+; [wWallpaperTile] = the wallpaper tile ID from DecorationAttributes
+	ld c, a
+	call GetDecorationSprite
+	ld a, c
+	ld [wWallpaperTile], a
+
+; [wWallTile] = $02
+; This tile will use the palette of [wWallpaperTile] instead
+	ld a, $02
+	ld [wWallTile], a
+
+; Cover each tile listed in WallpaperCoveredTiles 
+	ld hl, WallpaperCoveredTiles
+.loop
+; Stop when we reach -1
+	ld a, [hli]
+	cp -1
+	ret z
+; [wCoveredTile2] = the tile ID to cover with wallpaper
+	ld [wCoveredTile2], a
+; bc = the mask for which pixels to cover
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+; Copy the wallpaper pixels over the covered pixels
+	push hl
+	call CoverWallpaperTile
+	pop hl
+	jr .loop
+
+CoverWallpaperTile:
+; Copy pixels from tile #[wWallpaperTile] to tile #[wCoveredTile2]
+; based on the bitmask in bc.
+; Both tile IDs must be less than $80 (i.e. in bank 0).
+
+	push bc
+
+; de = covered tile in VRAM (destination)
+	ld a, [wCoveredTile2]
+	ld hl, vTiles2
+	ld bc, 1 tiles
+	call AddNTimes
+	ld d, h
+	ld e, l
+
+; hl = wallpaper tile in VRAM (source)
+	ld a, [wWallpaperTile]
+	ld hl, vTiles2
+	ld bc, 1 tiles
+	call AddNTimes
+
+	pop bc
+
+; bc = one byte before the pixel mask
+	dec bc
+
+; Cover all 8 rows of the tile
+rept TILE_WIDTH - 1
+	call .CoverRow2
+endr
+.CoverRow2:
+	inc bc ; advance to the next 1bpp mask byte
+	call .CoverHalfRow2
+.CoverHalfRow2:
+	push hl
+; h = wallpaper byte
+	ld a, [hl]
+	ld h, a
+; l = covered byte
+	ld a, [de]
+	ld l, a
+; h = wallpaper & mask
+	ld a, [bc]
+	and h
+	ld h, a
+; l = covered & ~mask
+	ld a, [bc]
+	cpl
+	and l
+	ld l, a
+; covered = (wallpaper & mask) | (covered & ~mask) = if mask then wallpaper else covered
+	or h
+	ld [de], a
+	pop hl
+	inc hl ; advance to the next 2bpp carpet byte
+	inc de ; advance to the next 2bpp covered byte
+	ret
+INCLUDE "data/decorations/wallpaper_covered_tiles.asm"

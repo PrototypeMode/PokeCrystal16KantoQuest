@@ -29,14 +29,46 @@ SpawnPlayer:
 	call GetMapObject
 	ld hl, MAPOBJECT_PALETTE
 	add hl, bc
-	ln e, PAL_NPC_RED, OBJECTTYPE_SCRIPT
-	ld a, [wPlayerSpriteSetupFlags]
-	bit PLAYERSPRITESETUP_FEMALE_TO_MALE_F, a
-	jr nz, .ok
-	ld a, [wPlayerGender]
-	bit PLAYERGENDER_FEMALE_F, a
-	jr z, .ok
-	ln e, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT
+
+	
+	; Is Costume "Ash"
+	 ld a, [wPlayerCostume]
+	 cp 0
+	 jr z, .red1
+	 jr nz, .next1
+	 	 
+.next1 ; Is Costume "Misty"
+	ld a, [wPlayerCostume]
+	cp 1
+	jr z, .pink1
+	jr nz, .next2
+.next2	; Is Costume "Brock"
+	ld a, [wPlayerCostume]
+	cp 2
+	jr z, .green1
+	jr nz, .next3
+.next3; Is Costume "Blue/Gary"
+	ld a, [wPlayerCostume]
+	cp 3
+	jr z, .blue1
+
+
+.red1	 
+	 ln e, PAL_OW_RED, OBJECTTYPE_SCRIPT
+     jp .ok
+.blue1	
+	 ln e, PAL_OW_BLUE, OBJECTTYPE_SCRIPT
+     jp .ok
+.green1
+	ln e, PAL_OW_GREEN, OBJECTTYPE_SCRIPT
+	 jp .ok
+
+.pink1	
+	 ln e, PAL_OW_PINK, OBJECTTYPE_SCRIPT
+     jp .ok
+
+.purple1	
+	ln e, PAL_NPC_ROCK, OBJECTTYPE_SCRIPT
 
 .ok
 	ld [hl], e
@@ -55,7 +87,7 @@ PlayerObjectTemplate:
 ; A dummy map object used to initialize the player object.
 ; Shorter than the actual amount copied by two bytes.
 ; Said bytes seem to be unused.
-	object_event -4, -4, SPRITE_CHRIS, SPRITEMOVEDATA_PLAYER, 15, 15, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, 0, -1
+	object_event -4, -4, SPRITE_ASH, SPRITEMOVEDATA_PLAYER, 15, 15, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, 0, -1
 
 CopyDECoordsToMapObject::
 	push de

@@ -6,6 +6,7 @@
 
 LavenderTown_MapScripts:
 	def_scene_scripts
+	scene_script ClearGhostsScene, SCENE_LAVENDER_TOWN
 
 	def_callbacks
 	callback MAPCALLBACK_NEWMAP, LavenderTownFlypointCallback
@@ -13,6 +14,16 @@ LavenderTown_MapScripts:
 LavenderTownFlypointCallback:
 	setflag ENGINE_FLYPOINT_LAVENDER
 	endcallback
+
+ClearGhostsScene:
+      callasm .setflag0
+      end
+
+	
+.setflag0:
+   ld a, 0
+   ld [wAlternateBattleByte], a
+   ret
 
 LavenderTownPokefanMScript:
 	jumptextfaceplayer LavenderTownPokefanMText
@@ -113,10 +124,11 @@ LavenderTown_MapEvents:
 	warp_event  7, 13, LAVENDER_NAME_RATER, 1
 	warp_event  1,  5, LAVENDER_MART, 2
 	warp_event 13, 11, SOUL_HOUSE, 1
-	warp_event 14,  5, LAV_RADIO_TOWER_1F, 1
+	warp_event 14,  5, LAVENDER_TOWER_1F, 1
 
 	def_coord_events
-
+	coord_event  14,  5, SCENE_LAVENDER_TOWN, ClearGhostsScene
+	
 	def_bg_events
 	bg_event 11,  3, BGEVENT_READ, LavenderTownSign
 	bg_event 15,  7, BGEVENT_READ, KantoRadioStationSign

@@ -391,11 +391,12 @@ INCLUDE "maps/Route43MahoganyGate.asm"
 INCLUDE "maps/Route43Gate.asm"
 INCLUDE "maps/RedsHouse1F.asm"
 INCLUDE "maps/RedsHouse2F.asm"
-INCLUDE "maps/BluesHouse.asm"
-INCLUDE "maps/OaksLab.asm"
+
+
 
 
 SECTION "Map Scripts 20", ROMX
+INCLUDE "maps/BluesHouse1F.asm"
 
 INCLUDE "maps/CherrygroveCity.asm"
 INCLUDE "maps/Route35.asm"
@@ -407,7 +408,7 @@ INCLUDE "maps/Route25.asm"
 
 
 SECTION "Map Scripts 21", ROMX
-
+INCLUDE "maps/BluesHouse2F.asm"
 INCLUDE "maps/CianwoodCity.asm"
 INCLUDE "maps/Route27.asm"
 INCLUDE "maps/Route29.asm"
@@ -484,5 +485,28 @@ SECTION "Map Scripts 25", ROMX
 
 INCLUDE "maps/SilverCaveOutside.asm"
 INCLUDE "maps/Route10North.asm"
+INCLUDE "maps/GlobalTerminalOutside.asm"
+INCLUDE "maps/GlobalTerminal1F.asm"
 
-ENDSECTION
+SECTION "Map Scripts 26", ROMX
+INCLUDE "maps/OaksLab.asm"
+INCLUDE "maps/RedsHouseMom2F.asm"
+INCLUDE "maps/BluesHouseDaisy2F.asm"
+
+SECTION "Map Scripts 27", ROMX
+INCLUDE "maps/ViridianForest.asm"
+INCLUDE "maps/ViridianForestNorthGate.asm"
+INCLUDE "maps/ViridianForestSouthGate.asm"
+
+SECTION "Map Scripts 28", ROMX
+INCLUDE "maps/PewterMuseum1F.asm"
+INCLUDE "maps/PewterMuseum2F.asm"
+
+SECTION "Map Scripts 29", ROMX
+INCLUDE "maps/LavenderTower1F.asm"
+INCLUDE "maps/LavenderTower2F.asm"
+INCLUDE "maps/LavenderTower3F.asm"
+INCLUDE "maps/LavenderTower4F.asm"
+INCLUDE "maps/LavenderTower5F.asm"
+INCLUDE "maps/LavenderTower6F.asm"
+INCLUDE "maps/LavenderTower7F.asm"

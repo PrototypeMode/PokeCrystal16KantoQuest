@@ -133,7 +133,7 @@ Buena:
 	waitbutton
 	closetext
 	turnobject RADIOTOWER2F_BUENA, DOWN
-	reanchormap
+	refreshscreen
 	special BuenasPassword
 	closetext
 	iffalse .WrongAnswer

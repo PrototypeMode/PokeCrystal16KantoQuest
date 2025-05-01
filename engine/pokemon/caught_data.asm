@@ -1,4 +1,5 @@
 CheckPartyFullAfterContest:
+
 	ld a, [wContestMonSpecies]
 	and a
 	jp z, .DidntCatchAnything
@@ -152,9 +153,20 @@ CheckPartyFullAfterContest:
 	ret
 
 GiveANickname_YesNo:
+     ld a, [wSkipName]
+	 cp 0
+	 jr z, .Nick
+	 jr nz, .NoNick
+     ; ld b, CHECK_FLAG
+     ; ld de, ENGINE_UNLOCKED_UNOWNS_UNUSED_4
+     ; farcall EngineFlagAction
+     ; jp z, .NoNick
+.Nick
 	ld hl, CaughtAskNicknameText
 	call PrintText
 	jp YesNoBox
+.NoNick
+ret		
 
 CaughtAskNicknameText:
 	text_far _CaughtAskNicknameText
@@ -165,7 +177,11 @@ SetCaughtData:
 	dec a
 	ld hl, wPartyMon1CaughtLevel
 	call GetPartyLocation
+	
 SetBoxmonOrEggmonCaughtData:
+;Set Ball
+
+; Time of Day
 	ld a, [wTimeOfDay]
 	inc a
 	rrca

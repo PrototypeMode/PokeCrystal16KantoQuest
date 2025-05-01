@@ -52,11 +52,13 @@ _PlayBattleAnim:
 
 BattleAnimRunScript:
 	ld a, [wFXAnimID + 1]
-	and a
-	jr nz, .hi_byte
+	add a, a
+	jr c, .play_anyway
 
 	farcall CheckBattleScene
 	jr c, .disabled
+
+
 
 ; This vc_hook reduces the move animation flashing in the Virtual Console for
 ; Fissure, Self-Destruct, Thunder, Flash, Explosion, Horn Drill, and Hyper Beam.
@@ -88,7 +90,7 @@ BattleAnimRunScript:
 	ld a, h
 	ld [wFXAnimID + 1], a
 
-.hi_byte
+.play_anyway
 	call WaitSFX
 	call PlayHitSound
 	call RunBattleAnimScript
@@ -109,11 +111,15 @@ RunBattleAnimScript:
 
 ; Speed up Rollout's animation.
 	ld a, [wFXAnimID + 1]
-	or a
+	if HIGH(ROLLOUT)
+		cp HIGH(ROLLOUT)
+	else
+		or a
+	endc
 	jr nz, .not_rollout
 
 	ld a, [wFXAnimID]
-	cp ROLLOUT
+	cp LOW(ROLLOUT)
 	jr nz, .not_rollout
 
 	ld a, BATTLE_BG_EFFECT_ROLLOUT

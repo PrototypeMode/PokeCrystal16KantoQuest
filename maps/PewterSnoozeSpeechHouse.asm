@@ -9,13 +9,34 @@ PewterSnoozeSpeechHouse_MapScripts:
 PewterSnoozeSpeechHouseGrampsScript:
 	jumptextfaceplayer PewterSnoozeSpeechHouseGrampsText
 
+PewterSnoozeSpeechHouseYoungsterScript:
+	jumptextfaceplayer PewterSnoozeSpeechHouseYoungsterText
+
 PewterSnoozeSpeechHouseBookshelf:
 	jumpstd PictureBookshelfScript
 
 PewterSnoozeSpeechHouseGrampsText:
-	text "I like snoozing"
-	line "with the radio on…"
-	cont "…Zzzz…"
+	text "#MON learn new"
+	line "techniques as"
+	cont "they grow!"
+	
+	para "But, some moves"
+	line "must be taught by"
+	cont "the trainer!"
+	done
+
+PewterSnoozeSpeechHouseYoungsterText:
+    text "#MON become"
+	line "easier to catch"
+	cont "when they are"
+	cont "hurt or asleep!"
+	
+	para "But, it's not a"
+	line "sure thing!"
+	
+	para "Try different"
+	line "methods to catch"
+	cont "different #MON!"
 	done
 
 PewterSnoozeSpeechHouse_MapEvents:
@@ -32,4 +53,5 @@ PewterSnoozeSpeechHouse_MapEvents:
 	bg_event  1,  1, BGEVENT_READ, PewterSnoozeSpeechHouseBookshelf
 
 	def_object_events
-	object_event  5,  3, SPRITE_GRAMPS, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, PewterSnoozeSpeechHouseGrampsScript, -1
+	object_event  2,  3, SPRITE_GAMBLER, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, PewterSnoozeSpeechHouseGrampsScript, -1
+	object_event  4,  5, SPRITE_YOUNGSTER, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, PewterSnoozeSpeechHouseYoungsterScript, -1

@@ -9,6 +9,7 @@
 	const STARTMENUITEM_EXIT     ; 6
 	const STARTMENUITEM_POKEGEAR ; 7
 	const STARTMENUITEM_QUIT     ; 8
+	const STARTMENUITEM_TEAMSTATUS   ; 9
 
 StartMenu::
 	call ClearWindowData
@@ -184,6 +185,7 @@ StartMenu::
 	dw StartMenu_Exit,     .ExitString,     .ExitDesc
 	dw StartMenu_Pokegear, .PokegearString, .PokegearDesc
 	dw StartMenu_Quit,     .QuitString,     .QuitDesc
+	dw StartMenu_TeamStatus,   .TeamStatusString,   .TeamStatusDesc
 
 .PokedexString:  db "#DEX@"
 .PartyString:    db "#MON@"
@@ -194,7 +196,7 @@ StartMenu::
 .ExitString:     db "EXIT@"
 .PokegearString: db "<POKE>GEAR@"
 .QuitString:     db "QUIT@"
-
+.TeamStatusString:   db "TEAM@"
 .PokedexDesc:
 	db   "#MON"
 	next "database@"
@@ -230,6 +232,10 @@ StartMenu::
 .QuitDesc:
 	db   "Quit and"
 	next "be judged.@"
+	
+.TeamStatusDesc:
+	db   "Your human"
+	next "team members@"	
 
 .OpenMenu:
 	ld a, [wMenuSelection]
@@ -319,9 +325,21 @@ endr
 	call .AppendMenuList
 .no_pokegear
 
+    ld a, [wTeamCount]
+	cp 0
+	jr z, .Status
+	jr nz, .TeamStatus
+	
+.Status	
 	ld a, STARTMENUITEM_STATUS
 	call .AppendMenuList
+	jr .Next
+	
+.TeamStatus	
+	ld a, STARTMENUITEM_TEAMSTATUS
+	call .AppendMenuList	
 
+.Next
 	ld a, [wLinkMode]
 	and a
 	jr nz, .no_save
@@ -456,6 +474,15 @@ StartMenu_Status:
 	call CloseSubmenu
 	ld a, 0
 	ret
+	
+StartMenu_TeamStatus:
+; Player status.
+
+	call FadeToMenu
+	farcall TrainerCard
+	call CloseSubmenu
+	ld a, 0
+	ret	
 
 StartMenu_Pokedex:
 	ld a, [wPartyCount]

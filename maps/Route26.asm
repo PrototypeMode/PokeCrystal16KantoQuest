@@ -332,7 +332,7 @@ CooltrainerfJoyceAfterBattleText:
 
 CooltrainerfBeth1SeenText:
 	text "I lost to a train-"
-	line "er named <RIVAL>."
+	line "er named <GARY>."
 
 	para "He was really"
 	line "strong, but…"

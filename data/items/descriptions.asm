@@ -135,7 +135,7 @@ ItemDescriptions:
 	dw StarPieceDesc
 	dw BasementKeyDesc
 	dw PassDesc
-	dw QuestionMarkDesc
+	dw SilphScopeDesc
 	dw QuestionMarkDesc
 	dw QuestionMarkDesc
 	dw CharcoalDesc
@@ -372,7 +372,7 @@ LuckyPunchDesc:
 	next "ratio of CHANSEY.@"
 
 CalciumDesc:
-	db   "Ups SPECIAL stats"
+	db   "Raises SPCL.ATK"
 	next "of one #MON.@"
 
 RareCandyDesc:
@@ -756,6 +756,10 @@ BasementKeyDesc:
 PassDesc:
 	db   "A ticket for the"
 	next "MAGNET TRAIN.@"
+
+SilphScopeDesc:
+	db   "SILPH CO.'s scope"
+	next "reveals hidden <PKMN>!@"
 
 CharcoalDesc:
 	db   "Powers up fire-"

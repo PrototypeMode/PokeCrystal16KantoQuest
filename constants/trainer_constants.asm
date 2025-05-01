@@ -703,4 +703,14 @@ DEF KRIS EQU __trainer_class__
 	trainerclass MYSTICALMAN ; 43
 	const EUSINE
 
+	trainerclass RIVAL_GARY ; 44
+	const RIVAL_GARY_1_BULBASAUR
+	const RIVAL_GARY_1_SQUIRTLE
+	const RIVAL_GARY_1_CHARMANDER
+	
+	trainerclass RIVAL_ASH ; 44
+	const RIVAL_ASH_1_BULBASAUR
+	const RIVAL_ASH_1_SQUIRTLE
+	const RIVAL_ASH_1_CHARMANDER	
+
 DEF NUM_TRAINER_CLASSES EQU __trainer_class__ - 1

@@ -52,7 +52,8 @@ CGBLayoutJumptable:
 	dw _CGB_Pokepic
 	dw _CGB_MagnetTrain
 	dw _CGB_PackPals
-	dw _CGB_TrainerCard
+	dw _CGB_TrainerCardKanto
+	dw _CGB_TrainerCardJohto
 	dw _CGB_PokedexUnownMode
 	dw _CGB_BillsPC
 	dw _CGB_UnownPuzzle
@@ -77,13 +78,74 @@ _CGB_BattleGrayscale:
 	ld de, wOBPals1
 	ld c, 2
 	call CopyPalettes
-	jr _CGB_FinishBattleScreenLayout
+	jp _CGB_FinishBattleScreenLayout
+
+; _CGB_ThrowColors:
+	; ld hl, PlayerPalette
+    ; push hl
 
 _CGB_BattleColors:
+
+	callfar CheckItemPocket
+	ld a, [wItemAttributeValue]
+	cp BALL
+	jr z, .BallCheck
+    jr nz, .MonBack	
+
+.BallCheck	
+	ld a, [wPackUsedItem]
+	cp TRUE
+	jp z, .MonBack
+
+	
+	ld a, [wCurItemBackup]
+	ld [wNamedObjectIndex], a
+    ld a, [wNamedObjectIndex]
+	cp PARK_BALL
+	jp z, .TrainerBack
+	cp POKE_BALL
+	jp z, .TrainerBack
+	cp GREAT_BALL
+	jr z, .TrainerBack
+	cp ULTRA_BALL
+	jr z, .TrainerBack
+	cp MASTER_BALL
+	jr z, .TrainerBack
+	cp LURE_BALL
+	jr z, .TrainerBack
+	cp FAST_BALL
+	jr z, .TrainerBack
+	cp MOON_BALL
+	jr z, .TrainerBack
+	cp LOVE_BALL
+	jr z, .TrainerBack
+	cp LEVEL_BALL
+	jr z, .TrainerBack
+	cp HEAVY_BALL
+	jr z, .TrainerBack
+	cp FRIEND_BALL
+	jr z, .TrainerBack
+	cp PREMIER_BALL
+	jr z, .TrainerBack
+	cp GS_BALL
+	jr z, .TrainerBack
+    jr nz, .MonBack
+	
+.TrainerBack
+	ld de, wBGPals1
+	call GetPlayerUseBallPalettePointer
+	push hl
+	call LoadPalette_White_Col1_Col2_Black ; PAL_BATTLE_BG_PLAYER	
+	jp .Enemy
+	
+.MonBack	
 	ld de, wBGPals1
 	call GetBattlemonBackpicPalettePointer
 	push hl
 	call LoadPalette_White_Col1_Col2_Black ; PAL_BATTLE_BG_PLAYER
+
+    
+.Enemy	
 	call GetEnemyFrontpicPalettePointer
 	push hl
 	call LoadPalette_White_Col1_Col2_Black ; PAL_BATTLE_BG_ENEMY
@@ -213,7 +275,7 @@ _CGB_StatsScreenHPPals:
 	call LoadPalette_White_Col1_Col2_Black ; exp palette
 	ld hl, StatsScreenPagePals
 	ld de, wBGPals1 palette 3
-	ld bc, 3 palettes ; pink, green, and blue page palettes
+	ld bc, 4 palettes ; pink, green, blue, and orange page palettes
 	ld a, BANK(wBGPals1)
 	call FarCopyWRAM
 	call WipeAttrmap
@@ -228,19 +290,24 @@ _CGB_StatsScreenHPPals:
 	ld a, $2 ; exp palette
 	call ByteFill
 
-	hlcoord 13, 5, wAttrmap
+	hlcoord 11, 5, wAttrmap
 	lb bc, 2, 2
 	ld a, $3 ; pink page palette
 	call FillBoxCGB
 
-	hlcoord 15, 5, wAttrmap
+	hlcoord 13, 5, wAttrmap
 	lb bc, 2, 2
 	ld a, $4 ; green page palette
 	call FillBoxCGB
 
-	hlcoord 17, 5, wAttrmap
+	hlcoord 15, 5, wAttrmap
 	lb bc, 2, 2
 	ld a, $5 ; blue page palette
+	call FillBoxCGB
+
+	hlcoord 17, 5, wAttrmap
+	lb bc, 2, 2
+	ld a, $6 ; orange page palette
 	call FillBoxCGB
 
 	call ApplyAttrmap
@@ -615,110 +682,15 @@ _CGB_UnownPuzzle:
 	call ApplyAttrmap
 	ret
 
-_CGB_TrainerCard:
-	ld de, wBGPals1
-	xor a ; CHRIS
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	ld a, FALKNER ; KRIS
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	ld a, BUGSY
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	ld a, WHITNEY
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	ld a, MORTY
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	ld a, CHUCK
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	ld a, JASMINE
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	ld a, PRYCE
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	ld a, PREDEFPAL_CGB_BADGE
-	call GetPredefPal
-	call LoadHLPaletteIntoDE
-
-	; fill screen with opposite-gender palette for the card border
-	hlcoord 0, 0, wAttrmap
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
-	ld a, [wPlayerGender]
-	and a
-	ld a, $1 ; kris
-	jr z, .got_gender
-	ld a, $0 ; chris
-.got_gender
-	call ByteFill
-	; fill trainer sprite area with same-gender palette
-	hlcoord 14, 1, wAttrmap
-	lb bc, 7, 5
-	ld a, [wPlayerGender]
-	and a
-	ld a, $0 ; chris
-	jr z, .got_gender2
-	ld a, $1 ; kris
-.got_gender2
-	call FillBoxCGB
-	; top-right corner still uses the border's palette
-	hlcoord 18, 1, wAttrmap
-	ld [hl], $1
-	hlcoord 2, 11, wAttrmap
-	lb bc, 2, 4
-	ld a, $1 ; falkner
-	call FillBoxCGB
-	hlcoord 6, 11, wAttrmap
-	lb bc, 2, 4
-	ld a, $2 ; bugsy
-	call FillBoxCGB
-	hlcoord 10, 11, wAttrmap
-	lb bc, 2, 4
-	ld a, $3 ; whitney
-	call FillBoxCGB
-	hlcoord 14, 11, wAttrmap
-	lb bc, 2, 4
-	ld a, $4 ; morty
-	call FillBoxCGB
-	hlcoord 2, 14, wAttrmap
-	lb bc, 2, 4
-	ld a, $5 ; chuck
-	call FillBoxCGB
-	hlcoord 6, 14, wAttrmap
-	lb bc, 2, 4
-	ld a, $6 ; jasmine
-	call FillBoxCGB
-	hlcoord 10, 14, wAttrmap
-	lb bc, 2, 4
-	ld a, $7 ; pryce
-	call FillBoxCGB
-	; clair uses kris's palette
-	ld a, [wPlayerGender]
-	and a
-	push af
-	jr z, .got_gender3
-	hlcoord 14, 14, wAttrmap
-	lb bc, 2, 4
-	ld a, $1
-	call FillBoxCGB
-.got_gender3
-	pop af
-	ld c, $0
-	jr nz, .got_gender4
-	inc c
-.got_gender4
-	ld a, c
-	hlcoord 18, 1, wAttrmap
-	ld [hl], a
-	call ApplyAttrmap
-	call ApplyPals
-	ld a, TRUE
-	ldh [hCGBPalUpdate], a
+_CGB_TrainerCardKanto:
+    call _CGB_TrainerCardKanto2
 	ret
+	INCLUDE "engine/gfx/trainercard_colors_page_1.asm"
+
+_CGB_TrainerCardJohto:
+    call _CGB_TrainerCardJohto2
+    ret
+	INCLUDE "engine/gfx/trainercard_colors_page_2.asm"
 
 _CGB_MoveList:
 	ld de, wBGPals1

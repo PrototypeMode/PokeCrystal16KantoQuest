@@ -146,8 +146,8 @@ TrainerHouse1F_MapEvents:
 	def_coord_events
 
 	def_bg_events
-	bg_event  5,  0, BGEVENT_READ, TrainerHouseSign1
-	bg_event  7,  0, BGEVENT_READ, TrainerHouseSign2
+	bg_event  4,  0, BGEVENT_READ, TrainerHouseSign1
+	bg_event  5,  0, BGEVENT_READ, TrainerHouseSign2
 	bg_event  7, 10, BGEVENT_READ, TrainerHouseIllegibleBook
 
 	def_object_events

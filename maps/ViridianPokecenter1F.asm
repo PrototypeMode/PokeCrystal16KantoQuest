@@ -10,6 +10,14 @@ ViridianPokecenter1F_MapScripts:
 	def_callbacks
 
 ViridianPokecenter1FNurseScript:
+    setflag ENGINE_BOULDERBADGE
+    setflag ENGINE_CASCADEBADGE
+    setflag ENGINE_THUNDERBADGE
+    setflag ENGINE_RAINBOWBADGE
+    setflag ENGINE_SOULBADGE
+    setflag ENGINE_MARSHBADGE
+    setflag ENGINE_VOLCANOBADGE
+    setflag ENGINE_EARTHBADGE
 	jumpstd PokecenterNurseScript
 
 ViridianPokecenter1FCooltrainerMScript:

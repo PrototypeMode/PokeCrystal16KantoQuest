@@ -14,7 +14,7 @@ StdScripts::
 	add_stdscript TownMapScript
 	add_stdscript WindowScript
 	add_stdscript TVScript
-	add_stdscript HomepageScript ; unused
+	add_stdscript CharacterCycleScript ; unused
 	add_stdscript Radio1Script
 	add_stdscript Radio2Script
 	add_stdscript TrashCanScript
@@ -196,15 +196,154 @@ WindowScript:
 	farjumptext WindowText
 
 TVScript:
-	opentext
-	farwritetext TVText
-	waitbutton
-	closetext
+end
+
+CharacterCycleScript:
+
+    readmem wPlayerCostume
+	ifequal 0, MistyCostume
+	ifequal 1, BrockCostume
+	ifequal 2, GaryCostume
+	ifequal 3, PikachuCostume
+	ifequal 4, AshCostume
+
+   
+
+AshCostume:
+	playsound SFX_TINGLE
+	applymovement PLAYER, MovementData_PlayerSpinsClockwiseEndsFacingRight
+	setval (PAL_NPC_RED << 4)
+	special SetPlayerPalette
+	callasm .PickAsh
+	applymovement PLAYER, MovementData_PlayerSpinsClockwiseEndsFacingDown
+	special UpdatePlayerSprite
+	showemote EMOTE_SHOCK, PLAYER, 15
 	end
 
-HomepageScript:
-	farjumptext HomepageText
+.PickAsh
+    ld a, 0
+	ld [wPlayerGender], a
+	ld [wPlayerCostume], a
+	
+	ld hl, wAshsName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	ret
 
+	
+MistyCostume:
+	playsound SFX_TINGLE
+	applymovement PLAYER, MovementData_PlayerSpinsClockwiseEndsFacingRight
+	setval (PAL_NPC_PINK << 4)
+	special SetPlayerPalette
+	callasm .PickMisty
+	applymovement PLAYER, MovementData_PlayerSpinsClockwiseEndsFacingDown
+	special UpdatePlayerSprite
+	showemote EMOTE_SHOCK, PLAYER, 15
+	end
+
+.PickMisty
+    ld a, 1
+	ld [wPlayerGender], a
+	ld [wPlayerCostume], a
+	
+	ld hl, wMistysName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	ret
+
+	
+
+BrockCostume:
+
+	playsound SFX_TINGLE
+	applymovement PLAYER, MovementData_PlayerSpinsClockwiseEndsFacingRight
+	setval (PAL_NPC_GREEN << 4)
+	special SetPlayerPalette
+	callasm .PickBrock
+	applymovement PLAYER, MovementData_PlayerSpinsClockwiseEndsFacingDown
+	special UpdatePlayerSprite
+	showemote EMOTE_SHOCK, PLAYER, 15
+	end
+	
+.PickBrock
+    ld a, 0
+	ld [wPlayerGender], a
+    ld a, 2
+	ld [wPlayerCostume], a
+	
+	ld hl, wBrocksName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	ret
+
+GaryCostume:
+
+	playsound SFX_TINGLE
+	applymovement PLAYER, MovementData_PlayerSpinsClockwiseEndsFacingRight
+	setval (PAL_NPC_BLUE << 4)
+	special SetPlayerPalette
+	callasm .PickGary
+	applymovement PLAYER, MovementData_PlayerSpinsClockwiseEndsFacingDown
+	special UpdatePlayerSprite
+	showemote EMOTE_SHOCK, PLAYER, 15
+	end
+	
+.PickGary
+    ld a, 0
+	ld [wPlayerGender], a
+    ld a, 3
+	ld [wPlayerCostume], a
+	
+	ld hl, wGarysName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	ret
+	
+PikachuCostume:
+
+	playsound SFX_TINGLE
+	applymovement PLAYER, MovementData_PlayerSpinsClockwiseEndsFacingRight
+	setval (PAL_NPC_RED << 4)
+	special SetPlayerPalette
+	callasm .PickPikachu
+	applymovement PLAYER, MovementData_PlayerSpinsClockwiseEndsFacingDown
+	special UpdatePlayerSprite
+	showemote EMOTE_SHOCK, PLAYER, 15
+	end
+	
+.PickPikachu
+    ld a, 4
+	ld [wPlayerCostume], a
+	
+	ld hl, .PikachuName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyBytes
+	 ret
+	 
+ .PikachuName:
+	 db "PIKACHU@"
+ end
+
+MovementData_PlayerSpinsClockwiseEndsFacingRight:
+   	turn_head DOWN
+	turn_head LEFT
+	turn_head UP
+	turn_head RIGHT
+    step_end
+	
+   MovementData_PlayerSpinsClockwiseEndsFacingDown:
+   	turn_head UP
+	turn_head RIGHT
+	turn_head LEFT
+	turn_head DOWN
+	step_end
+	
 Radio1Script:
 	opentext
 	setval MAPRADIO_POKEMON_CHANNEL
@@ -593,9 +732,9 @@ InitializeEventsScript:
 	setevent EVENT_BATTLE_TOWER_OPEN_CIVILIANS
 	setflag ENGINE_ROCKET_SIGNAL_ON_CH20
 	setflag ENGINE_ROCKETS_IN_MAHOGANY
-	variablesprite SPRITE_WEIRD_TREE, SPRITE_SUDOWOODO
-	variablesprite SPRITE_OLIVINE_RIVAL, SPRITE_RIVAL
-	variablesprite SPRITE_AZALEA_ROCKET, SPRITE_ROCKET
+;	variablesprite SPRITE_WEIRD_TREE, SPRITE_SUDOWOODO
+;	variablesprite SPRITE_OLIVINE_RIVAL, SPRITE_RIVAL
+;	variablesprite SPRITE_AZALEA_ROCKET, SPRITE_ROCKET
 	variablesprite SPRITE_FUCHSIA_GYM_1, SPRITE_JANINE
 	variablesprite SPRITE_FUCHSIA_GYM_2, SPRITE_JANINE
 	variablesprite SPRITE_FUCHSIA_GYM_3, SPRITE_JANINE

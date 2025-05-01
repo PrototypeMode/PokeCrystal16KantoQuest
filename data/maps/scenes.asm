@@ -84,4 +84,21 @@ MapScenes::
 	scene_var MOUNT_MOON_SQUARE,                           wMountMoonSquareSceneID
 	scene_var MOBILE_TRADE_ROOM,                           wMobileTradeRoomSceneID
 	scene_var MOBILE_BATTLE_ROOM,                          wMobileBattleRoomSceneID
+	scene_var REDS_HOUSE_1F,                               wRedsHouse1FSceneID
+	scene_var BLUES_HOUSE_1F,                              wBluesHouse1FSceneID
+	scene_var OAKS_LAB,                                    wOaksLabSceneID
+	scene_var PALLET_TOWN,                                 wPalletTownOakSceneID
+	scene_var VIRIDIAN_CITY,                               wViridianCitySceneID
+	scene_var VIRIDIAN_MART,                               wViridianMartSceneID
+	scene_var PEWTER_MUSEUM_1F,                            wPewterMuseum1FSceneID
+	scene_var PEWTER_MUSEUM_2F,                            wPewterMuseum2FSceneID
+	scene_var PEWTER_CITY,                                 wPewterCitySceneID
+	scene_var LAVENDER_TOWN,                                 wLavenderTownSceneID
+	scene_var LAVENDER_TOWER_1F,                                 wLavenderTower1FSceneID
+	scene_var LAVENDER_TOWER_2F,                                 wLavenderTower2FSceneID
+	scene_var LAVENDER_TOWER_3F,                                 wLavenderTower3FSceneID
+	scene_var LAVENDER_TOWER_4F,                                 wLavenderTower4FSceneID
+	scene_var LAVENDER_TOWER_5F,                                 wLavenderTower5FSceneID
+	scene_var LAVENDER_TOWER_6F,                                 wLavenderTower6FSceneID
+	scene_var LAVENDER_TOWER_7F,                                 wLavenderTower7FSceneID
 	db -1 ; end

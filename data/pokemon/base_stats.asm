@@ -1,3 +1,8 @@
+MACRO evs
+	db (\1 << 6) | (\2 << 4) | (\3 << 2) | \4
+	db (\5 << 6) | (\6 << 4)
+ENDM
+
 ; used in data/pokemon/base_stats/*.asm
 MACRO tmhm
 	; initialize bytes to 0
@@ -22,7 +27,11 @@ MACRO tmhm
 ENDM
 
 BaseData::
-	table_width BASE_DATA_SIZE
+	indirect_table BASE_DATA_SIZE, 1
+	indirect_entries NUM_POKEMON, BaseData1
+	indirect_table_end
+
+BaseData1:
 INCLUDE "data/pokemon/base_stats/bulbasaur.asm"
 INCLUDE "data/pokemon/base_stats/ivysaur.asm"
 INCLUDE "data/pokemon/base_stats/venusaur.asm"
@@ -274,4 +283,5 @@ INCLUDE "data/pokemon/base_stats/tyranitar.asm"
 INCLUDE "data/pokemon/base_stats/lugia.asm"
 INCLUDE "data/pokemon/base_stats/ho_oh.asm"
 INCLUDE "data/pokemon/base_stats/celebi.asm"
-	assert_table_length NUM_POKEMON
+INCLUDE "data/pokemon/base_stats/silph_ghost.asm"
+.IndirectEnd::

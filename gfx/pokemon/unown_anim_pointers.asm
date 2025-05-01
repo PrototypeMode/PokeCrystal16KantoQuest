@@ -26,4 +26,5 @@ UnownAnimationPointers:
 	dw UnownXAnimation
 	dw UnownYAnimation
 	dw UnownZAnimation
+;	dw UnownGhostAnimation
 	assert_table_length NUM_UNOWN

@@ -45,7 +45,8 @@ SGBLayoutJumptable:
 	dw .SGB_Pokepic
 	dw .SGB_MagnetTrain
 	dw .SGB_PackPals
-	dw .SGB_TrainerCard
+	dw .SGB_TrainerCardKanto
+	dw .SGB_TrainerCardJohto
 	dw .SGB_PokedexUnownMode
 	dw .SGB_BillsPC
 	dw .SGB_UnownPuzzle
@@ -401,7 +402,8 @@ endr
 	ret
 
 .SGB_Unused0D:
-.SGB_TrainerCard:
+.SGB_TrainerCardKanto:
+.SGB_TrainerCardJohto:
 	ld hl, PalPacket_Diploma
 	ld de, BlkPacket_AllPal0
 	ret
@@ -446,8 +448,7 @@ endr
 	ld bc, PALPACKET_LENGTH
 	call CopyBytes
 	ld a, [wCurPartySpecies]
-	ld l, a
-	ld h, 0
+	call GetPokemonIndexFromID
 	add hl, hl
 	add hl, hl
 	add hl, hl

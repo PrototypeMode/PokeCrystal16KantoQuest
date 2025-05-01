@@ -73,7 +73,7 @@ LinkReceptionistScript_Trade:
 	writetext Text_TradeReceptionistIntro
 	yesorno
 	iffalse .Cancel
-	special CheckMobileAdapterStatusSpecial
+	special CheckMobileAdapterStatusSpecial ; always returns false
 	iffalse .NoMobile
 	writetext Text_TradeReceptionistMobile
 	special AskMobileOrCable
@@ -175,7 +175,7 @@ LinkReceptionistScript_Battle:
 	writetext Text_BattleReceptionistIntro
 	yesorno
 	iffalse .Cancel
-	special CheckMobileAdapterStatusSpecial
+	special CheckMobileAdapterStatusSpecial ; always returns false
 	iffalse .NoMobile
 	writetext Text_BattleReceptionistMobile
 	special AskMobileOrCable
@@ -418,21 +418,21 @@ Pokecenter2F_CheckGender:
 	end
 
 .Female:
-	applymovementlasttalked Pokecenter2FMovementData_ReceptionistWalksUpAndLeft_LookRight_2
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerTakesTwoStepsUp
+;	applymovementlasttalked Pokecenter2FMovementData_ReceptionistWalksUpAndLeft_LookRight_2
+;	applymovement PLAYER, Pokecenter2FMovementData_PlayerTakesTwoStepsUp
 	opentext
 	writetext Text_OhPleaseWait
 	waitbutton
 	closetext
-	applymovementlasttalked Pokecenter2FMovementData_ReceptionistLooksRight
-	turnobject PLAYER, LEFT
+;	applymovementlasttalked Pokecenter2FMovementData_ReceptionistLooksRight
+;	turnobject PLAYER, LEFT
 	opentext
 	writetext Text_ChangeTheLook
 	waitbutton
 	closetext
 	playsound SFX_TINGLE
 	applymovement PLAYER, Pokecenter2FMovementData_PlayerSpinsClockwiseEndsFacingRight
-	setval (PAL_NPC_RED << 4)
+	setval (PAL_NPC_GREEN << 4)
 	special SetPlayerPalette
 	applymovement PLAYER, Pokecenter2FMovementData_PlayerSpinsClockwiseEndsFacingLeft
 	setflag ENGINE_KRIS_IN_CABLE_CLUB
@@ -442,7 +442,7 @@ Pokecenter2F_CheckGender:
 	waitbutton
 	closetext
 	showemote EMOTE_SHOCK, PLAYER, 15
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerTakesOneStepUp
+;	applymovement PLAYER, Pokecenter2FMovementData_PlayerTakesOneStepUp
 	end
 
 Script_WalkOutOfLinkTradeRoom:
@@ -581,10 +581,14 @@ Script_LeftTimeCapsule:
 	end
 
 Pokecenter2FLinkRecordSign:
-	reanchormap
+	refreshscreen
 	special DisplayLinkRecord
 	closetext
 	end
+
+Pokecenter2FOfficerScript2:
+	faceplayer
+    
 
 Pokecenter2FOfficerScript:
 	faceplayer
@@ -1039,4 +1043,4 @@ Pokecenter2F_MapEvents:
 	object_event  5,  2, SPRITE_LINK_RECEPTIONIST, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, LinkReceptionistScript_Trade, -1
 	object_event  9,  2, SPRITE_LINK_RECEPTIONIST, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, LinkReceptionistScript_Battle, -1
 	object_event 13,  3, SPRITE_LINK_RECEPTIONIST, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, LinkReceptionistScript_TimeCapsule, -1
-	object_event  1,  1, SPRITE_OFFICER, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, Pokecenter2FOfficerScript, EVENT_MYSTERY_GIFT_DELIVERY_GUY
+	object_event  1,  1, SPRITE_OFFICER, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, Pokecenter2F_CheckGender, -1

@@ -36,6 +36,9 @@
 	const TILESET_KABUTO_WORD_ROOM     ; 22
 	const TILESET_OMANYTE_WORD_ROOM    ; 23
 	const TILESET_AERODACTYL_WORD_ROOM ; 24
+	const TILESET_UNUSED_JOHTO                ; 25
+	const TILESET_NEW_CITY              ; 26
+	const TILESET_CEMETERY             ; 27 
 DEF NUM_TILESETS EQU const_value - 1
 
 ; wTileset struct size
@@ -55,3 +58,13 @@ DEF ROOF_LENGTH EQU 9
 	const PAL_BG_BROWN  ; 5
 	const PAL_BG_ROOF   ; 6
 	const PAL_BG_TEXT   ; 7
+	
+	const_next $80
+	const PAL_BG_PRIORITY_GRAY   ; 80
+	const PAL_BG_PRIORITY_RED    ; 81
+	const PAL_BG_PRIORITY_GREEN  ; 82
+	const PAL_BG_PRIORITY_WATER  ; 83
+	const PAL_BG_PRIORITY_YELLOW ; 84
+	const PAL_BG_PRIORITY_BROWN  ; 85
+	const PAL_BG_PRIORITY_ROOF   ; 86
+	const PAL_BG_PRIORITY_TEXT   ; 87

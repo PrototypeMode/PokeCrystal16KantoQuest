@@ -65,7 +65,7 @@ INCLUDE "engine/events/bug_contest/judging.asm"
 INCLUDE "engine/events/pokerus/apply_pokerus_tick.asm"
 INCLUDE "engine/events/bug_contest/contest_2.asm"
 INCLUDE "engine/pokemon/correct_party_errors.asm"
-INCLUDE "engine/math/get_square_root.asm"
+
 
 
 SECTION "bank5", ROMX
@@ -80,12 +80,15 @@ INCLUDE "engine/events/pokecenter_pc.asm"
 INCLUDE "engine/items/mart.asm"
 INCLUDE "engine/events/money.asm"
 INCLUDE "data/items/marts.asm"
-INCLUDE "engine/events/mom.asm"
+
 INCLUDE "engine/events/daycare.asm"
 INCLUDE "engine/events/print_unown.asm"
 INCLUDE "engine/events/print_photo.asm"
 INCLUDE "engine/pokemon/breeding.asm"
 
+SECTION "BankingMomDaisy", ROMX
+INCLUDE "engine/events/mom.asm"
+INCLUDE "engine/events/daisy.asm"
 
 SECTION "Roofs", ROMX
 
@@ -96,6 +99,9 @@ SECTION "Clock Reset", ROMX
 
 INCLUDE "engine/rtc/restart_clock.asm"
 
+SECTION "Trainer Card", ROMX
+INCLUDE "engine/menus/trainer_card.asm"
+INCLUDE "engine/gfx/get_card_pic.asm"
 
 SECTION "bank9", ROMX
 
@@ -110,22 +116,25 @@ INCLUDE "engine/menus/menu_2.asm"
 INCLUDE "engine/pokemon/mon_submenu.asm"
 INCLUDE "engine/battle/menu.asm"
 INCLUDE "engine/items/buy_sell_toss.asm"
-INCLUDE "engine/menus/trainer_card.asm"
-INCLUDE "engine/events/prof_oaks_pc.asm"
-INCLUDE "engine/overworld/decorations.asm"
+
 INCLUDE "engine/pokemon/level_up_happiness.asm"
 INCLUDE "engine/battle/read_trainer_dvs.asm"
-INCLUDE "engine/battle/returntobattle_useball.asm"
+
 INCLUDE "engine/battle/consume_held_item.asm"
 INCLUDE "data/moves/effects.asm"
 INCLUDE "engine/events/kurt_selectquantity_interpretjoypad.asm"
 
+SECTION "bank9-1", ROMX
+INCLUDE "engine/battle/returntobattle_useball.asm"
+INCLUDE "engine/events/prof_oaks_pc.asm"
+
+SECTION "bank9-2", ROMX
+INCLUDE "engine/overworld/decorations.asm"
+
 
 SECTION "bankA", ROMX
 
-INCLUDE "engine/link/link.asm"
 INCLUDE "engine/overworld/wildmons.asm"
-INCLUDE "engine/battle/link_result.asm"
 
 
 SECTION "bankB", ROMX
@@ -151,18 +160,22 @@ SECTION "Enemy Trainers", ROMX
 
 INCLUDE "engine/battle/ai/items.asm"
 INCLUDE "engine/battle/ai/scoring.asm"
+
+
+SECTION "Enemy Trainers 2", ROMX
+
 INCLUDE "engine/battle/read_trainer_attributes.asm"
 INCLUDE "engine/battle/read_trainer_party.asm"
-
 
 SECTION "Battle Core", ROMX
 
 INCLUDE "engine/battle/core.asm"
-INCLUDE "data/battle/effect_command_pointers.asm"
 
+SECTION "Battle Core 2", ROMX
+INCLUDE "engine/battle/core2.asm"
 
 SECTION "bank10", ROMX
-
+INCLUDE "data/battle/effect_command_pointers.asm"
 INCLUDE "engine/pokedex/pokedex.asm"
 INCLUDE "data/moves/moves.asm"
 INCLUDE "engine/pokemon/evolve.asm"
@@ -213,7 +226,8 @@ INCLUDE "engine/smallflag.asm"
 INCLUDE "engine/gfx/trademon_frontpic.asm"
 INCLUDE "engine/events/pokerus/check_pokerus.asm"
 INCLUDE "engine/events/lucky_number.asm"
-INCLUDE "engine/pokemon/caught_data.asm"
+
+SECTION "bank13_2.5", ROMX
 INCLUDE "engine/pokemon/search_party.asm"
 INCLUDE "engine/pokemon/stats_screen.asm"
 INCLUDE "engine/events/catch_tutorial.asm"
@@ -226,6 +240,9 @@ INCLUDE "engine/battle/check_battle_scene.asm"
 INCLUDE "engine/movie/gbc_only.asm"
 INCLUDE "engine/events/poke_seer.asm"
 
+
+SECTION "bank13_3", ROMX
+INCLUDE "engine/pokemon/caught_data.asm"
 
 SECTION "bank14", ROMX
 
@@ -285,13 +302,16 @@ INCLUDE "engine/events/halloffame.asm"
 SECTION "Crystal Features 2", ROMX
 
 INCLUDE "engine/events/kurt.asm"
-INCLUDE "engine/gfx/player_gfx.asm"
+
 INCLUDE "mobile/mobile_22.asm"
 INCLUDE "engine/events/unown_walls.asm"
 INCLUDE "engine/events/buena.asm"
 INCLUDE "engine/events/dratini.asm"
 INCLUDE "engine/events/battle_tower/rules.asm"
 INCLUDE "mobile/mobile_22_2.asm"
+
+SECTION "Crystal Features 3", ROMX
+INCLUDE "engine/gfx/player_gfx.asm"
 
 
 SECTION "bank23", ROMX
@@ -312,7 +332,7 @@ INCLUDE "engine/rtc/timeset.asm"
 INCLUDE "engine/pokegear/pokegear.asm"
 INCLUDE "engine/events/fish.asm"
 INCLUDE "engine/games/slot_machine.asm"
-
+INCLUDE "data/pokemon/first_stages.asm"
 
 SECTION "Phone Scripts 1", ROMX
 
@@ -362,9 +382,8 @@ INCLUDE "engine/pokemon/mail_2.asm"
 
 
 SECTION "Phone Scripts 2", ROMX
-
 INCLUDE "engine/events/std_scripts.asm"
-INCLUDE "engine/phone/scripts/unused.asm"
+
 INCLUDE "engine/phone/scripts/mom.asm"
 INCLUDE "engine/phone/scripts/bill.asm"
 INCLUDE "engine/phone/scripts/elm.asm"
@@ -396,8 +415,16 @@ INCLUDE "engine/phone/scripts/wilton.asm"
 INCLUDE "engine/phone/scripts/kenji.asm"
 INCLUDE "engine/phone/scripts/parry.asm"
 INCLUDE "engine/phone/scripts/erin.asm"
+
+
+
+SECTION "Phone Scripts 3", ROMX
 INCLUDE "engine/phone/scripts/generic_callee.asm"
+INCLUDE "engine/phone/scripts/unused.asm"
 INCLUDE "engine/events/trainer_scripts.asm"
+
+SECTION "Init Events", ROMX
+INCLUDE "engine/events/init_events.asm"
 
 
 SECTION "bank32", ROMX
@@ -481,7 +508,7 @@ SECTION "bank3F", ROMX
 INCLUDE "engine/tilesets/tileset_anims.asm"
 INCLUDE "engine/events/npc_trade.asm"
 INCLUDE "engine/events/mom_phone.asm"
-
+INCLUDE "engine/events/tradeback_npc.asm"
 
 SECTION "mobile40", ROMX
 
@@ -530,6 +557,8 @@ SECTION "bank5B", ROMX
 
 INCLUDE "mobile/mobile_5b.asm"
 INCLUDE "engine/link/link_trade.asm"
+INCLUDE "engine/link/link.asm"
+INCLUDE "engine/battle/link_result.asm"
 
 
 SECTION "mobile5C", ROMX
@@ -686,6 +715,10 @@ SECTION "Stadium 2 Checksums", ROMX[$7DE0], BANK[$7F]
 ; Pokémon Stadium Gold and Silver was the third Stadium release for N64.)
 ; This SECTION reserves space for those checksums.
 ; If it is removed, also remove the "tools/stadium" command in the Makefile.
+
+SECTION "16-bit ID stuff", ROMX
+
+INCLUDE "engine/16/table_functions.asm"
 
 ; own section
 INCLUDE "data/trainers/parties.asm"

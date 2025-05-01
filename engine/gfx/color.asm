@@ -5,13 +5,15 @@ DEF SHINY_DEF_DV EQU 10
 DEF SHINY_SPD_DV EQU 10
 DEF SHINY_SPC_DV EQU 10
 
+
 CheckShininess:
 ; Check if a mon is shiny by DVs at bc.
 ; Return carry if shiny.
 
 	ld l, c
 	ld h, b
-
+		
+.shiny
 ; Attack
 	ld a, [hl]
 	and SHINY_ATK_MASK << 4
@@ -375,7 +377,7 @@ LoadStatsScreenPals:
 	ret z
 	ld hl, StatsScreenPals
 	ld b, 0
-	dec c
+	
 	add hl, bc
 	add hl, bc
 	ldh a, [rSVBK]
@@ -440,6 +442,7 @@ LoadMailPalettes:
 INCLUDE "gfx/mail/mail.pal"
 
 INCLUDE "engine/gfx/cgb_layouts.asm"
+
 
 CopyFourPalettes:
 	ld de, wBGPals1
@@ -671,6 +674,25 @@ GetBattlemonBackpicPalettePointer:
 	ret
 
 GetEnemyFrontpicPalettePointer:
+   ld a, [wBattleType]
+   cp BATTLETYPE_GHOST
+   jr z, .GhostFrontpicPalette
+   
+   cp BATTLETYPE_SCOPE
+   jr z, .GhostFrontpicPalette
+   jr nz, .NormalFrontpicPalette
+	
+
+	
+	
+.GhostFrontpicPalette
+	push de
+	ld hl, GhostPalette
+	pop de
+
+	ret
+	
+.NormalFrontpicPalette
 	push de
 	farcall GetEnemyMonDVs
 	ld c, l
@@ -679,22 +701,138 @@ GetEnemyFrontpicPalettePointer:
 	call GetFrontpicPalettePointer
 	pop de
 	ret
+	
+
+GetPlayerUseBallPalettePointer:
+.Dude	
+	ld a, [wBattleType]
+	cp BATTLETYPE_TUTORIAL
+	jr z, .dude
+	 
+
+.Costumes
+    ld a, [wPlayerCostume]
+    cp 2
+	jr z, .BrockPal
+	cp 3
+	jr z, .GaryPal
+	cp 4
+	jr z, .PikachuPal
+
+
+.Gender	
+   ld a, [wPlayerGender]
+	bit PLAYERGENDER_FEMALE_F, a
+	jr z, .male
+	jr nz, .female
+
+
+.BrockPal
+	ld hl, BrockPalette
+    ret
+.GaryPal
+	ld hl, GaryPalette
+    ret
+.PikachuPal	
+	ld hl, PikachuPalette
+    ret
+
+
+.female	
+	ld hl, OldMistyPalette
+    ret
+	
+.male
+	ld hl, PlayerPalette
+	ret
+
+.dude
+    ld a, [wMapGroup]
+	 ld b, a	
+	 ld a, [wMapNumber]
+	 ld c, a
+     call GetWorldMapLocation
+     cp LANDMARK_PALLET_TOWN
+	 jr z, .OakPalette
+      cp LANDMARK_VIRIDIAN_CITY
+	 jr z, .OldDudePalette
+     ret
+
+
+.OakPalette 
+	ld hl, OakPalette
+	ret	
+	
+
+.OldDudePalette 
+	ld hl, OldDudePalette
+	ret		
+	
 
 GetPlayerOrMonPalettePointer:
 	and a
 	jp nz, GetMonNormalOrShinyPalettePointer
-	ld a, [wPlayerSpriteSetupFlags]
-	bit PLAYERSPRITESETUP_FEMALE_TO_MALE_F, a
-	jr nz, .male
-	ld a, [wPlayerGender]
-	and a
-	jr z, .male
-	ld hl, KrisPalette
-	ret
+	
+.CatchTutorial	
+	ld a, [wBattleType]
+	cp BATTLETYPE_TUTORIAL
+	jr z, .TutorialCharacter
+	
+	
+    ld a, [wPlayerCostume]
+    cp 2
+	jr z, .BrockPal
+	cp 3
+	jr z, .GaryPal
+	cp 4
+	jr z, .PikachuPal
+	
+.Gender	
+   ld a, [wPlayerGender]
+	bit PLAYERGENDER_FEMALE_F, a
+	jr z, .AshPal
+	jr nz, .OldMistyPal
+    ret
+	
+.TutorialCharacter
+    ld a, [wMapGroup]
+	 ld b, a	
+	 ld a, [wMapNumber]
+	 ld c, a
+     call GetWorldMapLocation
+     cp LANDMARK_PALLET_TOWN
+	 jr z, .OakPal
+     cp LANDMARK_VIRIDIAN_CITY
+	 jr z, .OldDudePal
 
-.male
+
+
+.BrockPal
+	ld hl, BrockPalette
+    ret
+.GaryPal
+	ld hl, GaryPalette
+    ret
+.PikachuPal	
+	ld hl, PikachuPalette
+    ret
+
+.OldMistyPal	
+	ld hl, OldMistyPalette
+    ret
+	
+.AshPal
 	ld hl, PlayerPalette
 	ret
+
+.OakPal
+	ld hl, OakPalette
+	ret	
+
+.OldDudePal
+	ld hl, OldDudePalette
+	ret	
+
 
 GetFrontpicPalettePointer:
 	and a
@@ -761,8 +899,7 @@ CGBCopyTwoPredefObjectPals: ; unreferenced
 	ret
 
 _GetMonPalettePointer:
-	ld l, a
-	ld h, 0
+	call GetPokemonIndexFromID
 	add hl, hl
 	add hl, hl
 	add hl, hl
@@ -771,17 +908,35 @@ _GetMonPalettePointer:
 	ret
 
 GetMonNormalOrShinyPalettePointer:
+    ; ld a, [wBattleType]
+	; cp BATTLETYPE_SCOPE
+	; jr nz, .Normal
+	
+	
+; .GhostPalette
+	; push bc
+	; call _GetMonPalettePointer
+	; pop bc
+	
+	; push hl
+	; ld hl, KrisPalette
+    ; ret
+	
+; .Normal	
 	push bc
 	call _GetMonPalettePointer
 	pop bc
+	
 	push hl
+
 	call CheckShininess
 	pop hl
 	ret nc
 rept 4
 	inc hl
-endr
+endr	
 	ret
+
 
 PushSGBPals:
 	ld a, [wJoypadDisable]
@@ -1255,6 +1410,16 @@ LoadMapPals:
 	ldh [rSVBK], a
 
 .got_pals
+; This jumps to MuseumPal/MapObject2Pals when Pewter City (for Amber)
+	ld a, [wMapGroup]
+	ld b, a	
+	ld a, [wMapNumber]
+	ld c, a
+    call GetWorldMapLocation
+    cp LANDMARK_PEWTER_CITY
+    jp z, MuseumPal
+	
+;If not Pewter, fallthrough to regular palette set
 	ld a, [wTimeOfDayPal]
 	maskbits NUM_DAYTIMES
 	ld bc, 8 palettes
@@ -1265,6 +1430,7 @@ LoadMapPals:
 	ld a, BANK(wOBPals1)
 	call FarCopyWRAM
 
+OriginalPal:
 	ld a, [wEnvironment]
 	cp TOWN
 	jr z, .outside
@@ -1292,6 +1458,19 @@ endr
 	ld a, BANK(wBGPals1)
 	call FarCopyWRAM
 	ret
+	
+MuseumPal:
+	ld a, [wTimeOfDayPal]
+	maskbits NUM_DAYTIMES
+	ld bc, 8 palettes
+	ld hl, MapObject2Pals
+	call AddNTimes
+	ld de, wOBPals1
+	ld bc, 8 palettes
+	ld a, BANK(wOBPals1)
+	call FarCopyWRAM
+    jp OriginalPal	
+    ret	
 
 INCLUDE "data/maps/environment_colors.asm"
 
@@ -1306,6 +1485,9 @@ INCLUDE "gfx/tilesets/bg_tiles.pal"
 
 MapObjectPals::
 INCLUDE "gfx/overworld/npc_sprites.pal"
+
+MapObject2Pals::
+INCLUDE "gfx/overworld/npc_sprites2.pal"
 
 RoofPals:
 	table_width PAL_COLOR_SIZE * 2 * 2

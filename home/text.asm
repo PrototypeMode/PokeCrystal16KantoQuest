@@ -160,6 +160,20 @@ SetUpTextbox::
 	pop hl
 	ret
 
+FarPlaceString::
+	ld c, a
+	ldh a, [hROMBank]
+	ld b, a
+	ld a, c
+	rst Bankswitch
+
+	push bc
+	call PlaceString
+
+	pop af
+	rst Bankswitch
+	ret
+
 PlaceString::
 	push hl
 	; fallthrough
@@ -210,14 +224,14 @@ ENDM
 	dict "<SCROLL>",  _ContTextNoPause
 	dict "<_CONT>",   _ContText
 	dict "<PARA>",    Paragraph
-	dict "<MOM>",     PrintMomsName
+	dict "<BROCK>",     PrintBrocksName
 	dict "<PLAYER>",  PrintPlayerName
-	dict "<RIVAL>",   PrintRivalName
+	dict "<GARY>",   PrintGarysName
 	dict "<ROUTE>",   PlaceJPRoute
 	dict "<WATASHI>", PlaceWatashi
 	dict "<KOKO_WA>", PlaceKokoWa
-	dict "<RED>",     PrintRedsName
-	dict "<GREEN>",   PrintGreensName
+	dict "<ASH>",     PrintAshsName
+	dict "<MISTY>",   PrintMistysName
 	dict "#",         PlacePOKe
 	dict "<PC>",      PCChar
 	dict "<ROCKET>",  RocketChar
@@ -238,40 +252,8 @@ ENDM
 	dict "<USER>",    PlaceMoveUsersName
 	dict "<ENEMY>",   PlaceEnemysName
 	dict "<PLAY_G>",  PlaceGenderedPlayerName
-	dict "ﾟ",         .place
-	dict "ﾞ",         .place
 
-	cp FIRST_REGULAR_TEXT_CHAR
-	jr nc, .place
-; dakuten or handakuten
-	cp "パ"
-	jr nc, .handakuten
-; dakuten
-	cp FIRST_HIRAGANA_DAKUTEN_CHAR
-	jr nc, .hiragana_dakuten
-; katakana dakuten
-	add "カ" - "ガ"
-	jr .place_dakuten
 
-.hiragana_dakuten
-	add "か" - "が"
-.place_dakuten
-	ld b, "ﾞ" ; dakuten
-	jr .place
-
-.handakuten
-	cp "ぱ"
-	jr nc, .hiragana_handakuten
-; katakana handakuten
-	add "ハ" - "パ"
-	jr .place_handakuten
-
-.hiragana_handakuten
-	add "は" - "ぱ"
-.place_handakuten
-	ld b, "ﾟ" ; handakuten
-
-.place
 	ld [hli], a
 	call PrintLetterDelay
 	jp NextChar
@@ -288,11 +270,11 @@ MACRO print_name
 	jp PlaceCommandCharacter
 ENDM
 
-PrintMomsName:   print_name wMomsName
 PrintPlayerName: print_name wPlayerName
-PrintRivalName:  print_name wRivalName
-PrintRedsName:   print_name wRedsName
-PrintGreensName: print_name wGreensName
+PrintGarysName:  print_name wGarysName
+PrintAshsName:   print_name wAshsName
+PrintMistysName:   print_name wMistysName
+PrintBrocksName: print_name wBrocksName
 
 TrainerChar:  print_name TrainerCharText
 TMChar:       print_name TMCharText
@@ -358,7 +340,7 @@ PlaceEnemysName::
 	jr PlaceCommandCharacter
 
 .rival
-	ld de, wRivalName
+	ld de, wGarysName
 	jr PlaceCommandCharacter
 
 .linkbattle

@@ -2513,6 +2513,9 @@ _ContinueSpawnFacing:
 	ret
 
 _SetPlayerPalette:
+
+
+.ContinueCheck
 	ld a, d
 	and 1 << 7
 	ret z
@@ -2533,6 +2536,7 @@ _SetPlayerPalette:
 	and ~PALETTE_MASK
 	or d
 	ld [hl], a
+
 	ret
 
 StartFollow::

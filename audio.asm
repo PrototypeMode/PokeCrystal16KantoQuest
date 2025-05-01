@@ -16,6 +16,8 @@ INCLUDE "audio/music/rocketbattle.asm"
 INCLUDE "audio/music/elmslab.asm"
 INCLUDE "audio/music/darkcave.asm"
 INCLUDE "audio/music/johtogymbattle.asm"
+
+SECTION "Songs 1.5", ROMX
 INCLUDE "audio/music/championbattle.asm"
 INCLUDE "audio/music/ssaqua.asm"
 INCLUDE "audio/music/newbarktown.asm"
@@ -148,6 +150,10 @@ INCLUDE "audio/music/mobileadapter.asm"
 SECTION "Extra Songs 2", ROMX
 
 INCLUDE "audio/music/postcredits.asm"
+
+SECTION "New Songs", ROMX
+
+INCLUDE "audio/music/viridianforest.asm"
 
 
 SECTION "Sound Effects", ROMX

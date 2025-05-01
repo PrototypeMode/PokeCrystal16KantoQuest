@@ -26,6 +26,8 @@ MaleTrainers:
 	db SAGE
 	db BIKER
 	db SCIENTIST
+	db RIVAL_GARY
+	; db RIVAL_ASH	
 .End
 
 FemaleTrainers:

@@ -13,6 +13,14 @@ WildPokemonAppearedText:
 	text_start
 	line "appeared!"
 	prompt
+	
+WildGhostPokemonAppearedText:
+	text "A ghostly"
+	line "@"
+	text_ram wEnemyMonNickname
+	text_start
+	cont "appeared!"
+	prompt
 
 HookedPokemonAttackedText:
 	text "The hooked"
@@ -34,6 +42,33 @@ WildCelebiAppearedText:
 	text_start
 	line "appeared!"
 	prompt
+	
+WildSilphGhostAppearedText:
+	text "Ahh! A GHOST"
+	; text_ram wEnemyMonNickname
+	; text_start
+	line "appeared!"
+	
+	para "It can't be"
+	line "identified!"
+	prompt
+
+WildSilphGhostScopeText:
+	text "Ahh! A GHOST"
+	; text_ram wEnemyMonNickname
+	; text_start
+	line "appeared!"
+	
+	para "<PLAYER> used"
+	line "the SILPH SCOPE!"
+	prompt
+
+WildSilphGhostNoScopeText:
+	text "It can't be"
+	; text_ram wEnemyMonNickname
+	; text_start
+	line "identified"
+	prompt		
 
 WantsToBattleText::
 	text "<ENEMY>"
@@ -199,11 +234,11 @@ SentAllToMomText:
 	text "Sent all to MOM!"
 	prompt
 
-UnusedRivalLossText: ; unreferenced
-	text "<RIVAL>: Huh? I"
-	line "should've chosen"
-	cont "your #MON!"
-	prompt
+; UnusedRivalLossText: ; unreferenced
+	; text "<RIVAL>: Huh? I"
+	; line "should've chosen"
+	; cont "your #MON!"
+	; prompt
 
 BattleText_MonFainted:
 	text_ram wBattleMonNickname
@@ -215,11 +250,11 @@ BattleText_UseNextMon:
 	text "Use next #MON?"
 	done
 
-UnusedRivalWinText: ; unreferenced
-	text "<RIVAL>: Yes!"
-	line "I guess I chose a"
-	cont "good #MON!"
-	prompt
+; UnusedRivalWinText: ; unreferenced
+	; text "<RIVAL>: Yes!"
+	; line "I guess I chose a"
+	; cont "good #MON!"
+	; prompt
 
 LostAgainstText:
 	text "Lost against"
@@ -328,6 +363,11 @@ BattleText_TheMoveIsDisabled:
 	text "The move is"
 	line "DISABLED!"
 	prompt
+	
+BattleText_IsTooScared:
+    text "<USER> is too"
+	line "scared to move!"
+	prompt		
 
 BattleText_MonHasNoMovesLeft:
 	text_ram wBattleMonNickname

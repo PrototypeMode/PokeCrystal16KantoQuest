@@ -5,7 +5,7 @@ DEF WALL_TILE  EQU $0f
 DEF TALK       EQU $10
 
 ; collision data types (see data/tilesets/*_collision.asm)
-; CollisionPermissionTable indexes (see data/collision/collision_permissions.asm)
+; TileCollisionTable indexes (see data/collision/collision_permissions.asm)
 DEF COLL_FLOOR             EQU $00
 DEF COLL_01                EQU $01 ; garbage
 DEF COLL_03                EQU $03 ; garbage
@@ -79,14 +79,22 @@ DEF COLL_WARP_PANEL        EQU $7c
 DEF COLL_DOOR_7D           EQU $7d ; unused
 DEF COLL_WARP_CARPET_RIGHT EQU $7e
 DEF COLL_WARP_7F           EQU $7f ; unused
+DEF COLL_STOP_SPIN         EQU $80
+DEF COLL_SPIN_UP           EQU $81
+DEF COLL_SPIN_DOWN         EQU $82
+DEF COLL_SPIN_LEFT         EQU $83
+DEF COLL_SPIN_RIGHT        EQU $84
 DEF COLL_COUNTER           EQU $90
 DEF COLL_BOOKSHELF         EQU $91
 DEF COLL_PC                EQU $93
 DEF COLL_RADIO             EQU $94
 DEF COLL_TOWN_MAP          EQU $95
 DEF COLL_MART_SHELF        EQU $96
-DEF COLL_TV                EQU $97
-DEF COLL_COUNTER_98        EQU $98 ; unused
+DEF COLL_HOUSE_1_TV        EQU $97
+DEF COLL_PLAYER_ROOM_TV      EQU $98
+DEF COLL_PLAYER_HOUSE_1F_TV  EQU $99
+DEF COLL_9A                 EQU $9a
+DEF COLL_TV                EQU $9b ; unused
 DEF COLL_9C                EQU $9c ; garbage
 DEF COLL_WINDOW            EQU $9d
 DEF COLL_INCENSE_BURNER    EQU $9f

@@ -1,8 +1,8 @@
 DEF NAMINGSCREEN_CURSOR     EQU $7e
 
-DEF NAMINGSCREEN_BORDER     EQU "■" ; $60
+DEF NAMINGSCREEN_BORDER     EQU "■" ; $d7
 DEF NAMINGSCREEN_MIDDLELINE EQU "→" ; $eb
-DEF NAMINGSCREEN_UNDERLINE  EQU "<DOT>" ; $f2
+DEF NAMINGSCREEN_UNDERLINE  EQU "☎" ; $d9
 
 _NamingScreen:
 	call DisableSpriteUpdates
@@ -190,6 +190,7 @@ NamingScreen:
 .oTomodachi_no_namae_sutoringu
 	db "おともだち　の　なまえは？@"
 
+	
 .LoadSprite:
 	push de
 	ld hl, vTiles0 tile $00
@@ -209,14 +210,56 @@ NamingScreen:
 	ld [hl], a
 	pop de
 	ld b, SPRITE_ANIM_OBJ_RED_WALK
+.Chris
 	ld a, d
-	cp HIGH(KrisSpriteGFX)
-	jr nz, .not_kris
+	cp HIGH(AshSpriteGFX)
+	jr nz, .Kris
 	ld a, e
-	cp LOW(KrisSpriteGFX)
-	jr nz, .not_kris
+	cp LOW(AshSpriteGFX)
+	jr nz, .Kris
+	ld b, SPRITE_ANIM_OBJ_RED_WALK
+	jr .Animate
+	
+.Kris
+	ld a, d
+	cp HIGH(OldMistySpriteGFX)
+	jr nz, .Brock
+	ld a, e
+	cp LOW(OldMistySpriteGFX)
+	jr nz, .Brock
+	ld b, SPRITE_ANIM_OBJ_PINK_WALK
+    jr .Animate
+
+.Brock
+	ld a, d
+	cp HIGH(BrockSpriteGFX)
+	jr nz, .Blue
+	ld a, e
+	cp LOW(BrockSpriteGFX)
+	jr nz, .Blue
+	ld b, SPRITE_ANIM_OBJ_GREEN_WALK
+	jr .Animate
+
+.Blue
+	ld a, d
+	cp HIGH(GarySpriteGFX)
+	jr nz, .Pikachu
+	ld a, e
+	cp LOW(GarySpriteGFX)
+	jr nz, .Pikachu
 	ld b, SPRITE_ANIM_OBJ_BLUE_WALK
-.not_kris
+	jr .Animate		
+
+.Pikachu
+	ld a, d
+	cp HIGH(WalkingPikachuSpriteGFX)
+	jr nz, .Pikachu
+	ld a, e
+	cp LOW(WalkingPikachuSpriteGFX)
+	jr nz, .Pikachu
+	ld b, SPRITE_ANIM_OBJ_RED_WALK	
+
+.Animate
 	ld a, b
 	depixel 4, 4, 4, 0
 	call InitSpriteAnimStruct
@@ -831,7 +874,7 @@ LoadNamingScreenGFX:
 	lb bc, BANK(NamingScreenGFX_UnderLine), 1
 	call Get1bpp
 
-	ld de, vTiles2 tile NAMINGSCREEN_BORDER
+	ld de, vTiles0 tile NAMINGSCREEN_BORDER
 	ld hl, NamingScreenGFX_Border
 	ld bc, 1 tiles
 	ld a, BANK(NamingScreenGFX_Border)

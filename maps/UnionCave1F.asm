@@ -13,6 +13,13 @@ UnionCave1F_MapScripts:
 	def_scene_scripts
 
 	def_callbacks
+;    callback MAPCALLBACK_NIGHTPAL, DungeonNightPal
+	
+	
+; DungeonNightPal:
+     ; ld a, 1
+     ; ld [wBattleTimeOfDay], a
+     ; endcallback
 
 TrainerPokemaniacLarry:
 	trainer POKEMANIAC, LARRY, EVENT_BEAT_POKEMANIAC_LARRY, PokemaniacLarrySeenText, PokemaniacLarryBeatenText, 0, .Script

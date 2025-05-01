@@ -6,9 +6,9 @@ TrainerPalettes:
 
 	table_width PAL_COLOR_SIZE * 2
 
-PlayerPalette: ; Chris uses the same colors as Cal
-INCBIN "gfx/trainers/cal.gbcpal", middle_colors
-KrisPalette: ; Kris shares Falkner's palette
+PlayerPalette:
+INCLUDE "gfx/player/palettes/ash.pal"
+
 INCBIN "gfx/trainers/falkner.gbcpal", middle_colors
 INCBIN "gfx/trainers/whitney.gbcpal", middle_colors
 INCBIN "gfx/trainers/bugsy.gbcpal", middle_colors
@@ -18,9 +18,14 @@ INCBIN "gfx/trainers/jasmine.gbcpal", middle_colors
 INCBIN "gfx/trainers/chuck.gbcpal", middle_colors
 INCBIN "gfx/trainers/clair.gbcpal", middle_colors
 INCBIN "gfx/trainers/rival1.gbcpal", middle_colors
+OakPalette:
 INCBIN "gfx/trainers/oak.gbcpal", middle_colors
 INCBIN "gfx/trainers/will.gbcpal", middle_colors
+
+DudePalette:
 INCBIN "gfx/trainers/cal.gbcpal", middle_colors
+
+
 INCBIN "gfx/trainers/bruno.gbcpal", middle_colors
 INCBIN "gfx/trainers/karen.gbcpal", middle_colors
 INCBIN "gfx/trainers/koga.gbcpal", middle_colors
@@ -61,6 +66,7 @@ INCBIN "gfx/trainers/juggler.gbcpal", middle_colors
 INCBIN "gfx/trainers/blackbelt_t.gbcpal", middle_colors
 INCBIN "gfx/trainers/executive_m.gbcpal", middle_colors
 INCBIN "gfx/trainers/psychic_t.gbcpal", middle_colors
+OldDudePalette:
 INCBIN "gfx/trainers/picnicker.gbcpal", middle_colors
 INCBIN "gfx/trainers/camper.gbcpal", middle_colors
 INCBIN "gfx/trainers/executive_f.gbcpal", middle_colors
@@ -76,5 +82,22 @@ INCBIN "gfx/trainers/blue.gbcpal", middle_colors
 INCBIN "gfx/trainers/officer.gbcpal", middle_colors
 INCBIN "gfx/trainers/grunt_f.gbcpal", middle_colors
 INCBIN "gfx/trainers/mysticalman.gbcpal", middle_colors
+INCBIN "gfx/trainers/rival_gary.gbcpal", middle_colors
+INCBIN "gfx/trainers/rival_ash.gbcpal", middle_colors
 
-	assert_table_length NUM_TRAINER_CLASSES + 1
+OldMistyPalette:
+INCLUDE "gfx/player/palettes/old_misty.pal"
+
+; BrockPalette:
+; INCLUDE "gfx/player/palettes/brock.pal"
+BrockPalette:
+INCBIN "gfx/pokemon/sudowoodo/normal.gbcpal", middle_colors
+
+GaryPalette:
+INCLUDE "gfx/player/palettes/gary.pal"
+
+PikachuPalette:
+INCLUDE "gfx/player/palettes/pikachu.pal"
+
+
+	assert_table_length NUM_TRAINER_CLASSES + 5

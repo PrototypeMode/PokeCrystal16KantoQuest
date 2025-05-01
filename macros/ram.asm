@@ -10,12 +10,24 @@ MACRO box_struct
 \1Moves::          ds NUM_MOVES
 \1ID::             dw
 \1Exp::            ds 3
-\1StatExp::
-\1HPExp::          dw
-\1AtkExp::         dw
-\1DefExp::         dw
-\1SpdExp::         dw
-\1SpcExp::         dw
+; \1StatExp::
+; \1HPExp::          dw
+; \1AtkExp::         dw
+; \1DefExp::         dw
+; \1SpdExp::         dw
+; \1SpcExp::         dw
+\1EVs::
+\1HPEV::           db
+\1AtkEV::          db
+\1DefEV::          db
+\1SpdEV::          db
+\1SpclAtkEV::      db
+\1SpclDefEV::      db
+
+\1Padding::        ds 4
+
+
+
 \1DVs::            dw
 \1PP::             ds NUM_MOVES
 \1Happiness::      db
@@ -227,7 +239,7 @@ MACRO bugcontestwinner
 ENDM
 
 MACRO hof_mon
-\1Species::  db
+\1Species::  dw
 \1ID::       dw
 \1DVs::      dw
 \1Level::    db
@@ -241,7 +253,7 @@ MACRO hall_of_fame
 	for n, 1, PARTY_LENGTH + 1
 	\1Mon{d:n}:: hof_mon \1Mon{d:n}
 	endr
-\1End:: db
+\1End:: dw
 ENDM
 
 MACRO link_battle_record

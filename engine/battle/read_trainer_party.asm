@@ -46,11 +46,15 @@ ReadTrainerParty:
 	dec b
 	jr z, .got_trainer
 .loop
-	call GetNextTrainerDataByte
-	cp -1
-	jr nz, .loop
+	ld a, [wTrainerGroupBank]
+	call GetFarByte
+	add a, l
+	ld l, a
+	jr nc, .skip_trainer
+	inc h
 	jr .skip_trainer
 .got_trainer
+	inc hl
 
 .skip_name
 	call GetNextTrainerDataByte
@@ -87,13 +91,20 @@ ReadTrainerPartyPieces:
 
 	ld [wCurPartyLevel], a
 	call GetNextTrainerDataByte
+	push hl
+	push af
+	call GetNextTrainerDataByte
+	ld h, a
+	pop af
+	ld l, a
+	call GetPokemonIDFromIndex
 	ld [wCurPartySpecies], a
 
 	ld a, OTPARTYMON
 	ld [wMonType], a
-	push hl
 	predef TryAddMonToParty
 	pop hl
+	inc hl ;because hl was pushed before the last call to GetNextTrainerDataByte
 
 	ld a, [wOtherTrainerType]
 	and TRAINERTYPE_ITEM
@@ -125,6 +136,15 @@ ReadTrainerPartyPieces:
 	ld b, NUM_MOVES
 .copy_moves
 	call GetNextTrainerDataByte
+	push hl
+	push af
+	call GetNextTrainerDataByte
+	ld h, a
+	pop af
+	ld l, a
+	call GetMoveIDFromIndex
+	pop hl
+	inc hl
 	ld [de], a
 	inc de
 	dec b
@@ -153,14 +173,9 @@ ReadTrainerPartyPieces:
 	jr z, .copied_pp
 
 	push hl
-	push bc
-	dec a
-	ld hl, Moves + MOVE_PP
-	ld bc, MOVE_LENGTH
-	call AddNTimes
-	ld a, BANK(Moves)
-	call GetFarByte
-	pop bc
+	ld l, a
+	ld a, MOVE_PP
+	call GetMoveAttribute
 	pop hl
 
 	ld [de], a
@@ -206,6 +221,7 @@ Battle_GetTrainerName::
 	ld b, a
 	ld a, [wOtherTrainerClass]
 	ld c, a
+	; fallthrough
 
 GetTrainerName::
 	ld a, c
@@ -242,13 +258,19 @@ GetTrainerName::
 
 .loop
 	dec b
-	jr z, CopyTrainerName
+	jr z, .done
 
-.skip
-	call GetNextTrainerDataByte
-	cp $ff
-	jr nz, .skip
+	ld a, [wTrainerGroupBank]
+	call GetFarByte
+	add a, l
+	ld l, a
+	jr nc, .loop
+	inc h
 	jr .loop
+
+.done
+	inc hl
+	; fallthrough
 
 CopyTrainerName:
 	ld de, wStringBuffer1
@@ -274,3 +296,49 @@ GetNextTrainerDataByte:
 	ret
 
 INCLUDE "data/trainers/party_pointers.asm"
+
+
+SetTrainerBattleLevel:
+	ld a, 255
+	ld [wCurPartyLevel], a
+
+	ld a, [wInBattleTowerBattle]
+	bit IN_BATTLE_TOWER_BATTLE_F, a
+	ret nz
+
+	ld a, [wLinkMode]
+	and a
+	ret nz
+
+	ld a, [wOtherTrainerClass]
+	dec a
+	ld c, a
+	ld b, 0
+	ld hl, TrainerGroups
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+
+	ld a, [wOtherTrainerID]
+	ld b, a
+.skip_trainer
+	dec b
+	jr z, .got_trainer
+.skip_party
+	ld a, [hli]
+	cp $ff
+	jr nz, .skip_party
+	jr .skip_trainer
+.got_trainer
+
+.skip_name
+	ld a, [hli]
+	cp "@"
+	jr nz, .skip_name
+
+	inc hl
+	ld a, [hl]
+	ld [wCurPartyLevel], a
+	ret
