@@ -36,7 +36,7 @@ GetCardPic:
 .got_pic
 	ld de, vTiles2 tile $00
 	ld bc, $23 tiles
-	ld a, BANK(OldMistyCardPic) ; aka BANK(KrisCardPic)
+	ld a, BANK(OldMistyCardPic) 
 	call FarCopyBytes
 	ld hl, TrainerCardGFX
 	ld de, vTiles2 tile $23
@@ -62,3 +62,25 @@ INCBIN "gfx/trainer_card/pikachu_card.2bpp"
 
 TrainerCardGFX:
 INCBIN "gfx/trainer_card/trainer_card.2bpp"
+
+GetBrunoCardPic:
+GetAgathaCardPic:
+GetLoreleiCardPic:
+GetLanceCardPic:
+     ld hl, BrunoCardPic	
+	 jr .got_E4_pic
+	 
+.got_E4_pic
+	ld de, vTiles2 tile $00
+	ld bc, $23 tiles
+	ld a, BANK(BrunoCardPic) ; aka BANK(KrisCardPic)
+	call FarCopyBytes
+	ld hl, TrainerCardGFX
+	ld de, vTiles2 tile $23
+	ld bc, 6 tiles
+	ld a, BANK(TrainerCardGFX)
+	call FarCopyBytes
+	ret	 
+	 
+BrunoCardPic:
+INCBIN "gfx/trainer_card/bruno_card.2bpp"	 

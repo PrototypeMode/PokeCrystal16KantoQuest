@@ -10,13 +10,15 @@ VioletKylesHouse_MapScripts:
 VioletKylesHousePokefanMScript:
 	jumptextfaceplayer VioletKylesHousePokefanMText
 
-Kyle:
+NPCTradeKyle:
+    special SetTradeNPCGenderBoy
 	faceplayer
 	opentext
 	trade NPC_TRADE_KYLE
 	waitbutton
 	closetext
 	end
+
 
 VioletKylesHousePokefanMText:
 	text "A #MON you get"
@@ -43,4 +45,4 @@ VioletKylesHouse_MapEvents:
 
 	def_object_events
 	object_event  2,  3, SPRITE_POKEFAN_M, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, VioletKylesHousePokefanMScript, -1
-	object_event  6,  5, SPRITE_YOUNGSTER, SPRITEMOVEDATA_WALK_UP_DOWN, 0, 2, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, Kyle, -1
+	object_event  6,  5, SPRITE_YOUNGSTER, SPRITEMOVEDATA_WALK_UP_DOWN, 0, 2, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, NPCTradeKyle, -1

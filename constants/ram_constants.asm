@@ -281,7 +281,25 @@ DEF NUM_JOHTO_BADGES EQU const_value
 	const VOLCANOBADGE
 	const EARTHBADGE
 DEF NUM_KANTO_BADGES EQU const_value
-DEF NUM_BADGES       EQU NUM_JOHTO_BADGES + NUM_KANTO_BADGES
+
+; wEliteBadges::
+	const_def
+	const LORELEI_K
+	const BRUNO_K
+	const AGATHA_K
+	const LANCE_K
+	const CHAMP_ASH_K
+	const CHAMP_GARY_K
+	
+	const WILL_J
+	const KOGA_J
+	const BRUNO_J
+	const KAREN_J
+	const CHAMP_LANCE_J
+
+DEF NUM_ELITE_BADGES EQU const_value
+
+DEF NUM_BADGES       EQU NUM_JOHTO_BADGES + NUM_KANTO_BADGES + NUM_ELITE_BADGES
 
 ; wPokegearFlags::
 	const_def

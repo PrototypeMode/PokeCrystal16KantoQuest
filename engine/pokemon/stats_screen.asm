@@ -12,6 +12,19 @@ DEF STAT_PAGE_MASK EQU %00000011
 	const STATS_SCREEN_ANIMATE_EGG    ; 6
 
 BattleStatsScreenInit:
+ ; Load current Battle Time of Day into Backup
+    ld a, [wBattleTimeOfDay] 
+	ld [wBattleTimeOfDayBackup], a
+
+ ; Load current Weather into Backup, 
+    ld a, [wBattleWeather]
+	ld [wBattleWeatherBackup], a
+	
+ ; Clear Weather and Time to 0, giving the stats screen the day palette.
+	xor a
+	ld [wBattleTimeOfDay], a
+	ld [wBattleWeather], a
+
 	ld a, [wLinkMode]
 	cp LINK_MOBILE
 	jr nz, StatsScreenInit
@@ -22,6 +35,11 @@ BattleStatsScreenInit:
 	jr _MobileStatsScreenInit
 
 StatsScreenInit:
+        xor a
+        ld [wBattleTimeOfDay], a
+        ld [wBattleWeather], a 
+	farcall _CGB_BattleColors
+
 	ld hl, StatsScreenMain
 	jr StatsScreenInit_gotaddress
 
@@ -141,7 +159,15 @@ StatsScreen_SetJumptableIndex:
 StatsScreen_Exit:
 	ld hl, wJumptableIndex
 	set JUMPTABLE_EXIT_F, [hl]
+	jr StatsScreen_Exit2
 	ret
+	
+StatsScreen_Exit2:
+  ld a, [wBattleTimeOfDayBackup]
+  ld [wBattleTimeOfDay], a
+
+  ld a, [wBattleWeatherBackup]
+  ld [wBattleWeather], a	
 
 MonStatsInit:
 	ld hl, wStatsScreenFlags
@@ -825,10 +851,31 @@ LoadBluePage:
 	
 LoadOrangePage:
 
-
+    push hl
+    push de
+    ld hl, wPlayerID    
+	ld de, wTempMonID
+    ld c, 2
+	call CompareBytes
+	pop hl
+    pop de
+	 jr z, .placeMetAt
+	 jr nz, .placeTradeMetAt
+	 ret
+    
 .placeMetAt
+
 	call .placeCaughtLocation
 	ld de, MetAtMapString
+	hlcoord 1, 9
+	call PlaceString
+	call .placeCaughtLevel
+	ret
+
+.placeTradeMetAt
+
+	call .placeCaughtLocation
+	ld de, TradeMetAtMapString
 	hlcoord 1, 9
 	call PlaceString
 	call .placeCaughtLevel
@@ -906,6 +953,9 @@ LoadOrangePage:
 
 MetAtMapString:
 	db "MET AT:@"
+
+TradeMetAtMapString:
+	db "MET IN TRADE AT:@"	
 
 MetUnknownMapString:
 	db "UNKNOWN@"

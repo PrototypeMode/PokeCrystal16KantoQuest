@@ -1442,7 +1442,7 @@ _NPCTradeAfterText1::
 	text_ram wStringBuffer2
 	text " doing?"
 	done
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 _NPCTradeIntroText2::
 	text "Hi, I'm looking"
 	line "for this #MON."
@@ -1490,7 +1490,7 @@ _NPCTradeAfterText2::
 	line "you traded me is"
 	cont "doing great!"
 	done
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 _NPCTradeIntroText3::
 	text_ram wMonOrItemNameBuffer
 	text "'s cute,"
@@ -1542,17 +1542,72 @@ _NPCTradeAfterText3::
 	text "'s"
 	line "so cute!"
 	done
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 _NPCTradeCompleteText4::
 	text "Uh? What happened?"
 	done
-
+	
 _NPCTradeAfterText4::
 	text "Trading is so odd…"
 
 	para "I still have a lot"
 	line "to learn about it."
+	done	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+_PewterMuseum_NPCTradeIntroText::
+	text "Say! You're a"
+	line "#MON Trainer,"
+	cont "right?"
+	
+	para "Do you have a"
+	line "@"
+	text_ram wStringBuffer1
+	text "?"
+
+	para "Want to trade it"
+	line "for my @"
+	text_ram wStringBuffer2
+	text "?"
 	done
+
+_PewterMuseum_NPCTradeCancelText::
+	text "You don't want to"
+	line "trade? Aww…"
+	done
+
+_PewterMuseum_NPCTradeWrongText::
+	text "Hey! That's not a"
+	line "@"
+	text_ram wStringBuffer1
+	text "! "
+	
+	para "Do you get a"
+	line "kick out of"
+	cont "making little"
+	cont "girls cry?"
+	done
+
+_PewterMuseum_NPCTradeCompleteText::
+	text "Alright!"
+	line "There you go,"
+	cont "my baby girl!"
+	
+	text "Your very own"
+	line "@"
+	text_ram wStringBuffer1
+	text "!"
+	cont "Thanks!"
+	done
+
+_PewterMuseum_NPCTradeAfterText::
+	text "Hi, how's my old"
+	line "@"
+	text_ram wStringBuffer2
+	text " doing?"
+	done	
+	
+
+
 
 _MomLeavingText1::
 	text "Wow, that's a cute"

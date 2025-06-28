@@ -222,7 +222,7 @@ TrainerCooltrainerfBeth1:
 	end
 
 TrainerPsychicRichard:
-	trainer PSYCHIC_T, RICHARD, EVENT_BEAT_PSYCHIC_RICHARD, PsychicRichardSeenText, PsychicRichardBeatenText, 0, .Script
+	trainer PSYCHIC_T, PSYCHIC_RICHARD, EVENT_BEAT_PSYCHIC_RICHARD, PsychicRichardSeenText, PsychicRichardBeatenText, 0, .Script
 
 .Script:
 	endifjustbattled

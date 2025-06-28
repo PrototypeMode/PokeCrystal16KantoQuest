@@ -175,7 +175,14 @@ MoltresSpriteGFX::             INCBIN "gfx/sprites/moltres.2bpp"
 LugiaSpriteGFX::             INCBIN "gfx/sprites/lugia.2bpp"
 Ho_OhSpriteGFX::             INCBIN "gfx/sprites/ho_oh.2bpp"
 
+ChanseySpriteGFX::             INCBIN "gfx/sprites/chansey.2bpp"
+
 
 OldAmberSpriteGFX::    INCBIN "gfx/sprites/old_amber.2bpp"
 GamblerSpriteGFX::    INCBIN "gfx/sprites/gambler.2bpp"
 GamblerAsleepSpriteGFX::    INCBIN "gfx/sprites/gambler_asleep.2bpp"
+KantoLassSpriteGFX::                INCBIN "gfx/sprites/kantolass.2bpp"
+KantoLass2SpriteGFX::                INCBIN "gfx/sprites/kantolass2.2bpp"
+BugCatcher2SpriteGFX::          INCBIN "gfx/sprites/bug_catcher2.2bpp"
+KantoGrampsSpriteGFX::              INCBIN "gfx/sprites/kanto_gramps.2bpp"
+BurlySpriteGFX::              INCBIN "gfx/sprites/burly.2bpp"

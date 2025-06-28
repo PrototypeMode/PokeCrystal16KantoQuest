@@ -1,10 +1,22 @@
 	object_const_def
+	const ROUTE2NUGGETHOUSE_NPC_TRADE_MARCEL
 	const ROUTE2NUGGETHOUSE_FISHER
 
 Route2NuggetHouse_MapScripts:
 	def_scene_scripts
 
 	def_callbacks
+
+
+NPCTradeMarcel:
+    special SetTradeNPCGenderBoy
+	faceplayer
+	opentext
+	trade NPC_TRADE_MARCEL
+	waitbutton
+	closetext
+	end
+	
 
 Route2NuggetHouseFisherScript:
 	faceplayer
@@ -61,4 +73,5 @@ Route2NuggetHouse_MapEvents:
 	def_bg_events
 
 	def_object_events
+	object_event  2,  4, SPRITE_FISHER, SPRITEMOVEDATA_WALK_UP_DOWN, 0, 2, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, NPCTradeMarcel, -1
 	object_event  2,  4, SPRITE_FISHER, SPRITEMOVEDATA_WALK_UP_DOWN, 0, 2, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, Route2NuggetHouseFisherScript, -1

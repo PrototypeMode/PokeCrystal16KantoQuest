@@ -1,4 +1,8 @@
 _CGB_TrainerCardKanto2:
+    xor a
+	ld [wBattleWeather], a
+	ld [wBattleTimeOfDay], a
+
 ; Define Colors to use sequentially
 	ld de, wBGPals1
 	xor a ; CHRIS ; $0
@@ -29,8 +33,8 @@ _CGB_TrainerCardKanto2:
 	call GetTrainerPalettePointer
 	call LoadPalette_White_Col1_Col2_Black
 	
-
-	ld a, PREDEFPAL_CGB_BADGE
+ 
+	ld a, PREDEFPAL_RB_YELLOWMON
 	call GetPredefPal
 	call LoadHLPaletteIntoDE
 	
@@ -174,6 +178,7 @@ _CGB_TrainerCardKanto2:
 	hlcoord 18, 1, wAttrmap
 	ld [hl], a
 	call ApplyAttrmap
+	   call GetKantoBadgePalettes
 	call ApplyPals
 	ld a, TRUE
 	ldh [hCGBPalUpdate], a

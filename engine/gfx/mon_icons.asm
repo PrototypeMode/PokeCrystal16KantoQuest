@@ -1,4 +1,4 @@
-LoadOverworldMonIcon:
+LoadOverworldMonIcon::
 	ld a, e
 	call ReadMonMenuIcon
 	ld l, a
@@ -13,7 +13,7 @@ LoadOverworldMonIcon:
 	ld c, 8
 	ret
 
-LoadMenuMonIcon:
+LoadMenuMonIcon::
 	push hl
 	push de
 	push bc
@@ -284,7 +284,7 @@ GetMonIconDE: ; unreferenced
 
 GetMemIconGFX:
 	ld a, [wCurIconTile]
-GetIconGFX:
+GetIconGFX::
 	call GetIcon_a
 	ld de, 8 tiles
 	add hl, de
@@ -300,7 +300,7 @@ HeldItemIcons:
 INCBIN "gfx/stats/mail.2bpp"
 INCBIN "gfx/stats/item.2bpp"
 
-GetIcon_de:
+GetIcon_de::
 ; Load icon graphics into VRAM starting from tile de.
 	ld l, e
 	ld h, d
@@ -434,7 +434,7 @@ HoldSwitchmonIcon:
 	jr nz, .loop
 	ret
 
-ReadMonMenuIcon:
+ReadMonMenuIcon::
 	cp EGG
 	jr z, .egg
 	call GetPokemonIndexFromID

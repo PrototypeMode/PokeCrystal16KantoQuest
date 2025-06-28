@@ -1192,6 +1192,7 @@ Pack_QuitNoScript:
 	ret
 
 Pack_QuitRunScript:
+	ld [wCurItem], a
 	ld hl, wJumptableIndex
 	set JUMPTABLE_EXIT_F, [hl]
 	ld a, TRUE

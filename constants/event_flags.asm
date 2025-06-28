@@ -205,7 +205,7 @@
 	const EVENT_GAVE_GS_BALL_TO_KURT
 	const EVENT_FOREST_IS_RESTLESS
 	const EVENT_ANSWERED_DRAGON_MASTER_QUIZ_WRONG
-; Unused: next 6 events
+; Unused: next 5 events
 
 	const_next 200
 ; Kanto story events
@@ -272,6 +272,8 @@
 	const EVENT_TULLY_GAVE_WATER_STONE
 	const EVENT_TIFFANY_GAVE_PINK_BOW
 ; Unused: next 339 events
+   const EVENT_VIRIDIAN_FOREST_HIDDEN_POTION
+   const EVENT_VIRIDIAN_FOREST_HIDDEN_POKE_BALL
 
 	const_next 600
 ; Kurt Apricorn events
@@ -1051,7 +1053,20 @@
 	const EVENT_BEAT_SAGE_MASA
 	const EVENT_BEAT_SAGE_KOJI
 ; Unused: next 116 events
+;New Viridian Forest Trainers
+const EVENT_BEAT_BUG_CATCHER_RICK ; 1 - Weedle 6, 2 - Caterpie 6
+const EVENT_BEAT_BUG_CATCHER_ADAM
+const EVENT_BEAT_BUG_CATCHER_TONY
+const EVENT_BEAT_BUG_CATCHER_LIAM
+const EVENT_BEAT_BUG_CATCHER_SAMMY
+const EVENT_BEAT_LASS_STACEY
 
+const EVENT_BEAT_ELITE_4_LORELEI_K
+const EVENT_BEAT_ELITE_4_BRUNO_K
+const EVENT_BEAT_ELITE_4_AGATHA_K
+const EVENT_BEAT_ELITE_4_LANCE_K
+
+;	const_next 1600
 	const_next 1600
 ; Sprite visibility flags
 ; When these events are cleared, the sprite becomes visible; when set, the sprite is hidden.
@@ -1513,8 +1528,19 @@
 	const EVENT_OLD_DUDE_GOT_COFFEE
 	const EVENT_GIOVANNI_REVEALED
 	
+   const EVENT_NOT_BEAT_BROCK
+   const EVENT_NOT_BEAT_MISTY
+   
+   const EVENT_GOT_BROCK_FIRST
+   const EVENT_GOT_MISTY_FIRST
+   const EVENT_GOT_GARY
 
-	
+   const EVENT_POKECENTER_ASH
+   const EVENT_POKECENTER_MISTY
+   const EVENT_POKECENTER_BROCK
+   const EVENT_POKECENTER_GARY
+   const EVENT_POKECENTER_PIKACHU
+   
 
 	const_next 2048
 DEF NUM_EVENTS EQU const_value ; 800

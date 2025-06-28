@@ -191,6 +191,8 @@ DEF KRIS EQU __trainer_class__
 	const DANA3
 	const DANA4
 	const DANA5
+	
+	const STACEY
 
 	trainerclass JANINE ; 1a
 	const JANINE1
@@ -348,6 +350,14 @@ DEF KRIS EQU __trainer_class__
 	const ARNIE4
 	const ARNIE5
 	const WAYNE
+   const RICK ; 1 - Weedle 6, 2 - Caterpie 6
+   const ADAM
+    const TONY
+    const LIAM
+   const SAMMY	
+
+
+
 
 	trainerclass FISHER ; 25
 	const JUSTIN
@@ -380,7 +390,7 @@ DEF KRIS EQU __trainer_class__
 	const HAROLD
 	const SIMON
 	const RANDALL
-	const CHARLIE
+	const CHARLES
 	const GEORGE
 	const BERKE
 	const KIRK
@@ -389,10 +399,10 @@ DEF KRIS EQU __trainer_class__
 	const PATON ; unused
 	const DARYL ; unused
 	const WALTER ; unused
-	const TONY ; unused
+	const SWIMMERM_CHARLIE ; unused
 	const JEROME
 	const TUCKER
-	const RICK ; unused
+	const RICK1 ; unused
 	const CAMERON
 	const SETH
 	const JAMES ; unused
@@ -493,7 +503,7 @@ DEF KRIS EQU __trainer_class__
 	const DWAYNE
 	const HARRIS
 	const ZEKE
-	const CHARLES
+	const BIKER_CHARLES
 	const RILEY
 	const JOEL
 	const GLENN
@@ -550,7 +560,7 @@ DEF KRIS EQU __trainer_class__
 	const NORMAN
 	const MARK
 	const PHIL
-	const RICHARD
+	const PSYCHIC_RICHARD
 	const GILBERT
 	const JARED
 	const RODNEY

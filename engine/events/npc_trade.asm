@@ -189,13 +189,14 @@ DoNPCTrade:
 	ld a, c
 	ld [wPlayerTrademonCaughtData], a
 
-	ld e, NPCTRADE_DIALOG
-	call GetTradeAttr
-	ld a, [hl]
-	cp TRADE_DIALOGSET_GIRL
-	ld a, CAUGHT_BY_GIRL
-	jr c, .okay
-	ld a, CAUGHT_BY_BOY
+	; ld e, NPCTRADE_DIALOG
+;	 call GetTradeAttr
+	 ld a, [wNPCTradeOTGender]
+	 inc a
+	; cp TRADE_DIALOGSET_GIRL
+	; ld a, CAUGHT_BY_GIRL
+	; jr c, .okay
+	; ld a, CAUGHT_BY_BOY
 .okay
 	ld [wOTTrademonCaughtData], a
 
@@ -212,16 +213,18 @@ DoNPCTrade:
 	callfar RemoveMonFromPartyOrBox
 	predef TryAddMonToParty
 
-	ld e, NPCTRADE_DIALOG
-	call GetTradeAttr
-	ld a, [hl]
-	cp TRADE_DIALOGSET_GIRL
-	ld b, CAUGHT_BY_UNKNOWN
-	jr c, .incomplete
-	ld b, CAUGHT_BY_GIRL
-.incomplete
-	farcall SetGiftPartyMonCaughtData
-
+	; ld e, NPCTRADE_DIALOG
+	; call GetTradeAttr
+	; ld a, [hl]
+	; cp TRADE_DIALOGSET_GIRL
+	; ld b, CAUGHT_BY_UNKNOWN
+	; jr c, .incomplete
+	; ld b, CAUGHT_BY_GIRL
+	ld a, [wNPCTradeOTGender]
+	
+    ld b, a
+;	farcall SetGiftPartyMonCaughtData
+	farcall SetCaughtData
 	ld e, NPCTRADE_NICKNAME
 	call GetTradeAttr
 	ld de, wOTTrademonNickname
@@ -436,26 +439,31 @@ TradeTexts:
 	dw NPCTradeIntroText2
 	dw NPCTradeIntroText2
 	dw NPCTradeIntroText3
+	dw PewterMuseum_NPCTradeIntroText
 ; TRADE_DIALOG_CANCEL
 	dw NPCTradeCancelText1
 	dw NPCTradeCancelText2
 	dw NPCTradeCancelText2
 	dw NPCTradeCancelText3
+	dw PewterMuseum_NPCTradeCancelText
 ; TRADE_DIALOG_WRONG
 	dw NPCTradeWrongText1
 	dw NPCTradeWrongText2
 	dw NPCTradeWrongText2
 	dw NPCTradeWrongText3
+	dw PewterMuseum_NPCTradeWrongText
 ; TRADE_DIALOG_COMPLETE
 	dw NPCTradeCompleteText1
 	dw NPCTradeCompleteText2
 	dw NPCTradeCompleteText4
 	dw NPCTradeCompleteText3
+	dw PewterMuseum_NPCTradeCompleteText
 ; TRADE_DIALOG_AFTER
 	dw NPCTradeAfterText1
 	dw NPCTradeAfterText2
 	dw NPCTradeAfterText4
 	dw NPCTradeAfterText3
+	dw PewterMuseum_NPCTradeAfterText
 
 NPCTradeCableText:
 	text_far _NPCTradeCableText
@@ -494,7 +502,7 @@ NPCTradeCompleteText1:
 NPCTradeAfterText1:
 	text_far _NPCTradeAfterText1
 	text_end
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 NPCTradeIntroText2:
 	text_far _NPCTradeIntroText2
 	text_end
@@ -514,7 +522,7 @@ NPCTradeCompleteText2:
 NPCTradeAfterText2:
 	text_far _NPCTradeAfterText2
 	text_end
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 NPCTradeIntroText3:
 	text_far _NPCTradeIntroText3
 	text_end
@@ -534,7 +542,7 @@ NPCTradeCompleteText3:
 NPCTradeAfterText3:
 	text_far _NPCTradeAfterText3
 	text_end
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 NPCTradeCompleteText4:
 	text_far _NPCTradeCompleteText4
 	text_end
@@ -542,3 +550,25 @@ NPCTradeCompleteText4:
 NPCTradeAfterText4:
 	text_far _NPCTradeAfterText4
 	text_end
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+PewterMuseum_NPCTradeIntroText:
+	text_far _PewterMuseum_NPCTradeIntroText
+	text_end
+
+PewterMuseum_NPCTradeCancelText:
+	text_far _PewterMuseum_NPCTradeCancelText
+	text_end
+
+PewterMuseum_NPCTradeWrongText:
+	text_far _PewterMuseum_NPCTradeWrongText
+	text_end
+
+PewterMuseum_NPCTradeCompleteText:
+	text_far _PewterMuseum_NPCTradeCompleteText
+	text_end
+
+PewterMuseum_NPCTradeAfterText:
+	text_far _PewterMuseum_NPCTradeAfterText
+	text_end
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

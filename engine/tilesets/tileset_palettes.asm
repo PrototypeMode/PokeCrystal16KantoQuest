@@ -1,5 +1,7 @@
 LoadSpecialMapPalette:
 	ld a, [wMapTileset]
+		cp TILESET_GATE
+	jr z, .gate
 	cp TILESET_POKECOM_CENTER
 	jr z, .pokecom_2f
 	cp TILESET_BATTLE_TOWER_INSIDE
@@ -16,7 +18,13 @@ LoadSpecialMapPalette:
 	cp TILESET_CEMETERY
 	jr z, .cemetery
 	jr .do_nothing
+	
+.gate
 
+	call LoadGatePalette
+	scf
+    ret 
+	
 .pokecom_2f
 	call LoadPokeComPalette
 	scf
@@ -168,3 +176,51 @@ LoadCemeteryPalette:
 
 CemeteryPalette:
 INCLUDE "gfx/tilesets/cemetery.pal"
+
+LoadGatePalette:
+	ld a, BANK(wBGPals1)
+	ld de, wBGPals1
+	ld hl, GatePalette
+	ld bc, 8 palettes
+	call FarCopyWRAM
+	; ld a, BANK(wBGPals1)
+	; ld de, wBGPals1 palette PAL_BG_YELLOW
+	; ld hl, MansionPalette2
+	; ld bc, 1 palettes
+	; call FarCopyWRAM
+	; ld a, BANK(wBGPals1)
+	; ld de, wBGPals1 palette PAL_BG_WATER
+	; ld hl, MansionPalette1 palette 6
+	; ld bc, 1 palettes
+	; call FarCopyWRAM
+	ld a, [wMapGroup]
+	ld b, a	
+	ld a, [wMapNumber]
+	ld c, a
+    call GetWorldMapLocation
+    cp LANDMARK_ROUTE_2
+    jr z, .ViridianGate
+	cp LANDMARK_ROUTE_29
+    jr z, .Route29Gate
+	ret
+
+.ViridianGate
+	ld a, BANK(wBGPals1)
+	ld de, wBGPals1 palette PAL_BG_ROOF	
+	ld hl, GateRoofPalette palette 2
+	ld bc, 1 palettes
+	call FarCopyWRAM
+    ret
+	
+.Route29Gate
+	ld a, BANK(wBGPals1)
+	ld de, wBGPals1 palette PAL_BG_ROOF	
+	ld hl, GateRoofPalette palette 3
+	ld bc, 1 palettes
+	call FarCopyWRAM	
+	ret
+
+GatePalette:
+INCLUDE "gfx/tilesets/gate.pal"
+GateRoofPalette:
+INCLUDE "gfx/tilesets/gateroof.pal"

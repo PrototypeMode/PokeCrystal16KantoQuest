@@ -14,6 +14,8 @@ PewterCity_MapScripts:
 	def_scene_scripts
 	scene_script PewterCityRoadblockScene, SCENE_PEWTERCITY_ROADBLOCK
 	scene_script PewterCityNoRoadblockScene, SCENE_PEWTERCITY_NOROADBLOCK
+	scene_script PewterCityBrockMeetScene, SCENE_PEWTERCITY_BROCKMEET
+
 
 	def_callbacks
 	callback MAPCALLBACK_NEWMAP, PewterCityFlypointCallback
@@ -30,14 +32,40 @@ PewterCityRoadblockScene:
      end
 	 
 PewterCityNoRoadblockScene:
+    checkflag ENGINE_BOULDERBADGE
+	 iffalse .SwitchScene0
+	  iftrue .CheckTeam
      end
+	 
+.CheckTeam
+   readmem wTeamCount
+   ifequal 0, .SwitchScene2
+   ifgreater 0, .SwitchScene1
+
+.SwitchScene0
+   setscene 0	 
+	 end
+	 
+ .SwitchScene1
+    setscene 1	 
+	 end	 
+	 
+ .SwitchScene2
+    setscene 2	 
+	 end
+	 
+	 
+PewterCityBrockMeetScene:
+     end
+	 
 PewterCityFlypointCallback:
+
     setmapscene PEWTER_MUSEUM_1F, SCENE_PEWTERMUSEUM_1F_CLERK
 	setflag ENGINE_FLYPOINT_PEWTER
-	special RefreshSprites
 	endcallback
 
 PewterCityCooltrainerFScript:
+     clearflag ENGINE_BOULDERBADGE
 	jumptextfaceplayer PewterCityCooltrainerFText
 	
 PewterCityCooltrainerMScript:
@@ -155,10 +183,9 @@ PewterCityTownBlockScript0:
 	writetext PewterCityPlayerBeatBrockText
 	promptbutton
 	closetext
-	sjump CheckHumanTeam
+	;sjump CheckHumanTeam
   end
   
-
 
 .BrockNoBlock
 	opentext
@@ -344,21 +371,205 @@ RoadblockMoveScript2:
 	sjump PewterCityTownBlockScript2
 	end
 	
-CheckHumanTeam:
-   readmem wTeamCount
-   ifequal 0, .MeetBrock
-   end
 
-.MeetBrock
-  sjump MeetBrockScript
-   end
+MeetBrockScript0:
+   moveobject PEWTERCITY_BROCK_MEET, 33, 17
+   clearflag EVENT_NOT_BEAT_BROCK
+   appear PEWTERCITY_BROCK_MEET
 
-MeetBrockScript:
-   ;appear PEWTERCITY_BROCK_MEET
-   moveobject PEWTERCITY_BROCK_MEET, 32, 17
-   	showemote EMOTE_SHOCK, PEWTERCITY_BROCK_MEET, 15
+   musicfadeout MUSIC_YOUNGSTER_ENCOUNTER, 16
+	playsound SFX_READ_TEXT
+    waitsfx
+   showemote EMOTE_SHOCK, PEWTERCITY_BROCK_MEET, 30
+   
+  
+   
+   	opentext
+	writetext PewterCityBrockJoinPartyText
+	promptbutton
+	closetext
+	
+	turnobject PLAYER, LEFT
+   
+   applymovement PEWTERCITY_BROCK_MEET, StepRightMovement3
+   faceplayer
+    opentext
+   writetext PewterCityBrockJoinPartyText2
+   promptbutton
+   closetext
+   
+   	playsound SFX_READ_TEXT
+    waitsfx
+   showemote EMOTE_QUESTION, PLAYER, 15
+   
+   opentext
+   writetext PewterCityBrockJoinPartyText3
+   promptbutton
+
+   yesorno
+   iffalse RejectBrockScript
+   closetext
    applymovement PEWTERCITY_BROCK_MEET, StepRightMovement
+ 	playsound SFX_TRANSACTION
+	disappear PEWTERCITY_BROCK_MEET
+	
+	turnobject PLAYER, DOWN
+	showemote EMOTE_HAPPY, PLAYER, 30
+	
+
+	
+   playsound SFX_FANFARE	
+   turnobject PLAYER, LEFT
+   turnobject PLAYER, UP
+   turnobject PLAYER, RIGHT
+   turnobject PLAYER, DOWN  
+   opentext
+   writetext PewterCityBrockJoinedThePartyText
+   waitsfx
+   promptbutton
+   closetext
+   
+   musicfadeout MUSIC_VIRIDIAN_CITY, 16
+   sjump AcceptBrockScript   
+   
    end
+	
+MeetBrockScript1:
+   moveobject PEWTERCITY_BROCK_MEET, 33, 18
+   clearflag EVENT_NOT_BEAT_BROCK
+   appear PEWTERCITY_BROCK_MEET
+   
+   	playsound SFX_READ_TEXT
+    waitsfx
+   showemote EMOTE_SHOCK, PEWTERCITY_BROCK_MEET, 30
+   
+   	opentext
+	writetext PewterCityBrockJoinPartyText
+	promptbutton
+	closetext
+	
+	turnobject PLAYER, LEFT
+   
+   applymovement PEWTERCITY_BROCK_MEET, StepRightMovement3
+   faceplayer
+   opentext
+   writetext PewterCityBrockJoinPartyText2
+   promptbutton
+   closetext
+   
+   	playsound SFX_READ_TEXT
+    waitsfx
+   showemote EMOTE_QUESTION, PLAYER, 15
+   
+   opentext
+   writetext PewterCityBrockJoinPartyText3
+   promptbutton
+
+   yesorno
+   iffalse RejectBrockScript
+   closetext
+   applymovement PEWTERCITY_BROCK_MEET, StepRightMovement
+ 	playsound SFX_TRANSACTION
+	disappear PEWTERCITY_BROCK_MEET
+	
+	turnobject PLAYER, DOWN
+	showemote EMOTE_HAPPY, PLAYER, 30
+	
+
+	
+   playsound SFX_FANFARE	
+   turnobject PLAYER, LEFT
+   turnobject PLAYER, UP
+   turnobject PLAYER, RIGHT
+   turnobject PLAYER, DOWN  
+   opentext
+   writetext PewterCityBrockJoinedThePartyText
+   waitsfx
+   promptbutton
+   closetext
+ 
+   musicfadeout MUSIC_VIRIDIAN_CITY, 16
+   sjump AcceptBrockScript   
+   end
+
+MeetBrockScript2:
+   moveobject PEWTERCITY_BROCK_MEET, 33, 18
+   clearflag EVENT_NOT_BEAT_BROCK
+   appear PEWTERCITY_BROCK_MEET
+
+	playsound SFX_READ_TEXT
+    waitsfx
+   showemote EMOTE_SHOCK, PEWTERCITY_BROCK_MEET, 30
+   
+    opentext
+	writetext PewterCityBrockJoinPartyText
+	promptbutton
+	closetext
+	
+	turnobject PLAYER, UP
+   
+   applymovement PEWTERCITY_BROCK_MEET, StepRightMovement3
+   applymovement PEWTERCITY_BROCK_MEET, StepRightMovement
+   faceplayer
+    opentext
+   writetext PewterCityBrockJoinPartyText2
+   promptbutton
+   closetext
+   
+   	playsound SFX_READ_TEXT
+    waitsfx
+   showemote EMOTE_QUESTION, PLAYER, 15
+   
+   opentext
+   writetext PewterCityBrockJoinPartyText3
+   promptbutton
+   
+   yesorno
+   iffalse RejectBrockScript
+   closetext
+   applymovement PEWTERCITY_BROCK_MEET, StepDownMovement
+ 	playsound SFX_TRANSACTION
+	disappear PEWTERCITY_BROCK_MEET
+	
+	turnobject PLAYER, DOWN
+	showemote EMOTE_HAPPY, PLAYER, 30
+	
+
+	
+   playsound SFX_FANFARE	
+   turnobject PLAYER, LEFT
+   turnobject PLAYER, UP
+   turnobject PLAYER, RIGHT
+   turnobject PLAYER, DOWN  
+   opentext
+   writetext PewterCityBrockJoinedThePartyText
+   waitsfx
+   promptbutton
+   closetext
+   
+   musicfadeout MUSIC_VIRIDIAN_CITY, 16
+   sjump AcceptBrockScript
+   end
+
+AcceptBrockScript:
+    setscene 1
+	readmem wTeamCount
+	setval 1
+	writemem wTeamCount
+	setevent EVENT_GOT_BROCK_FIRST
+	
+	readmem wPokecenterChar1
+	setval 3
+	writemem wPokecenterChar1
+	
+	; readmem wPokecenterChar2
+	; setval 2
+	; writemem wPokecenterChar2
+
+RejectBrockScript:
+    closetext   
+	end
+	
 	
 StepDownMovement:
    step DOWN
@@ -390,7 +601,13 @@ StepLeftMovement2:
 StepRightMovement2:
    step RIGHT
    step RIGHT
+   step_end
+StepRightMovement3:
+   step RIGHT
+   step RIGHT
+   step RIGHT
    step_end 
+   
   
  ToGymMovement:
    step LEFT 
@@ -501,8 +718,8 @@ AwayFromMuseumMovement:
 	; closetext
 	; end
 
-PewterCitySign:
-	jumptext PewterCitySignText
+PewterCityGardenSign:
+	jumptext PewterCityGardenSignText
 
 PewterGymSign:
 	jumptext PewterGymSignText
@@ -686,9 +903,11 @@ PewterCityBrockNoBlockText:
 	; line "of travel."
 	; done
 
-PewterCitySignText:
-	text "PEWTER CITY"
-	line "A Stone Gray City"
+PewterCityGardenSignText:
+	text "TRAINER TIPS"
+	para "Buy REPEL to"
+	line "keep wild #MON"
+	cont "away!"
 	done
 
 PewterGymSignText:
@@ -718,10 +937,79 @@ PewterCityMtMoonGiftShopSignText:
 	done
 
 PewterCityWelcomeSignText:
-	text "WELCOME TO"
-	line "PEWTER CITY!"
+	text "   PEWTER CITY"
+	line "    “A Stone"
+	cont "    Gray City”"
+	done
+;	text_asm		
+	; ldcoord_a 16, 13 ; Top Left
+	; inc a
+	; ldcoord_a 16, 14  ; Bottom Left
+	; inc a
+	; ldcoord_a 17, 13 ; Top Right
+	; inc a
+	; ldcoord_a 17, 14 ; Bottom Right
+	
+	
+	; hlcoord 18, 17
+	; ld [hl], "▼"
+	; ld hl, TestText
+	
+; rept 4
+	; inc bc ; space
+; endr
+	;ret
+
+TestText:
+	 text "This is Test"
+	 line "Text"
+	 done
+	 
+
+	 
+PewterCityBrockJoinPartyText:
+	text "Hey!!"
+
+	para "<PLAYER>!"
+	line "Wait up!"
+	done	
+	
+PewterCityBrockJoinPartyText2:
+	text "Are you heading"
+    line "up to MT. MOON?"
+	
+	para "Mind if I tag"
+	line "along with you?"
 	done
 
+PewterCityBrockJoinPartyText3:
+	text "Why?"
+	
+    para "Well, our battle"
+	line "got me thinking."
+
+	para "You've only just"
+	line "started your"
+	cont "#MON journey,"
+	cont "and my beautiful"
+	cont "GEODUDE and ONIX"
+	cont "didn't stand a"
+	cont "chance against"
+	cont "you!"
+	
+	para "MT. MOON is a"
+	line "great place for"
+	cont "training #MON!"
+	
+	para "What do you say?"
+	done		
+	
+PewterCityBrockJoinedThePartyText:	
+   text "<BROCK> joined"
+   line "<PLAYER>'s TEAM!"
+   done
+   
+   
 PewterCity_MapEvents:
 	db 0, 0 ; filler
 
@@ -730,6 +1018,7 @@ PewterCity_MapEvents:
 	warp_event 16, 17, PEWTER_GYM, 1
 	warp_event 23, 17, PEWTER_MART, 2
 	warp_event 13, 25, PEWTER_POKECENTER_1F, 1
+;	warp_event 13, 25, ROUTE_2_NUGGET_HOUSE, 1
 	warp_event  7, 29, PEWTER_SNOOZE_SPEECH_HOUSE, 1
 	warp_event 14, 7, PEWTER_MUSEUM_1F, 1
 	warp_event 19, 5, PEWTER_MUSEUM_1F, 4
@@ -739,10 +1028,12 @@ PewterCity_MapEvents:
 	coord_event 35, 18, SCENE_PEWTERCITY_ROADBLOCK, RoadblockMoveScript1
 	coord_event 35, 19, SCENE_PEWTERCITY_ROADBLOCK, RoadblockMoveScript2
 	
-	
+	coord_event 37, 17, SCENE_PEWTERCITY_BROCKMEET, MeetBrockScript0
+	coord_event 37, 18, SCENE_PEWTERCITY_BROCKMEET, MeetBrockScript1
+	coord_event 37, 19, SCENE_PEWTERCITY_BROCKMEET, MeetBrockScript2
 	
 	def_bg_events
-	bg_event 25, 23, BGEVENT_READ, PewterCitySign
+	bg_event 25, 23, BGEVENT_READ, PewterCityGardenSign
 	bg_event 11, 17, BGEVENT_READ, PewterGymSign
 	bg_event 15,  9, BGEVENT_READ, PewterMuseumSign
 	bg_event 33, 19, BGEVENT_READ, PewterCityMtMoonGiftShopSign
@@ -756,7 +1047,7 @@ PewterCity_MapEvents:
 	object_event 26, 25, SPRITE_BUG_CATCHER, SPRITEMOVEDATA_WALK_LEFT_RIGHT, 2, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, PewterCityRepelNerdScript, -1
 	object_event 27, 17, SPRITE_SUPER_NERD, SPRITEMOVEDATA_SPINRANDOM_SLOW, 2, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, PewterCityMuseumGuyScript, -1
 	object_event 35, 16, SPRITE_YOUNGSTER, SPRITEMOVEDATA_SPINRANDOM_SLOW, 2, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, PewterCityTownBlockScript0, -1 ;EVENT_BEAT_BROCK
-	object_event 32, 17, SPRITE_BROCK, SPRITEMOVEDATA_SPINRANDOM_SLOW, 2, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, MeetBrockScript, -1 ;EVENT_BEAT_BROCK
+	object_event 32, 17, SPRITE_BROCK, SPRITEMOVEDATA_STANDING_RIGHT, 2, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, MeetBrockScript0, EVENT_NOT_BEAT_BROCK
 	; object_event 16, 25, SPRITE_BUG_CATCHER, SPRITEMOVEDATA_WANDER, 2, 2, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, PewterCityBugCatcherScript, -1
 	; object_event 26, 25, SPRITE_GRAMPS, SPRITEMOVEDATA_WALK_LEFT_RIGHT, 2, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, PewterCityGrampsScript, -1
 	; object_event 32,  3, SPRITE_FRUIT_TREE, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, PewterCityFruitTree1, -1

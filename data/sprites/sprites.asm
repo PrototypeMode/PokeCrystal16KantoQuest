@@ -61,8 +61,10 @@ OverworldSprites:
 	overworld_sprite ErikaSpriteGFX, 12, WALKING_SPRITE, PAL_OW_GREEN
 	overworld_sprite KogaSpriteGFX, 12, WALKING_SPRITE, PAL_OW_BROWN
 	overworld_sprite SabrinaSpriteGFX, 12, WALKING_SPRITE, PAL_OW_RED
+	
 	overworld_sprite CooltrainerMSpriteGFX, 12, WALKING_SPRITE, PAL_OW_BLUE
 	overworld_sprite CooltrainerFSpriteGFX, 12, WALKING_SPRITE, PAL_OW_BLUE
+	
 	overworld_sprite BugCatcherSpriteGFX, 12, WALKING_SPRITE, PAL_OW_BLUE
 	overworld_sprite TwinSpriteGFX, 12, WALKING_SPRITE, PAL_OW_RED
 	overworld_sprite YoungsterSpriteGFX, 12, WALKING_SPRITE, PAL_OW_BLUE
@@ -172,8 +174,15 @@ OverworldSprites:
 	overworld_sprite LugiaSpriteGFX, 12, STILL_SPRITE, PAL_OW_BLUE
     overworld_sprite Ho_OhSpriteGFX, 12, STILL_SPRITE, PAL_OW_RED
 	
+    overworld_sprite ChanseySpriteGFX, 12, STILL_SPRITE, PAL_OW_PINK
+	
 
 	overworld_sprite OldAmberSpriteGFX, 4, STILL_SPRITE, PAL_OW_ROCK
 	overworld_sprite GamblerSpriteGFX, 12, WALKING_SPRITE, PAL_OW_BROWN
 	overworld_sprite GamblerAsleepSpriteGFX, 4, STILL_SPRITE, PAL_OW_BROWN
+	overworld_sprite KantoLassSpriteGFX, 12, WALKING_SPRITE, PAL_OW_RED
+	overworld_sprite KantoLass2SpriteGFX, 12, WALKING_SPRITE, PAL_OW_RED
+	overworld_sprite BugCatcher2SpriteGFX, 12, WALKING_SPRITE, PAL_OW_BLUE
+	overworld_sprite KantoGrampsSpriteGFX, 12, WALKING_SPRITE, PAL_OW_RED
+	overworld_sprite BurlySpriteGFX, 12, WALKING_SPRITE, PAL_OW_BROWN
 	assert_table_length NUM_OVERWORLD_SPRITES

@@ -296,6 +296,7 @@ gfx/trainer_card/pikachu_card.2bpp: rgbgfx += --columns
 
 gfx/trainer_card/kanto_leaders.2bpp: tools/gfx += --trim-whitespace
 gfx/trainer_card/johto_leaders.2bpp: tools/gfx += --trim-whitespace
+gfx/trainer_card/johto_e4.2bpp: tools/gfx += --trim-whitespace
 
 gfx/overworld/chris_fish.2bpp: tools/gfx += --trim-whitespace
 gfx/overworld/kris_fish.2bpp: tools/gfx += --trim-whitespace

@@ -56,6 +56,8 @@ SGBLayoutJumptable:
 	dw .SGB_TrainerOrMonFrontpicPals
 	dw .SGB_MysteryGift
 	dw .SGB_Unused1E
+	dw .SGB_TrainerCardE4
+	dw .SGB_TrainerCardE4_2
 	assert_table_length NUM_SCGB_LAYOUTS
 
 .SGB_BattleGrayscale:
@@ -404,6 +406,8 @@ endr
 .SGB_Unused0D:
 .SGB_TrainerCardKanto:
 .SGB_TrainerCardJohto:
+.SGB_TrainerCardE4:
+.SGB_TrainerCardE4_2:
 	ld hl, PalPacket_Diploma
 	ld de, BlkPacket_AllPal0
 	ret

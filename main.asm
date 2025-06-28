@@ -20,6 +20,8 @@ SECTION "bank2", ROMX
 INCLUDE "engine/overworld/player_object.asm"
 INCLUDE "engine/math/sine.asm"
 INCLUDE "engine/predef.asm"
+
+SECTION "bank2.1", ROMX
 INCLUDE "engine/gfx/color.asm"
 
 
@@ -56,6 +58,8 @@ INCLUDE "engine/events/itemfinder.asm"
 INCLUDE "engine/menus/start_menu.asm"
 INCLUDE "engine/pokemon/mon_menu.asm"
 INCLUDE "engine/overworld/select_menu.asm"
+INCLUDE "engine/overworld/character_select_menu.asm"
+
 INCLUDE "engine/events/elevator.asm"
 INCLUDE "engine/events/bug_contest/contest.asm"
 INCLUDE "engine/events/repel.asm"
@@ -194,7 +198,7 @@ SECTION "Crystal Features 1", ROMX
 INCLUDE "engine/menus/init_gender.asm"
 INCLUDE "engine/items/pack_kris.asm"
 INCLUDE "engine/events/move_tutor.asm"
-INCLUDE "engine/gfx/crystal_layouts.asm"
+;INCLUDE "engine/gfx/crystal_layouts.asm"
 INCLUDE "engine/events/celebi.asm"
 INCLUDE "engine/menus/main_menu.asm"
 INCLUDE "mobile/mobile_menu.asm"
@@ -202,6 +206,8 @@ INCLUDE "engine/pokemon/search_owned.asm"
 INCLUDE "mobile/mobile_12_2.asm"
 INCLUDE "engine/events/buena_menu.asm"
 
+SECTION "Crystal Layouts", ROMX
+INCLUDE "engine/gfx/crystal_layouts.asm"
 
 SECTION "bank13", ROMX
 

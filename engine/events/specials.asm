@@ -17,6 +17,7 @@ INCLUDE "data/events/special_pointers.asm"
 
 UnusedDummySpecial:
     ret
+		
 SetPlayerPalette:
 	ld a, [wScriptVar]
 	ld d, a
@@ -505,4 +506,29 @@ DeleteDex:
 	call ByteFill	
 	ret
 	
-
+SetTradeNPCGenderBoy:
+   ld a, 0
+   ld [wNPCTradeOTGender], a
+ ;  jr z, Sub1
+   ret
+   
+SetTradeNPCGenderGirl:
+   ld a, 1
+   ld [wNPCTradeOTGender], a
+ ;  jr z, Sub1
+   ret
+   
+SetTradeNPCGenderUnknown:
+   ld a, 0
+   ld [wNPCTradeOTGender], a
+;   jr z, Sub1
+   ret
+   
+; Sub1:
+   ; ld a, [wNPCTradeOTGender]
+   ; cp 3
+   ; jr z, .sub
+   ; ret
+; .sub
+   ; xor a 
+	; ret	

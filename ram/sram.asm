@@ -114,6 +114,7 @@ sGameData::
 sPlayerData::  ds wPlayerDataEnd - wPlayerData
 sCurMapData::  ds wCurMapDataEnd - wCurMapData
 sPokemonData:: ds wPokemonDataEnd - wPokemonData
+
 sGameDataEnd::
 
 sPokemonIndexTable:: ds wPokemonIndexTableEnd - wPokemonIndexTable

@@ -843,11 +843,17 @@ StartMenuScript:
 	sjump StartMenuCallback
 
 SelectMenuScript:
-	callasm SelectMenu
+    callasm CharacterSwitch
+	;callasm SelectMenu
 	sjump SelectMenuCallback
+	
+; CharacterSelectMenuScript:
+	; callasm CharacterSelectMenu
+	; sjump CharacterSelectMenuCallback	
 
 StartMenuCallback:
 SelectMenuCallback:
+CharacterSelectMenuCallback:
 	readmem hMenuReturn
 	ifequal HMENURETURN_SCRIPT, .Script
 	ifequal HMENURETURN_ASM, .Asm

@@ -688,8 +688,12 @@ YoungsterGroup:
 
 	next_list_item ; YOUNGSTER (9)
 	db "WARREN@", TRAINERTYPE_NORMAL
-	db 35
-	dw FEAROW
+	db 5
+	dw PIKACHU
+	db 5
+	dw MEOWTH
+	db 5
+	dw DITTO
 	db -1 ; end
 
 	next_list_item ; YOUNGSTER (10)
@@ -1270,6 +1274,13 @@ LassGroup:
 	dw DISABLE, SURF, PSYCHIC_M, SCREECH
 	db -1 ; end
 
+	next_list_item ; LASS (18)
+	db "STACEY@", TRAINERTYPE_NORMAL
+	db 6
+	dw NIDORAN_F
+	db 6
+	dw NIDORAN_M
+	db -1 ; end
 	end_list_items
 
 JanineGroup:
@@ -2458,6 +2469,48 @@ BugCatcherGroup:
 	dw PARAS
 	db -1 ; end
 
+; Viridian Forest Bug Catchers
+	next_list_item ; BUG_CATCHER (20)
+	db "RICK@", TRAINERTYPE_NORMAL
+	db 6
+	dw CATERPIE
+	db 6
+	dw WEEDLE
+	db -1 ; end
+
+	next_list_item ; BUG_CATCHER (21)
+	db "ADAM@", TRAINERTYPE_NORMAL
+	db 7
+	dw WEEDLE
+	db 7
+	dw KAKUNA
+	db 7
+	dw WEEDLE
+	db -1 ; end
+	
+	next_list_item ; BUG_CATCHER (22)
+	db "TONY@", TRAINERTYPE_NORMAL
+	db 7
+	dw CATERPIE
+	db 8
+	dw CATERPIE
+	db -1 ; end	
+	
+	next_list_item ; BUG_CATCHER (23)
+	db "LIAM@", TRAINERTYPE_NORMAL
+	db 7
+	dw METAPOD
+	db 7
+	dw CATERPIE
+	db 7
+	dw METAPOD
+	db -1 ; end
+	
+	next_list_item ; BUG_CATCHER (23)
+	db "SAMMY@", TRAINERTYPE_NORMAL
+	db 9
+	dw WEEDLE
+	db -1 ; end	
 	end_list_items
 
 FisherGroup:
@@ -2725,7 +2778,7 @@ SwimmerMGroup:
 	db -1 ; end
 
 	next_list_item ; SWIMMERM (4)
-	db "CHARLIE@", TRAINERTYPE_NORMAL
+	db "CHARLES@", TRAINERTYPE_NORMAL
 	db 21
 	dw SHELLDER
 	db 19

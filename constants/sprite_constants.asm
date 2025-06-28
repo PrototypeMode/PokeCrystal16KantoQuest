@@ -162,14 +162,20 @@
 	const SPRITE_MOLTRES ; a3
 	const SPRITE_LUGIA ; a4
 	const SPRITE_HO_OH ; a5
+	const SPRITE_CHANSEY ; a6
 
 	const SPRITE_OLD_AMBER; a7
-	const SPRITE_GAMBLER
-	const SPRITE_GAMBLER_ASLEEP
+	const SPRITE_GAMBLER ;a8
+	const SPRITE_GAMBLER_ASLEEP ;a9
+	const SPRITE_KANTO_LASS
+	const SPRITE_KANTO_LASS_2
+	const SPRITE_BUG_CATCHER_2
+	const SPRITE_KANTO_GRAMPS
+	const SPRITE_BURLY
 DEF NUM_OVERWORLD_SPRITES EQU const_value - 1
 
 ; SpriteMons indexes (see data/sprites/sprite_mons.asm)
-	const_next $97
+	const_next $9d
 DEF SPRITE_POKEMON EQU const_value
 	; const SPRITE_UNOWN ; 80
 	; const SPRITE_GEODUDE ; 81

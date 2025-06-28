@@ -131,7 +131,10 @@ wUnusedScriptByte:: db
 
 wMapTimeOfDay:: db
 
-	ds 3
+wBattleTimeOfDay:: db
+wBattleTimeOfDayBackup:: db
+
+	ds 1
 
 wPrinterConnectionOpen:: db
 wPrinterOpcode:: db
@@ -544,7 +547,7 @@ wEnemyLightScreenCount:: db
 wEnemyReflectCount:: db
 	ds 1
 
-	ds 1
+
 
 wBattleWeather::
 ; 00 normal
@@ -555,6 +558,8 @@ wBattleWeather::
 ; 05 sunliight faded
 ; 06 sandstorm subsided
 	db
+	
+wBattleWeatherBackup:: db
 
 wWeatherCount::
 ; # turns remaining
@@ -1551,17 +1556,10 @@ wPokegearCard:: db
 wPokegearMapRegion:: db
 wUnusedPokegearByte:: db
 
-NEXTU
-; pack
-wPackJumptableIndex:: db
-wCurPocket:: db
-wPackUsedItem:: db
 
-NEXTU
-; trainer card badges
-wTrainerCardBadgeFrameCounter:: db
-wTrainerCardBadgeTileID:: db
-wTrainerCardBadgeAttributes:: db
+
+
+
 
 NEXTU
 ; slot machine
@@ -1834,6 +1832,10 @@ wConversionTableBitmap:: ds $20
 
 
 SECTION "WRAM 1", WRAMX
+; pack
+wPackJumptableIndex:: db
+wCurPocket:: db
+wPackUsedItem:: db
 
 wGBCOnlyDecompressBuffer:: ; a $540-byte buffer that continues past this SECTION
 
@@ -1981,8 +1983,8 @@ wTrainerHUDTiles:: ds 4
 SECTION UNION "Miscellaneous WRAM 1", WRAMX
 
 ; mobile participant nicknames
-	ds 4
-	wTeamCount:: db
+	ds 5
+;	wTeamCount:: db
 	wCardBorder:: db
 	ds 1
 ; wMobileParticipant1Nickname:: ds NAME_LENGTH_JAPANESE
@@ -2254,8 +2256,14 @@ wPoisonStepFlagSum:: db
 wPoisonStepPartyFlags:: ds PARTY_LENGTH
 wPoisonStepDataEnd::
 ENDU
-
-	ds 23
+    ds 20
+	; ds 23, was before adding Badge Data
+SECTION "BadgeData", WRAMX
+; trainer card badges
+wTrainerCardBadgeFrameCounter:: db
+wTrainerCardBadgeTileID:: db
+wTrainerCardBadgePaletteAddr:: db
+	
 
 
 SECTION "More WRAM 1", WRAMX
@@ -2762,6 +2770,8 @@ wMonTriedToEvolve:: db
 wTimeOfDay:: db
 
 	ds 1
+	
+	
 
 
 SECTION "Enemy Party", WRAMX
@@ -3033,6 +3043,7 @@ wCoins:: dw
 wBadges::
 wJohtoBadges:: flag_array NUM_JOHTO_BADGES
 wKantoBadges:: flag_array NUM_KANTO_BADGES
+wEliteBadges:: flag_array NUM_ELITE_BADGES
 
 wTMsHMs:: ds NUM_TMS + NUM_HMS
 
@@ -3071,7 +3082,9 @@ wMooMooBerries:: db
 wUndergroundSwitchPositions:: db
 wFarfetchdPosition:: db
 
-	ds 13
+	ds 1
+;	ds 7
+;	ds 13 added 6 badges
 
 ; map scene ids
 wPokecenter2FSceneID::                            db
@@ -3167,18 +3180,28 @@ wPewterMuseum1FSceneID::                          db
 wPewterMuseum2FSceneID::                          db
 wPewterCitySceneID::                              db
 
-wLavenderTownSceneID::                                db
-wLavenderTower1FSceneID::                                db
-wLavenderTower2FSceneID::                                db	
-wLavenderTower3FSceneID::                                db	
-wLavenderTower4FSceneID::                                db	
-wLavenderTower5FSceneID::                                db	
-wLavenderTower6FSceneID::                                db	
-wLavenderTower7FSceneID::                                db	
+wLavenderTownSceneID::                            db
+wLavenderTower1FSceneID::                         db
+wLavenderTower2FSceneID::                         db	
+wLavenderTower3FSceneID::                         db	
+wLavenderTower4FSceneID::                         db	
+wLavenderTower5FSceneID::                         db	
+wLavenderTower6FSceneID::                         db	
+wLavenderTower7FSceneID::                         db	
 	
 	
-	
-	ds 32
+wViridianPokecenter1FSceneID::                    db
+wPewterPokecenter1FSceneID::                      db
+wCeruleanPokecenter1FSceneID::                    db
+wVermilionPokecenter1FSceneID::                   db
+wFuchsiaPokecenter1FSceneID::                     db
+wSaffronPokecenter1FSceneID::                     db
+wCeladonPokecenter1FSceneID::                     db
+wLavenderPokecenter1FSceneID::                    db
+wCinnabarPokecenter1FSceneID::                    db
+wMtMoonPokecenter1FSceneID::                      db
+wRockTunnelPokecenter1FSceneID::                  db
+	ds 21
 
 
 ; fight counts
@@ -3308,6 +3331,8 @@ wdc60:: db
 wAlternateBattleByte:: db
 
 ;	ds 18 ; Added wAlternateBattleByte
+
+
 	ds 17
 
 wStepCount:: db
@@ -3391,7 +3416,14 @@ wPartyMon{d:n}Nickname:: ds MON_NAME_LENGTH
 endr
 wPartyMonNicknamesEnd::
 
-	ds 22
+wTeamCount:: db
+wPokecenterChar1:: db
+wPokecenterChar2:: db
+wPokecenterChar3:: db
+wPokecenterChar4:: db
+
+wNPCTradeOTGender:: db
+	ds 16
 
 wPokedexCaught:: flag_array NUM_POKEMON
 wEndPokedexCaught::

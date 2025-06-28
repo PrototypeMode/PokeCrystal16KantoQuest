@@ -71,7 +71,7 @@ TrainerSwimmerfWendy:
 	end
 
 TrainerSwimmermCharlie:
-	trainer SWIMMERM, CHARLIE, EVENT_BEAT_SWIMMERM_CHARLIE, SwimmermCharlieSeenText, SwimmermCharlieBeatenText, 0, .Script
+	trainer SWIMMERM, SWIMMERM_CHARLIE, EVENT_BEAT_SWIMMERM_CHARLIE, SwimmermCharlieSeenText, SwimmermCharlieBeatenText, 0, .Script
 
 .Script:
 	endifjustbattled

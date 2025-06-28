@@ -24,9 +24,9 @@ _CGB_TrainerCardJohto2:
 	ld a, PRYCE
 	call GetTrainerPalettePointer
 	call LoadPalette_White_Col1_Col2_Black
-	ld a, PREDEFPAL_CGB_BADGE
-	call GetPredefPal
-	call LoadHLPaletteIntoDE
+	; ld a, PREDEFPAL_CGB_BADGE
+	; call GetPredefPal
+	; call LoadHLPaletteIntoDE
 	
 	
 	ld a, [wPlayerCostume]
@@ -54,7 +54,7 @@ _CGB_TrainerCardJohto2:
 	ld [wCardBorder], a
 	jr .fill
 .CardYellow
-	ld a, 4
+	ld a, 5
 	ld [wCardBorder], a	
 	
 	
@@ -164,6 +164,7 @@ _CGB_TrainerCardJohto2:
 	hlcoord 18, 1, wAttrmap
 	ld [hl], a
 	call ApplyAttrmap
+	call GetJohtoBadgePalettes
 	call ApplyPals
 	ld a, TRUE
 	ldh [hCGBPalUpdate], a

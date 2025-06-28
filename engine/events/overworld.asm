@@ -134,15 +134,15 @@ CutFunction:
 	dw .FailCut
 
 .CheckAble:
-	ld de, ENGINE_HIVEBADGE
+	ld de, ENGINE_CASCADEBADGE
 	call CheckBadge
-	jr c, .nohivebadge
+	jr c, .NoCascadeBadge
 	call CheckMapForSomethingToCut
 	jr c, .nothingtocut
 	ld a, $1
 	ret
 
-.nohivebadge
+.NoCascadeBadge
 	ld a, JUMPTABLE_EXIT
 	ret
 
@@ -1771,7 +1771,7 @@ TryCutOW::
 	call CheckPartyMoveIndex
 	jr c, .cant_cut
 
-	ld de, ENGINE_HIVEBADGE
+	ld de, ENGINE_CASCADEBADGE
 	call CheckEngineFlag
 	jr c, .cant_cut
 

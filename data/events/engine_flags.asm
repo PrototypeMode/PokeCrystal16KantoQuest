@@ -61,6 +61,20 @@ EngineFlags:
 	engine_flag wKantoBadges, MARSHBADGE
 	engine_flag wKantoBadges, VOLCANOBADGE
 	engine_flag wKantoBadges, EARTHBADGE
+	
+	engine_flag wEliteBadges, LORELEI_K
+	engine_flag wEliteBadges, BRUNO_K
+	engine_flag wEliteBadges, AGATHA_K
+	engine_flag wEliteBadges, LANCE_K
+	engine_flag wEliteBadges, CHAMP_ASH_K
+	engine_flag wEliteBadges, CHAMP_GARY_K
+	
+	engine_flag wEliteBadges, WILL_J
+	engine_flag wEliteBadges, KOGA_J
+	engine_flag wEliteBadges, BRUNO_J
+	engine_flag wEliteBadges, KAREN_J
+	engine_flag wEliteBadges, CHAMP_LANCE_J
+
 
 	; unown sets (see data/wild/unlocked_unowns.asm)
 	engine_flag wUnlockedUnowns, UNLOCKED_UNOWNS_A_TO_K_F

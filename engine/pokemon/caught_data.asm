@@ -228,7 +228,7 @@ SetGiftBoxMonCaughtData:
 	call OpenSRAM
 	ld hl, sBoxMon1CaughtLevel
 	pop bc
-	call SetGiftMonCaughtData
+	call SetCaughtData
 	call CloseSRAM
 	ret
 
@@ -240,12 +240,12 @@ SetGiftPartyMonCaughtData:
 	call GetPartyLocation
 	pop bc
 SetGiftMonCaughtData:
-	xor a
-	ld [hli], a
-	ld a, LANDMARK_GIFT
-	rrc b
-	or b
-	ld [hl], a
+	; xor a
+	; ld [hli], a
+	; ld a, LANDMARK_GIFT
+	; rrc b
+	; or b
+	; ld [hl], a
 	ret
 
 SetEggMonCaughtData:

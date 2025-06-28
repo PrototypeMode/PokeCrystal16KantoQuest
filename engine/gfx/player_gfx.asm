@@ -135,7 +135,7 @@ INCLUDE "data/player_names.asm"
 	; call InitName
 	; ret
 
-GetPlayerIcon:
+GetPlayerIcon::
     ld a, [wPlayerCostume]
 	cp 0
 	jr z, .IconGender

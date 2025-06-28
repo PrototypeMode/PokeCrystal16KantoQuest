@@ -9,70 +9,65 @@ ViridianPokecenter1F_MapScripts:
 
 	def_callbacks
 
-ViridianPokecenter1FNurseScript:
-    setflag ENGINE_BOULDERBADGE
-    setflag ENGINE_CASCADEBADGE
-    setflag ENGINE_THUNDERBADGE
-    setflag ENGINE_RAINBOWBADGE
-    setflag ENGINE_SOULBADGE
-    setflag ENGINE_MARSHBADGE
-    setflag ENGINE_VOLCANOBADGE
-    setflag ENGINE_EARTHBADGE
+ViridianPokecenter1F_NurseScript:
+
 	jumpstd PokecenterNurseScript
 
-ViridianPokecenter1FCooltrainerMScript:
+ViridianPokecenter1F_CooltrainerMScript:
+    setflag ENGINE_BRUNO_J
+    setflag ENGINE_ZEPHYRBADGE
 	faceplayer
 	opentext
-	checkevent EVENT_BLUE_IN_CINNABAR
-	iftrue .BlueReturned
-	writetext ViridianPokecenter1FCooltrainerMText
+
+	writetext ViridianPokecenter1F_CooltrainerMText
 	waitbutton
 	closetext
 	end
 
-.BlueReturned:
-	writetext ViridianPokecenter1FCooltrainerMText_BlueReturned
-	waitbutton
-	closetext
-	end
 
-ViridianPokecenter1FCooltrainerFScript:
-	jumptextfaceplayer ViridianPokecenter1FCooltrainerFText
+ViridianPokecenter1F_GentlemanScript:
 
-ViridianPokecenter1FBugCatcherScript:
-	jumptextfaceplayer ViridianPokecenter1FBugCatcherText
+	jumptextfaceplayer ViridianPokecenter1F_GentlemanText
 
-ViridianPokecenter1FCooltrainerMText:
-	text "Where in the world"
-	line "is VIRIDIAN's GYM"
+ViridianPokecenter1F_BugCatcherScript:
+	jumptextfaceplayer ViridianPokecenter1F_BugCatcherText
 
-	para "LEADER? I wanted"
-	line "to challenge him."
+ViridianPokecenter1F_CooltrainerMText:
+	text "#MON CENTERs"
+	line "heal your tired,"
+	cont "hurt, or fainted"
+	cont "#MON!"
+	
+	para "There's a #MON"
+	line "CENTER in every"
+	cont "town ahead!"
+
+	para "They'll heal your"
+	line "whole party for"
+	cont "just ¥200!"
 	done
 
-ViridianPokecenter1FCooltrainerMText_BlueReturned:
-	text "There are no GYM"
-	line "TRAINERS at the"
-	cont "VIRIDIAN GYM."
+; ViridianPokecenter1FCooltrainerMText_BlueReturned:
+	; text "There are no GYM"
+	; line "TRAINERS at the"
+	; cont "VIRIDIAN GYM."
 
-	para "The LEADER claims"
-	line "his policy is to"
+	; para "The LEADER claims"
+	; line "his policy is to"
 
-	para "win without having"
-	line "any underlings."
+	; para "win without having"
+	; line "any underlings."
+	; done
+
+ViridianPokecenter1F_GentlemanText:
+	text "You can use that"
+	line "PC in the corner."
+
+	para "NURSE JOY told"
+	line "me! So kind!"
 	done
 
-ViridianPokecenter1FCooltrainerFText:
-	text "I heard that the"
-	line "GYM in CINNABAR is"
-	cont "gone."
-
-	para "I wonder what be-"
-	line "came of BLAINE,"
-	cont "the GYM LEADER."
-	done
-
-ViridianPokecenter1FBugCatcherText:
+ViridianPokecenter1F_BugCatcherText:
 	text "My dream is to be-"
 	line "come a GYM LEADER."
 	done
@@ -90,7 +85,7 @@ ViridianPokecenter1F_MapEvents:
 	def_bg_events
 
 	def_object_events
-	object_event  3,  1, SPRITE_NURSE, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ViridianPokecenter1FNurseScript, -1
-	object_event  8,  4, SPRITE_COOLTRAINER_M, SPRITEMOVEDATA_WALK_LEFT_RIGHT, 1, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, ViridianPokecenter1FCooltrainerMScript, -1
-	object_event  5,  3, SPRITE_COOLTRAINER_F, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, ViridianPokecenter1FCooltrainerFScript, -1
-	object_event  1,  6, SPRITE_BUG_CATCHER, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, ViridianPokecenter1FBugCatcherScript, -1
+	object_event  3,  1, SPRITE_NURSE, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ViridianPokecenter1F_NurseScript, -1
+	object_event  5,  4, SPRITE_COOLTRAINER_M, SPRITEMOVEDATA_STANDING_UP, 1, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, ViridianPokecenter1F_CooltrainerMScript, -1
+	object_event  8,  3, SPRITE_GENTLEMAN, SPRITEMOVEDATA_WANDER, 2, 2, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, ViridianPokecenter1F_GentlemanScript, -1
+	object_event  0,  3, SPRITE_BUG_CATCHER, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, ViridianPokecenter1F_BugCatcherScript, -1

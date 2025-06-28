@@ -317,7 +317,7 @@ ENDM
 	map_const PEWTER_POKECENTER_2F_BETA,                    8,  4 ;  7
 	map_const PEWTER_SNOOZE_SPEECH_HOUSE,                   4,  4 ;  8
 	map_const PEWTER_MUSEUM_1F,                             10,  4 ;  6
-	map_const PEWTER_MUSEUM_2F,                             7,  4 ;  6
+	map_const PEWTER_MUSEUM_2F,                             10,  4 ;  6
 	map_const VIRIDIAN_FOREST_NORTH_GATE,                    5, 4 ; 15
 	endgroup
 

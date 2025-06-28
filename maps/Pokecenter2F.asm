@@ -3,9 +3,17 @@
 	const POKECENTER2F_BATTLE_RECEPTIONIST
 	const POKECENTER2F_TIME_CAPSULE_RECEPTIONIST
 	const POKECENTER2F_OFFICER
+	
+	const POKECENTER2F_NPC_ASH
+	const POKECENTER2F_NPC_BROCK
+	const POKECENTER2F_NPC_MISTY
+	 const POKECENTER2F_NPC_GARY
+	 const POKECENTER2F_NPC_PIKACHU
+;	 const POKECENTER2F_NPC_CHRIS
 
 Pokecenter2F_MapScripts:
 	def_scene_scripts
+	scene_script Pokecenter2FNoopScene, SCENE_POKECENTER2F_NOOP
 	scene_script Pokecenter2FCheckMysteryGiftScene,      SCENE_POKECENTER2F_CHECK_MYSTERY_GIFT
 	scene_script Pokecenter2FLeaveTradeCenterScene,      SCENE_POKECENTER2F_LEAVE_TRADE_CENTER
 	scene_script Pokecenter2FLeaveColosseumScene,        SCENE_POKECENTER2F_LEAVE_COLOSSEUM
@@ -14,6 +22,758 @@ Pokecenter2F_MapScripts:
 	scene_script Pokecenter2FLeaveMobileBattleRoomScene, SCENE_POKECENTER2F_LEAVE_MOBILE_BATTLE_ROOM
 
 	def_callbacks
+	callback MAPCALLBACK_NEWMAP, Pokecenter2FCallback
+	
+Pokecenter2FNoopScene:
+end
+
+Pokecenter2FCallback:
+   setevent EVENT_POKECENTER_ASH   
+   setevent EVENT_POKECENTER_MISTY   
+   setevent EVENT_POKECENTER_BROCK   
+   setevent EVENT_POKECENTER_GARY   
+   setevent EVENT_POKECENTER_PIKACHU
+   readmem wTeamCount
+   ifequal 0, .DeleteTeamNPC
+   ifgreater 0, .GenerateNPC1
+    endcallback	
+	
+.DeleteTeamNPC
+   setevent EVENT_POKECENTER_ASH   
+   setevent EVENT_POKECENTER_MISTY   
+   setevent EVENT_POKECENTER_BROCK   
+   setevent EVENT_POKECENTER_GARY   
+   setevent EVENT_POKECENTER_PIKACHU
+   endcallback	
+	
+.GenerateNPC1
+   readmem wPokecenterChar1
+   ifequal 1, .JustAsh
+   ifequal 2, .JustMisty
+   ifequal 3, .JustBrock
+   ifequal 4, .JustGary
+   ifequal 5, .JustPikachu
+    endcallback
+
+.JustAsh
+   setevent EVENT_POKECENTER_MISTY
+   setevent EVENT_POKECENTER_BROCK
+   setevent EVENT_POKECENTER_GARY
+   setevent EVENT_POKECENTER_PIKACHU
+   clearevent EVENT_POKECENTER_ASH
+   readmem wPokecenterChar2
+   ifgreater 0, .GenerateNPC2
+   endcallback   
+   
+.JustBrock
+   setevent EVENT_POKECENTER_ASH
+   setevent EVENT_POKECENTER_MISTY
+   setevent EVENT_POKECENTER_GARY
+   setevent EVENT_POKECENTER_PIKACHU
+   clearevent EVENT_POKECENTER_BROCK
+   readmem wPokecenterChar2
+   ifgreater 0, .GenerateNPC2   
+   endcallback
+   
+.JustMisty
+   setevent EVENT_POKECENTER_ASH
+   setevent EVENT_POKECENTER_BROCK
+   setevent EVENT_POKECENTER_GARY
+   setevent EVENT_POKECENTER_PIKACHU
+   clearevent EVENT_POKECENTER_MISTY
+   readmem wPokecenterChar2
+   ifgreater 0, .GenerateNPC2
+ ;  moveobject POKECENTER2F_NPC_MISTY, 6, 6   
+   endcallback
+   
+.JustGary
+   setevent EVENT_POKECENTER_ASH
+   setevent EVENT_POKECENTER_BROCK
+   setevent EVENT_POKECENTER_MISTY
+   setevent EVENT_POKECENTER_PIKACHU
+   clearevent EVENT_POKECENTER_GARY
+   readmem wPokecenterChar2
+    ifgreater 0, .GenerateNPC2
+   endcallback
+
+.JustPikachu
+   setevent EVENT_POKECENTER_ASH
+   setevent EVENT_POKECENTER_BROCK
+   setevent EVENT_POKECENTER_MISTY
+   setevent EVENT_POKECENTER_GARY
+   clearevent EVENT_POKECENTER_PIKACHU
+   readmem wPokecenterChar2
+    ifgreater 0, .GenerateNPC2
+   endcallback      
+
+.GenerateNPC2
+   readmem wPokecenterChar2
+   ifequal 1, .JustAsh2
+   ifequal 2, .JustMisty2
+   ifequal 3, .JustBrock2
+   ifequal 4, .JustGary2
+   ifequal 5, .JustPikachu2 
+   ; clearevent EVENT_POKECENTER_BROCK
+   ; clearevent EVENT_POKECENTER_MISTY    
+   endcallback
+   
+.JustAsh2
+   ; setevent EVENT_POKECENTER_MISTY
+   ; setevent EVENT_POKECENTER_BROCK
+   ; setevent EVENT_POKECENTER_GARY
+   ; setevent EVENT_POKECENTER_PIKACHU
+   clearevent EVENT_POKECENTER_ASH
+   moveobject POKECENTER2F_NPC_ASH, 7, 6
+   appear POKECENTER2F_NPC_ASH
+   endcallback
+
+.JustMisty2
+   ; setevent EVENT_POKECENTER_BROCK
+   ; setevent EVENT_POKECENTER_GARY
+   ; setevent EVENT_POKECENTER_PIKACHU
+   ; setevent EVENT_POKECENTER_ASH
+   clearevent EVENT_POKECENTER_MISTY
+   moveobject POKECENTER2F_NPC_MISTY, 7, 6
+    appear POKECENTER2F_NPC_MISTY
+   endcallback
+
+.JustBrock2
+   ; setevent EVENT_POKECENTER_GARY
+   ; setevent EVENT_POKECENTER_PIKACHU
+   ; setevent EVENT_POKECENTER_ASH
+   ; setevent EVENT_POKECENTER_MISTY
+   clearevent EVENT_POKECENTER_BROCK
+   moveobject POKECENTER2F_NPC_BROCK, 7, 6
+    appear POKECENTER2F_NPC_BROCK
+   endcallback
+   
+.JustGary2
+   ; setevent EVENT_POKECENTER_PIKACHU
+   ; setevent EVENT_POKECENTER_ASH
+   ; setevent EVENT_POKECENTER_MISTY
+   ; setevent EVENT_POKECENTER_BROCK
+   clearevent EVENT_POKECENTER_GARY
+   moveobject POKECENTER2F_NPC_GARY, 7, 6
+    appear POKECENTER2F_NPC_GARY
+   endcallback
+
+.JustPikachu2
+   
+   ; setevent EVENT_POKECENTER_ASH
+   ; setevent EVENT_POKECENTER_MISTY
+   ; setevent EVENT_POKECENTER_BROCK
+   ; setevent EVENT_POKECENTER_GARY
+   clearevent EVENT_POKECENTER_PIKACHU
+   moveobject POKECENTER2F_NPC_PIKACHU, 7, 6
+    appear POKECENTER2F_NPC_PIKACHU
+   endcallback
+
+NPC_Ash_Script:
+  faceplayer
+  random 3
+  ifequal 0, .AshText0
+  ifequal 1, .AshText1
+  ifequal 2, .AshText2
+ end
+ 
+.AshText0 
+  opentext
+  farwritetext NPC_Ash_Text0
+  promptbutton
+  closetext
+  sjump .AshText3
+  end
+ 
+.AshText1
+  opentext
+  farwritetext NPC_Ash_Text1
+  promptbutton
+  closetext
+  sjump .AshText3
+  end
+  
+.AshText2
+  opentext
+  farwritetext NPC_Ash_Text2
+  promptbutton
+  closetext
+  sjump .AshText3
+  end
+ 
+.AshText3
+  opentext
+  farwritetext NPC_Ash_Text3
+  promptbutton
+  yesorno
+  iftrue .AshText4
+  iffalse .AshText5
+  end
+
+.AshText4
+  opentext
+  farwritetext NPC_Ash_Text4
+  promptbutton
+  closetext
+  sjump SwitchAshWithPlayer
+ 
+  end
+  
+.AshText5 
+  opentext
+  farwritetext NPC_Ash_Text5
+  promptbutton
+  closetext
+  end   
+
+NPC_Misty_Script:
+  faceplayer
+  random 3
+  ifequal 0, .MistyText0
+  ifequal 1, .MistyText1
+  ifequal 2, .MistyText2
+ end
+ 
+.MistyText0 
+  opentext
+  farwritetext NPC_Misty_Text0
+  promptbutton
+  closetext
+  sjump .MistyText3
+  end
+ 
+.MistyText1
+  opentext
+  farwritetext NPC_Misty_Text1
+  promptbutton
+  closetext
+  sjump .MistyText3
+  end
+  
+.MistyText2
+  opentext
+  farwritetext NPC_Misty_Text2
+  promptbutton
+  closetext
+  sjump .MistyText3
+  end
+ 
+.MistyText3
+  opentext
+  farwritetext NPC_Misty_Text3
+  promptbutton
+  yesorno
+  iftrue .MistyText4
+  iffalse .MistyText5
+  end
+
+.MistyText4
+  opentext
+  farwritetext NPC_Misty_Text4
+  promptbutton
+  closetext
+  sjump SwitchMistyWithPlayer
+ 
+  end
+  
+.MistyText5 
+  opentext
+  farwritetext NPC_Misty_Text5
+  promptbutton
+  closetext
+  end  
+ 
+ 
+NPC_Brock_Script:
+  faceplayer
+  random 3
+  ifequal 0, .BrockText0
+  ifequal 1, .BrockText1
+  ifequal 2, .BrockText2
+  end
+  
+.BrockText0 
+  opentext
+  farwritetext NPC_Brock_Text0
+  promptbutton
+  closetext
+  sjump .BrockText3
+  end
+ 
+.BrockText1
+  opentext
+  farwritetext NPC_Brock_Text1
+  promptbutton
+  closetext
+  sjump .BrockText3
+  end
+  
+.BrockText2
+  opentext
+  farwritetext NPC_Brock_Text2
+  promptbutton
+  closetext
+  sjump .BrockText3
+  end
+ 
+.BrockText3
+  opentext
+  farwritetext NPC_Brock_Text3
+  promptbutton
+  yesorno
+  iftrue .BrockText4
+  iffalse .BrockText5
+  end
+
+.BrockText4
+  opentext
+  farwritetext NPC_Brock_Text4
+  promptbutton
+  closetext
+  sjump SwitchBrockWithPlayer
+ 
+  end
+  
+.BrockText5 
+  opentext
+  farwritetext NPC_Brock_Text5
+  promptbutton
+  closetext
+  end  
+  
+NPC_Gary_Script:
+  faceplayer
+  random 3
+  ifequal 0, .GaryText0
+  ifequal 1, .GaryText1
+  ifequal 2, .GaryText2
+  end
+  
+.GaryText0 
+  opentext
+  farwritetext NPC_Gary_Text0
+  promptbutton
+  closetext
+  sjump .GaryText3
+  end
+ 
+.GaryText1
+  opentext
+  farwritetext NPC_Gary_Text1
+  promptbutton
+  closetext
+  sjump .GaryText3
+  end
+  
+.GaryText2
+  opentext
+  farwritetext NPC_Gary_Text2
+  promptbutton
+  closetext
+  sjump .GaryText3
+  end
+ 
+.GaryText3
+  opentext
+  farwritetext NPC_Gary_Text3
+  promptbutton
+  yesorno
+  iftrue .GaryText4
+  iffalse .GaryText5
+  end
+
+.GaryText4
+  opentext
+  farwritetext NPC_Gary_Text4
+  promptbutton
+  closetext
+  sjump SwitchGaryWithPlayer
+ 
+  end
+  
+.GaryText5 
+  opentext
+  farwritetext NPC_Gary_Text5
+  promptbutton
+  closetext
+  end  
+ end
+
+NPC_Pikachu_Script:
+ end
+
+ SwitchAshWithPlayer:
+ 	readvar VAR_FACING
+	ifequal DOWN, StepUpAshScript
+	ifequal UP, StepDownAshScript
+	ifequal LEFT, StepRightAshScript
+	ifequal RIGHT, StepLeftAshScript
+	end 
+ 
+SwitchMistyWithPlayer:
+ 	readvar VAR_FACING
+	ifequal DOWN, StepUpMistyScript
+	ifequal UP, StepDownMistyScript
+	ifequal LEFT, StepRightMistyScript
+	ifequal RIGHT, StepLeftMistyScript
+	end 
+ 
+SwitchBrockWithPlayer:
+ 	readvar VAR_FACING
+	ifequal DOWN, StepUpBrockScript
+	ifequal UP, StepDownBrockScript
+	ifequal LEFT, StepRightBrockScript
+	ifequal RIGHT, StepLeftBrockScript
+	end
+	
+SwitchGaryWithPlayer:
+ 	readvar VAR_FACING
+	ifequal DOWN, StepUpGaryScript
+	ifequal UP, StepDownGaryScript
+	ifequal LEFT, StepRightGaryScript
+	ifequal RIGHT, StepLeftGaryScript
+	end
+	
+SwitchPikachuWithPlayer:
+ 	readvar VAR_FACING
+	ifequal DOWN, StepUpPikachuScript
+	ifequal UP, StepDownPikachuScript
+	ifequal LEFT, StepRightPikachuScript
+	ifequal RIGHT, StepLeftPikachuScript
+	end		
+	
+SwapNPC1WithPlayer:
+
+	ld a, [wPlayerCostume]
+	inc a
+	ld [wPokecenterChar1], a
+	ret
+	
+SwapNPC2WithPlayer:	
+	ld a, [wPlayerCostume]
+	inc a
+	ld [wPokecenterChar2], a
+	ret	
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
+StepUpAshScript:
+    applymovement POKECENTER2F_NPC_ASH, PokecenterNPCStepUpMovement
+	readvar VAR_XCOORD
+    ifequal 6, FinishAshScript
+    ifequal 7, FinishAshScript2
+	end
+	
+StepDownAshScript:
+   applymovement POKECENTER2F_NPC_ASH, PokecenterNPCStepDownMovement
+	readvar VAR_XCOORD
+    ifequal 6, FinishAshScript
+    ifequal 7, FinishAshScript2
+   end
+StepLeftAshScript:  
+   applymovement POKECENTER2F_NPC_ASH, PokecenterNPCStepLeftMovement
+  	readvar VAR_XCOORD
+    ifequal 5, FinishAshScript
+    ifequal 6, FinishAshScript2
+   end
+StepRightAshScript:
+    applymovement POKECENTER2F_NPC_ASH, PokecenterNPCStepRightMovement
+   	readvar VAR_XCOORD
+    ifequal 7, FinishAshScript
+    ifequal 8, FinishAshScript2
+   end
+   
+FinishAshScript:
+	 disappear POKECENTER2F_NPC_ASH
+	 setevent EVENT_POKECENTER_ASH	 
+	 callasm SwapNPC1WithPlayer
+     callasm AshCostumeChange 
+	 sjump CheckPokecenterChar1
+end
+
+FinishAshScript2:
+	 disappear POKECENTER2F_NPC_ASH
+	 setevent EVENT_POKECENTER_ASH	 
+	 callasm SwapNPC2WithPlayer
+	 moveobject POKECENTER2F_NPC_ASH, 7, 6
+     callasm AshCostumeChange 
+	 sjump CheckPokecenterChar2
+end     
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
+StepUpBrockScript:
+	; disappear PLAYER
+    applymovement POKECENTER2F_NPC_BROCK, PokecenterNPCStepUpMovement
+ 	readvar VAR_XCOORD
+    ifequal 6, FinishBrockScript
+    ifequal 7, FinishBrockScript2
+	end
+	
+StepDownBrockScript:
+	; disappear PLAYER
+   applymovement POKECENTER2F_NPC_BROCK, PokecenterNPCStepDownMovement
+	readvar VAR_XCOORD
+    ifequal 6, FinishBrockScript
+    ifequal 7, FinishBrockScript2
+   end
+StepLeftBrockScript: 
+	; disappear PLAYER
+   applymovement POKECENTER2F_NPC_BROCK, PokecenterNPCStepLeftMovement
+  	readvar VAR_XCOORD
+    ifequal 5, FinishBrockScript
+    ifequal 6, FinishBrockScript2
+   end
+StepRightBrockScript:
+	; disappear PLAYER
+    applymovement POKECENTER2F_NPC_BROCK, PokecenterNPCStepRightMovement
+   	readvar VAR_XCOORD
+    ifequal 7, FinishBrockScript
+    ifequal 8, FinishBrockScript2
+   end
+   
+FinishBrockScript:
+	 disappear POKECENTER2F_NPC_BROCK
+	 setevent EVENT_POKECENTER_BROCK	 
+	 callasm SwapNPC1WithPlayer
+	 
+     callasm BrockCostumeChange
+    sjump CheckPokecenterChar1
+end
+
+FinishBrockScript2:
+	 disappear POKECENTER2F_NPC_BROCK
+	 setevent EVENT_POKECENTER_BROCK	 
+	 callasm SwapNPC2WithPlayer
+	 
+     callasm BrockCostumeChange
+    sjump CheckPokecenterChar2
+end      
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
+StepUpMistyScript:
+   applymovement POKECENTER2F_NPC_MISTY, PokecenterNPCStepUpMovement
+ 	readvar VAR_XCOORD
+    ifequal 6, FinishMistyScript
+    ifequal 7, FinishMistyScript2
+	end
+StepDownMistyScript:
+    applymovement POKECENTER2F_NPC_MISTY, PokecenterNPCStepDownMovement
+	readvar VAR_XCOORD
+    ifequal 6, FinishMistyScript
+    ifequal 7, FinishMistyScript2
+   end
+StepLeftMistyScript:  
+    applymovement POKECENTER2F_NPC_MISTY, PokecenterNPCStepLeftMovement
+  	readvar VAR_XCOORD
+    ifequal 5, FinishMistyScript
+    ifequal 6, FinishMistyScript2
+   end
+StepRightMistyScript:
+   applymovement POKECENTER2F_NPC_MISTY, PokecenterNPCStepRightMovement
+   	readvar VAR_XCOORD
+    ifequal 7, FinishMistyScript
+    ifequal 8, FinishMistyScript2
+   end
+   
+FinishMistyScript:
+	 disappear POKECENTER2F_NPC_MISTY
+	 setevent EVENT_POKECENTER_MISTY	 
+	 callasm SwapNPC1WithPlayer
+     callasm MistyCostumeChange
+	 
+     sjump CheckPokecenterChar1
+     end
+
+FinishMistyScript2:
+	 disappear POKECENTER2F_NPC_MISTY
+	 setevent EVENT_POKECENTER_MISTY	 
+	 callasm SwapNPC2WithPlayer
+     callasm MistyCostumeChange
+	 
+     sjump CheckPokecenterChar2
+     end  	 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
+StepUpGaryScript:
+   applymovement POKECENTER2F_NPC_GARY, PokecenterNPCStepUpMovement
+ 	readvar VAR_XCOORD
+    ifequal 6, FinishGaryScript
+    ifequal 7, FinishGaryScript2
+	end
+StepDownGaryScript:
+    applymovement POKECENTER2F_NPC_GARY, PokecenterNPCStepDownMovement
+ 	readvar VAR_XCOORD
+    ifequal 6, FinishGaryScript
+    ifequal 7, FinishGaryScript2
+   end
+StepLeftGaryScript:  
+    applymovement POKECENTER2F_NPC_GARY, PokecenterNPCStepLeftMovement
+  	readvar VAR_XCOORD
+    ifequal 5, FinishGaryScript
+    ifequal 6, FinishGaryScript2
+   end
+StepRightGaryScript:
+   applymovement POKECENTER2F_NPC_GARY, PokecenterNPCStepRightMovement
+   	readvar VAR_XCOORD
+    ifequal 7, FinishGaryScript
+    ifequal 8, FinishGaryScript2
+   end
+   
+FinishGaryScript:
+	 disappear POKECENTER2F_NPC_GARY
+	 setevent EVENT_POKECENTER_GARY	 
+	 callasm SwapNPC1WithPlayer
+     callasm GaryCostumeChange
+	 
+     sjump CheckPokecenterChar1
+     end
+
+FinishGaryScript2:
+	 disappear POKECENTER2F_NPC_GARY
+	 setevent EVENT_POKECENTER_GARY	 
+	 callasm SwapNPC2WithPlayer
+     callasm GaryCostumeChange
+	 
+     sjump CheckPokecenterChar2
+     end      	 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
+StepUpPikachuScript:
+   applymovement POKECENTER2F_NPC_PIKACHU, PokecenterNPCStepUpMovement
+ 	readvar VAR_XCOORD
+    ifequal 6, FinishPikachuScript
+    ifequal 7, FinishPikachuScript2 
+	end
+StepDownPikachuScript:
+    applymovement POKECENTER2F_NPC_PIKACHU, PokecenterNPCStepDownMovement
+ 	readvar VAR_XCOORD
+    ifequal 6, FinishPikachuScript
+    ifequal 7, FinishPikachuScript2 
+   end
+StepLeftPikachuScript:  
+    applymovement POKECENTER2F_NPC_PIKACHU, PokecenterNPCStepLeftMovement
+    	readvar VAR_XCOORD
+    ifequal 5, FinishPikachuScript
+    ifequal 6, FinishPikachuScript2 
+   end
+StepRightPikachuScript:
+   applymovement POKECENTER2F_NPC_PIKACHU, PokecenterNPCStepRightMovement
+    	readvar VAR_XCOORD
+    ifequal 7, FinishPikachuScript
+    ifequal 8, FinishPikachuScript2 
+   end
+   
+FinishPikachuScript:
+	 disappear POKECENTER2F_NPC_PIKACHU
+	 setevent EVENT_POKECENTER_PIKACHU	 
+	 callasm SwapNPC1WithPlayer
+     callasm PikachuCostumeChange
+	 
+     sjump CheckPokecenterChar1
+     end
+
+FinishPikachuScript2:
+	 disappear POKECENTER2F_NPC_PIKACHU
+	 setevent EVENT_POKECENTER_PIKACHU	 
+	 callasm SwapNPC2WithPlayer
+     callasm PikachuCostumeChange
+	 
+     sjump CheckPokecenterChar2
+     end    	 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+CheckPokecenterChar1:   
+	 readmem wPokecenterChar1
+	 ifequal 1, AshAppear
+	 ifequal 2, MistyAppear
+	 ifequal 3, BrockAppear
+	 ifequal 4, GaryAppear
+	 ifequal 5, PikachuAppear
+	 end
+
+CheckPokecenterChar2:   
+	 readmem wPokecenterChar2
+	 ifequal 1, AshAppear2
+	 ifequal 2, MistyAppear2
+	 ifequal 3, BrockAppear2
+	 ifequal 4, GaryAppear2
+	 ifequal 5, PikachuAppear2
+	 end
+
+AshAppear2:
+  moveobject POKECENTER2F_NPC_ASH, 7, 6
+   clearevent EVENT_POKECENTER_ASH
+  appear POKECENTER2F_NPC_ASH
+  end
+  
+AshAppear:
+  moveobject POKECENTER2F_NPC_ASH, 6, 6
+ clearevent EVENT_POKECENTER_ASH
+  appear POKECENTER2F_NPC_ASH
+    end
+
+MistyAppear2:
+  moveobject POKECENTER2F_NPC_MISTY, 7, 6
+   clearevent EVENT_POKECENTER_MISTY	
+  appear POKECENTER2F_NPC_MISTY
+  end
+  
+MistyAppear:
+  moveobject POKECENTER2F_NPC_MISTY, 6, 6
+ clearevent EVENT_POKECENTER_MISTY	
+  appear POKECENTER2F_NPC_MISTY
+    end
+
+BrockAppear2:
+ moveobject POKECENTER2F_NPC_BROCK, 7, 6
+  clearevent EVENT_POKECENTER_BROCK
+  appear POKECENTER2F_NPC_BROCK
+    end	
+	
+BrockAppear:
+ moveobject POKECENTER2F_NPC_BROCK, 6, 6
+ clearevent EVENT_POKECENTER_BROCK
+  appear POKECENTER2F_NPC_BROCK
+    end	
+	
+GaryAppear2:
+  moveobject POKECENTER2F_NPC_GARY, 7, 6
+   clearevent EVENT_POKECENTER_GARY
+  appear POKECENTER2F_NPC_GARY
+    end
+	
+GaryAppear:
+  moveobject POKECENTER2F_NPC_GARY, 6, 6
+ clearevent EVENT_POKECENTER_GARY
+  appear POKECENTER2F_NPC_GARY
+    end
+
+PikachuAppear2:
+ moveobject POKECENTER2F_NPC_PIKACHU, 7, 6
+ clearevent EVENT_POKECENTER_PIKACHU
+  appear POKECENTER2F_NPC_PIKACHU
+    end		 
+PikachuAppear:
+ moveobject POKECENTER2F_NPC_PIKACHU, 6, 6
+ clearevent EVENT_POKECENTER_PIKACHU
+  appear POKECENTER2F_NPC_PIKACHU
+    end		
+
+
+PokecenterNPCStepUpMovement:   
+   step UP
+    step_end
+ 
+PokecenterNPCStepDownMovement:   
+   step DOWN
+    step_end
+
+PokecenterNPCStepLeftMovement:   
+   step LEFT
+    step_end
+
+PokecenterNPCStepRightMovement:   
+   step RIGHT
+    step_end	
 
 Pokecenter2FCheckMysteryGiftScene:
 	special CheckMysteryGift
@@ -49,7 +809,24 @@ Pokecenter2F_AppearMysteryGiftDeliveryGuy:
 	appear POKECENTER2F_OFFICER
 	setevent EVENT_TEMPORARY_UNTIL_MAP_RELOAD_2
 	end
+	
+; NPCTradeCrispy:
+    ; clearevent EVENT_MYSTERY_GIFT_DELIVERY_GUY
+	; callasm GiveGift
+    ; special SetTradeNPCGenderBoy
+	; faceplayer
+	; opentext
+	; trade NPC_TRADE_JULIO
+	; waitbutton
+	; closetext
+	; end	
 
+; GiveGift:
+	; ld a, BANK(sMysteryGiftItem)
+	; call OpenSRAM
+   ; ld a, FRIEND_BALL
+    ; ld [sMysteryGiftItem], a
+	; ret
 Script_TradeCenterClosed:
 	faceplayer
 	opentext
@@ -586,15 +1363,16 @@ Pokecenter2FLinkRecordSign:
 	closetext
 	end
 
-Pokecenter2FOfficerScript2:
+Pokecenter2F_OfficerScript2:
 	faceplayer
     
 
-Pokecenter2FOfficerScript:
+Pokecenter2F_OfficerScript:
+;    clearevent EVENT_MYSTERY_GIFT_DELIVERY_GUY
 	faceplayer
 	opentext
 	checkevent EVENT_MYSTERY_GIFT_DELIVERY_GUY
-	iftrue .AlreadyGotGift
+	iftrue .NoGift
 	writetext Text_MysteryGiftDeliveryGuy_Intro
 	yesorno
 	iffalse .RefusedGift
@@ -605,8 +1383,18 @@ Pokecenter2FOfficerScript:
 	iffalse .BagIsFull
 	itemnotify
 	setevent EVENT_MYSTERY_GIFT_DELIVERY_GUY
-.AlreadyGotGift:
+	sjump .ServeYouAgain
+	end
+	
+.ServeYouAgain:
 	writetext Text_MysteryGiftDeliveryGuy_Outro
+	waitbutton
+	closetext
+	setevent EVENT_MYSTERY_GIFT_DELIVERY_GUY
+	end
+
+.NoGift:
+	writetext Text_MysteryGiftDeliveryGuy_Outro2
 	waitbutton
 	closetext
 	end
@@ -622,7 +1410,8 @@ Pokecenter2FOfficerScript:
 	waitbutton
 	closetext
 	end
-
+	
+	
 Pokecenter2FMovementData_ReceptionistWalksUpAndLeft_LookRight:
 	slow_step UP
 	slow_step LEFT
@@ -972,6 +1761,25 @@ Text_MysteryGiftDeliveryGuy_Outro:
 	text "We hope to serve"
 	line "you again."
 	done
+	
+Text_MysteryGiftDeliveryGuy_Outro2:
+	text "Hello there!"
+	
+	para "<PLAYER>, was it?"
+	;line "it?"
+	
+	para "No, it doesn't"
+	line "look like we"
+	cont "have anything"
+	cont "here for you!"
+	
+    para "But please,"
+	line "do keep MYSTERY"
+	cont "GIFT Delivery Co."
+	cont "in mind for all"
+	cont "of your future"
+	cont "delivery needs!"
+	done	
 
 Text_MysteryGiftDeliveryGuy_NoRoom:
 	text "Oh, you have no"
@@ -1040,7 +1848,14 @@ Pokecenter2F_MapEvents:
 	bg_event  7,  3, BGEVENT_READ, Pokecenter2FLinkRecordSign
 
 	def_object_events
-	object_event  5,  2, SPRITE_LINK_RECEPTIONIST, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, LinkReceptionistScript_Trade, -1
-	object_event  9,  2, SPRITE_LINK_RECEPTIONIST, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, LinkReceptionistScript_Battle, -1
+	object_event  5,  2, SPRITE_LINK_RECEPTIONIST, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_PINK, OBJECTTYPE_SCRIPT, 0, LinkReceptionistScript_Trade, -1
+	object_event  9,  2, SPRITE_LINK_RECEPTIONIST, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, LinkReceptionistScript_Battle, -1
 	object_event 13,  3, SPRITE_LINK_RECEPTIONIST, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, LinkReceptionistScript_TimeCapsule, -1
-	object_event  1,  1, SPRITE_OFFICER, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, Pokecenter2F_CheckGender, -1
+	object_event  1,  1, SPRITE_OFFICER, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, Pokecenter2F_OfficerScript, -1
+
+   	object_event 6, 6, SPRITE_ASH, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, NPC_Ash_Script, EVENT_POKECENTER_ASH
+	object_event 6, 6, SPRITE_BROCK, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, NPC_Brock_Script, EVENT_POKECENTER_BROCK
+	object_event 6, 6, SPRITE_OLD_MISTY, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_PINK, OBJECTTYPE_SCRIPT, 0, NPC_Misty_Script, EVENT_POKECENTER_MISTY
+	object_event 6, 6, SPRITE_GARY, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, NPC_Gary_Script, EVENT_POKECENTER_GARY
+	object_event 6, 6, SPRITE_PIKACHU, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, NPC_Pikachu_Script, EVENT_POKECENTER_PIKACHU
+;	object_event  9,  5, SPRITE_POKEFAN_M, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, NPCTradeCrispy, -1

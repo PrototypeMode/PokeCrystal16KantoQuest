@@ -101,4 +101,5 @@ MapScenes::
 	scene_var LAVENDER_TOWER_5F,                                 wLavenderTower5FSceneID
 	scene_var LAVENDER_TOWER_6F,                                 wLavenderTower6FSceneID
 	scene_var LAVENDER_TOWER_7F,                                 wLavenderTower7FSceneID
+	scene_var PEWTER_POKECENTER_1F,                              wPewterPokecenter1FSceneID
 	db -1 ; end

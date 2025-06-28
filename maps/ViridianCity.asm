@@ -12,6 +12,7 @@ ViridianCity_MapScripts:
 
 	def_scene_scripts
 	scene_script ViridianCityZeroScene, SCENE_VIRIDIAN_CITY
+	scene_script ViridianCityOneScene, SCENE_VIRIDIAN_CITY_1
 
 	def_callbacks
 	callback MAPCALLBACK_NEWMAP, ViridianCityFlypointCallback
@@ -23,13 +24,24 @@ ViridianCityFlypointCallback:
 ViridianCityZeroScene:
      checkflag ENGINE_POKEDEX
 	      iffalse .Disappear
-		  end
+	      iftrue .Disappear2
+	
+	end
 		  
-.Disappear		  
+.Disappear
    disappear VIRIDIANCITY_GAMBLER
 	 end
+.Disappear2
+    setscene 1
+    end
+
+ViridianCityOneScene:
+   disappear VIRIDIANCITY_GAMBLER_ASLEEP	  
+	end
+	
 
 ViridianCityNoCoffeeGramps:
+     faceplayer
      checkflag ENGINE_POKEDEX
      iffalse .OldDudeNoCoffee
      iftrue ViridianCityCoffeeGramps
@@ -44,6 +56,7 @@ ViridianCityNoCoffeeGramps:
 	 end
 	 
 ViridianCityCoffeeGramps:
+    faceplayer
     ; checkevent EVENT_OLD_DUDE_GOT_COFFEE
 	; iffalse .AskQuestion
 	; iftrue .CatchTutorial
@@ -69,6 +82,8 @@ ViridianCityCoffeeGramps:
 	end
 	
 ViridianCityCoffeeLass:	
+	checkevent EVENT_OLD_DUDE_GOT_COFFEE
+	iftrue ViridianCityCoffeeLass2
 	faceplayer
 	opentext
 	writetext ViridianCityCoffeeLassText
@@ -121,8 +136,27 @@ ViridianCityYoungsterScript:
 	jumptextfaceplayer ViridianCityYoungsterText
 	
 ViridianCityBugGuyScript:
-	jumptextfaceplayer ViridianCityBugGuyText
-
+	faceplayer
+	opentext
+	writetext ViridianCityBugGuyText
+    promptbutton
+	yesorno
+	iftrue .BugDesc
+	iffalse .NoBugDesc
+	end
+	
+.BugDesc	
+	writetext ViridianCityBugGuyText2
+	promptbutton
+	closetext
+	end
+	
+.NoBugDesc	
+	writetext ViridianCityBugGuyText3
+	promptbutton
+	closetext
+	end	
+	
 ViridianCityBallGuy0Script:
 	readmem wPartyCount
 	ifequal 1, ViridianCity1BallGuyScript
@@ -208,10 +242,12 @@ ViridianCityCoffeeLassText:
 	done
 	 
 ViridianCityCoffeeLassText2:
-    text "Oh, Grandpa! Don't"
-    line "be so mean!"	
-    cont "He hasn't had his"
-    cont "coffee yet."	
+    text "Grandpa can be"
+    line "so moody without"	
+    cont "his coffee, but"
+    cont "he really was an"	
+    cont "ACE TRAINER back"	
+    cont "in the day!"	
     done
 	
 ViridianCityGrampsNearGymText:
@@ -278,6 +314,24 @@ ViridianCityBugGuyText:
     cont "BUG-Type #MON"
 	cont "you can find in"
 	cont "VIRIDIAN FOREST?"
+	done
+
+ViridianCityBugGuyText2:
+	text "CATERPIE has no"
+	line "poison, but"
+    cont "WEEDLE does."
+    
+	para "Watch out for its"
+	line "POISON STING!"
+	done
+
+ViridianCityBugGuyText3:
+	text "Oh, OK then!"
+	
+    para "Some people just"
+    line "can't appreciate"
+    cont "good BUG trivia!"
+
 	done
 
 ViridianCity1BallGuyText:
@@ -364,7 +418,8 @@ ViridianCity_MapEvents:
 	;warp_event 23, 25, LAVENDER_TOWER_1F, 1
 
 	def_coord_events
-
+    coord_event 19, 9, SCENE_VIRIDIAN_CITY, ViridianCityNoCoffeeGramps
+	
 	def_bg_events
 	bg_event 17, 17, BGEVENT_READ, ViridianCitySign
 	bg_event 27,  7, BGEVENT_READ, ViridianGymSign
@@ -376,10 +431,10 @@ ViridianCity_MapEvents:
 
 	def_object_events
 	object_event 18,  9, SPRITE_GAMBLER_ASLEEP, SPRITEMOVEDATA_STANDING_DOWN, 2, 2, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ViridianCityNoCoffeeGramps, EVENT_OLD_DUDE_GOT_COFFEE
-	object_event 18,  9, SPRITE_GAMBLER, SPRITEMOVEDATA_WANDER, 2, 2, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ViridianCityCoffeeGramps, -1
+	object_event 18,  9, SPRITE_GAMBLER, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ViridianCityCoffeeGramps, -1
 	object_event 17,  9, SPRITE_LASS, SPRITEMOVEDATA_STANDING_RIGHT, 2, 2, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ViridianCityCoffeeLass, -1
 	object_event 30,  8, SPRITE_GRAMPS, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, ViridianCityGrampsNearGym, -1
 	object_event  6, 23, SPRITE_FISHER, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, ViridianCityDreamEaterFisher, -1
 	object_event 17, 21, SPRITE_YOUNGSTER, SPRITEMOVEDATA_WANDER, 3, 3, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, ViridianCityYoungsterScript, -1
-	object_event 31, 25, SPRITE_YOUNGSTER, SPRITEMOVEDATA_WANDER, 3, 3, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, ViridianCityBugGuyScript, -1
-	object_event 13, 18, SPRITE_YOUNGSTER, SPRITEMOVEDATA_WANDER, 3, 3, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, ViridianCityBallGuy0Script, -1
+	object_event 31, 25, SPRITE_BUG_CATCHER_2, SPRITEMOVEDATA_WANDER, 3, 3, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, ViridianCityBugGuyScript, -1
+	object_event 13, 18, SPRITE_YOUNGSTER, SPRITEMOVEDATA_WANDER, 3, 3, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, ViridianCityBallGuy0Script, -1

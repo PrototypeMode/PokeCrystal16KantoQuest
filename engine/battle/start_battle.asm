@@ -13,6 +13,69 @@ ShowLinkBattleParticipants:
 	ret
 
 FindFirstAliveMonAndStartBattle:
+
+	ld a, [wMapGroup]
+	ld b, a	
+	ld a, [wMapNumber]
+	ld c, a
+    call GetWorldMapLocation
+    cp LANDMARK_ILEX_FOREST
+       jr z, .forestpal
+	   cp LANDMARK_VIRIDIAN_FOREST
+       jr z, .forestpal
+
+     call GetMapEnvironment
+       cp DUNGEON
+       jr z, .indoorpal
+
+      call GetMapEnvironment  
+      cp INDOOR
+      jr z, .indoorpal
+
+      call GetMapEnvironment	  
+      cp CAVE
+      jr z, .cavepal
+
+ ; Now we check for the Time of Day 
+    ld a, [wTimeOfDay]
+	cp DAY_F
+    jr z, .daypal
+
+   ld a, [wTimeOfDay]
+	cp MORN_F
+    jr z, .daypal
+	
+    ld a, [wTimeOfDay]
+	cp NITE_F
+    jr z, .nightpal
+
+.indoorpal
+    ld a, 0
+	ld [wBattleTimeOfDay], a
+    jr .timeofdaypalset 
+	
+.cavepal
+     ld a, 2
+	ld [wBattleTimeOfDay], a	
+	jr .timeofdaypalset 
+
+.forestpal
+     ld a, 3
+	ld [wBattleTimeOfDay], a	
+	jr .timeofdaypalset 
+
+.daypal
+    ld a, 0
+	ld [wBattleTimeOfDay], a
+     jr .timeofdaypalset
+	   
+
+.nightpal
+    ld a, 1
+	ld [wBattleTimeOfDay], a
+
+
+.timeofdaypalset
 	xor a
 	ldh [hMapAnims], a
 	call DelayFrame

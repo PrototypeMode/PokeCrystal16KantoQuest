@@ -258,6 +258,7 @@ HandleBetweenTurnEffects:
 	call CheckFaint_PlayerThenEnemy
 	ret c
 	call HandleWeather
+	farcall _CGB_BattleColors
 	call CheckFaint_PlayerThenEnemy
 	ret c
 	call HandleWrap
@@ -275,6 +276,7 @@ HandleBetweenTurnEffects:
 	call CheckFaint_EnemyThenPlayer
 	ret c
 	call HandleWeather
+	farcall _CGB_BattleColors
 	call CheckFaint_EnemyThenPlayer
 	ret c
 	call HandleWrap
@@ -1852,6 +1854,11 @@ HandleWeather:
 .ended
 	ld hl, .WeatherEndedMessages
 	call .PrintWeatherMessage
+
+		farcall _CGB_BattleColors
+		ld a, 1
+		ld [hCGBPalUpdate], a	
+	
 	xor a
 	ld [wBattleWeather], a
 	ret
@@ -5237,6 +5244,7 @@ BattleMenu_Pack:
 	call FinishBattleAnim
 	call LoadTilemapToTempTilemap
 	jp BattleMenu
+
 
 .ItemsCantBeUsed:
 	ld hl, BattleText_ItemsCantBeUsedHere
@@ -8937,6 +8945,11 @@ ExitBattle:
 CleanUpBattleRAM:
 	call BattleEnd_HandleRoamMons
 	xor a
+	
+    ld [wStatsScreenFlags], a
+	ld [wBattleTimeOfDay], a
+	ld [wBattleWeather], a
+	
 	ld [wLowHealthAlarm], a
 	ld [wBattleMode], a
 	ld [wBattleType], a

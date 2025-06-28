@@ -198,4 +198,7 @@ SpecialsPointers::
 	add_special DeleteDex
 	add_special BankOfDaisy
 	add_special CharacterCycleScript
+	add_special SetTradeNPCGenderBoy
+	add_special SetTradeNPCGenderGirl
+	add_special SetTradeNPCGenderUnknown
 

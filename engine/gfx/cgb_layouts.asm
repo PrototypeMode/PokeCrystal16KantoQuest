@@ -63,6 +63,8 @@ CGBLayoutJumptable:
 	dw _CGB_TrainerOrMonFrontpicPals
 	dw _CGB_MysteryGift
 	dw _CGB_Unused1E
+	dw _CGB_TrainerCardE4_Kanto
+	dw _CGB_TrainerCardE4_Johto
 	assert_table_length NUM_SCGB_LAYOUTS
 
 _CGB_BattleGrayscale:
@@ -203,7 +205,7 @@ _CGB_FinishBattleScreenLayout:
 	call FillBoxCGB
 	hlcoord 0, 12, wAttrmap
 	ld bc, 6 * SCREEN_WIDTH
-	ld a, PAL_BATTLE_BG_TEXT
+	ld a, PAL_BATTLE_BG_PLAYER
 	call ByteFill
 	ld hl, BattleObjectPals
 	ld de, wOBPals1 palette PAL_BATTLE_OB_GRAY
@@ -376,6 +378,9 @@ _CGB_BillsPC:
 .GetMonPalette:
 	ld bc, wTempMonDVs
 	call GetPlayerOrMonPalettePointer
+	xor a
+       ld [wBattleWeather], a
+	ld [wBattleTimeOfDay], a
 	call LoadPalette_White_Col1_Col2_Black
 .GotPalette:
 	call WipeAttrmap
@@ -691,6 +696,16 @@ _CGB_TrainerCardJohto:
     call _CGB_TrainerCardJohto2
     ret
 	INCLUDE "engine/gfx/trainercard_colors_page_2.asm"
+
+_CGB_TrainerCardE4_Kanto:
+    call _CGB_TrainerCardE4_Kanto_2
+    ret
+	INCLUDE "engine/gfx/trainercard_colors_page_3.asm"
+	
+_CGB_TrainerCardE4_Johto:
+    call _CGB_TrainerCardE4_Johto_2
+    ret
+	INCLUDE "engine/gfx/trainercard_colors_page_4.asm"		
 
 _CGB_MoveList:
 	ld de, wBGPals1

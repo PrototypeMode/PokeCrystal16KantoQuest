@@ -6,16 +6,24 @@ Route5UndergroundPathEntrance_MapScripts:
 
 	def_callbacks
 
-Route5UndergroundPathEntranceTeacherScript:
-	jumptextfaceplayer Route5UndergroundPathEntranceTeacherText
+NPCTradeSaige:
+    special SetTradeNPCGenderGirl
+	faceplayer
+	opentext
+	trade NPC_TRADE_SAIGE
+	waitbutton
+	closetext
 
-Route5UndergroundPathEntranceTeacherText:
-	text "Many cities in"
-	line "JOHTO have long"
+; Route5UndergroundPathEntranceTeacherScript:
+	; jumptextfaceplayer Route5UndergroundPathEntranceTeacherText
 
-	para "histories. I'd"
-	line "love to visit!"
-	done
+; Route5UndergroundPathEntranceTeacherText:
+	; text "Many cities in"
+	; line "JOHTO have long"
+
+	; para "histories. I'd"
+	; line "love to visit!"
+	; done
 
 Route5UndergroundPathEntrance_MapEvents:
 	db 0, 0 ; filler
@@ -30,4 +38,5 @@ Route5UndergroundPathEntrance_MapEvents:
 	def_bg_events
 
 	def_object_events
-	object_event  2,  2, SPRITE_TEACHER, SPRITEMOVEDATA_WANDER, 1, 1, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, Route5UndergroundPathEntranceTeacherScript, -1
+;	object_event  2,  2, SPRITE_TEACHER, SPRITEMOVEDATA_WANDER, 1, 1, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, Route5UndergroundPathEntranceTeacherScript, -1
+	object_event  2,  2, SPRITE_TEACHER, SPRITEMOVEDATA_WANDER, 1, 1, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, NPCTradeSaige, -1
